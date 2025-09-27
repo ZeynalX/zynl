@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ders Programı Takip Sistemi</title>
     <style>
+        /* CSS kodu aynı kalacak */
         :root {
             --primary-color: #2196F3;
             --secondary-color: #FFC107;
@@ -215,6 +216,14 @@
             color: #f44336;
         }
         
+        .debug-info {
+            background: #ffeb3b;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
         @media (max-width: 768px) {
             .day-btn {
                 font-size: 0.9rem;
@@ -250,6 +259,7 @@
         <div class="date-info" id="date-info">
             <!-- Tarih bilgisi JavaScript ile eklenecek -->
         </div>
+        <div id="debug-info" class="debug-info"></div>
         <div id="schedule">
             <div class="loading">Ders programı yükleniyor...</div>
         </div>
@@ -268,6 +278,9 @@
     <div class="overlay"></div>
 
     <script>
+        // Debug bilgisi için element
+        const debugInfo = document.getElementById('debug-info');
+
         // UI Elementleri
         const menuBtn = document.querySelector('.menu-btn');
         const closeBtn = document.querySelector('.close-btn');
@@ -287,23 +300,37 @@
         // JSON dosyasını yükle
         async function loadScheduleData() {
             try {
+                debugInfo.innerHTML = 'JSON dosyası yükleniyor...';
+                
                 const response = await fetch('schedule-data.json');
+                debugInfo.innerHTML += `<br>Response status: ${response.status}`;
+                
                 if (!response.ok) {
-                    throw new Error('JSON dosyası yüklenemedi');
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                scheduleData = await response.json();
+                
+                const data = await response.text();
+                debugInfo.innerHTML += `<br>Veri uzunluğu: ${data.length} karakter`;
+                
+                // JSON'ı parse et
+                scheduleData = JSON.parse(data);
+                debugInfo.innerHTML += `<br>JSON başarıyla parse edildi. Hafta sayısı: ${Object.keys(scheduleData).length}`;
+                
                 initializeApp();
             } catch (error) {
                 console.error('Hata:', error);
-                schedule.innerHTML = '<div class="error">Ders programı yüklenirken hata oluştu. Lütfen sayfayı yenileyin.</div>';
+                debugInfo.innerHTML += `<br style="color: red;">HATA: ${error.message}`;
+                schedule.innerHTML = '<div class="error">Ders programı yüklenirken hata oluştu. Lütfen sayfayı yenileyin.<br>Hata: ' + error.message + '</div>';
             }
         }
 
         // Uygulamayı başlat
         function initializeApp() {
+            debugInfo.innerHTML += '<br>Uygulama başlatılıyor...';
             updateWeekSelector();
             updateWeekList();
             updateDaySchedule();
+            debugInfo.innerHTML += '<br>Uygulama başlatıldı!';
         }
 
         // Hamburger menü aç/kapat
@@ -360,7 +387,7 @@
                 const li = document.createElement('li');
                 li.className = `week-item ${i === currentWeek ? 'active' : ''}`;
                 const weekData = scheduleData[i];
-                const dateRange = weekData ? `${weekData.startDate} - ${weekData.endDate}` : '';
+                const dateRange = weekData ? `${weekData.startDate} - ${weekData.endDate}` : 'Veri yok';
                 li.textContent = `Hafta ${i} ${dateRange}`;
                 li.addEventListener('click', () => selectWeek(i));
                 weekList.appendChild(li);
@@ -369,10 +396,12 @@
 
         // Günlük ders programını güncelle
         function updateDaySchedule() {
-            const dayData = scheduleData[currentWeek]?.days[currentDay];
+            const dayData = scheduleData[currentWeek]?.days?.[currentDay];
+            debugInfo.innerHTML += `<br>Güncel hafta: ${currentWeek}, gün: ${currentDay}`;
+            
             if (!dayData) {
                 dateInfo.textContent = 'Veri bulunamadı';
-                schedule.innerHTML = '<p>Bu gün için ders programı verisi bulunamadı.</p>';
+                schedule.innerHTML = `<p>Hafta ${currentWeek} ${getDayName(currentDay)} günü için ders programı verisi bulunamadı.</p>`;
                 return;
             }
 
