@@ -3,437 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ders Programı Takip Sistemi</title>
+    <title>Haftalık Ders Programı ve Kazanımlar</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-        /* CSS kodu aynı kalacak */
         :root {
-            --primary-color: #2196F3;
-            --secondary-color: #FFC107;
-            --background-color: #f5f5f5;
+            --primary-color: #1976D2; /* Material Blue */
+            --secondary-color: #6c757d;
+            --background-color: #f4f7f9;
+            --card-background: #ffffff;
             --text-color: #333;
-            --card-color: #fff;
-            --shadow: 0 2px 5px rgba(0,0,0,0.1);
+            --border-color: #dee2e6;
+            --shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            --active-color: #FFC107; /* Material Amber */
         }
-        
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
         }
-        
+
         body {
+            font-family: 'Roboto', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            line-height: 1.6;
         }
-        
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1001;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.4s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover { color: #f1f1f1; }
+        .sidenav a.active {
+            color: var(--active-color);
+            font-weight: 700;
+        }
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
         header {
             background-color: var(--primary-color);
             color: white;
-            padding: 1rem;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+        }
+        
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .menu-icon {
+            font-size: 28px;
+            cursor: pointer;
+            position: absolute;
+            left: 15px;
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            margin: 0;
+            font-weight: 500;
+        }
+        
+        header h2 {
+            font-size: 0.9rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .day-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--card-background);
+            padding: 10px 5px;
             box-shadow: var(--shadow);
+            position: sticky;
+            top: 70px;
+            z-index: 999;
+        }
+
+        .day-nav button {
+            padding: 8px 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: transparent;
+            color: var(--secondary-color);
+            transition: all 0.3s ease;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .day-nav button.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .main-container { padding: 10px 8px; }
+
+        .schedule-card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .card-header {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        
-        .menu-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .week-selector {
-            display: flex;
-            overflow-x: auto;
-            padding: 0.5rem;
-            background-color: var(--card-color);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 60px;
-            z-index: 90;
-        }
-        
-        .week-btn {
-            padding: 0.5rem 1rem;
-            margin-right: 0.5rem;
-            background-color: var(--card-color);
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        
-        .week-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .day-selector {
-            display: flex;
-            overflow-x: auto;
-            background-color: var(--card-color);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 105px;
-            z-index: 80;
-        }
-        
-        .day-btn {
-            flex: 1;
-            padding: 1rem 0.5rem;
-            text-align: center;
-            border: none;
-            background-color: var(--card-color);
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .day-btn.active {
-            border-bottom: 3px solid var(--primary-color);
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        .schedule-container {
-            padding: 1rem;
-        }
-        
-        .date-info {
-            text-align: center;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        .lesson-card {
-            background-color: var(--card-color);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow);
+            font-size: 0.9rem;
         }
         
         .lesson-time {
-            font-weight: bold;
             color: var(--primary-color);
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            background-color: #e3f2fd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
         }
         
         .lesson-name {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+            color: #343a40;
+            font-weight: 500;
+        }
+
+        .card-body {
+            padding: 10px 12px;
+            font-size: 0.8rem;
+            line-height: 1.5;
         }
         
-        .lesson-outcomes {
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.4;
-        }
-        
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 300px;
-            height: 100%;
-            background-color: var(--card-color);
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            transition: left 0.3s;
-            z-index: 200;
-            overflow-y: auto;
-            padding: 1rem;
-        }
-        
-        .sidebar.active {
-            left: 0;
-        }
-        
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .week-list {
-            list-style: none;
-        }
-        
-        .week-item {
-            padding: 0.75rem;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-        }
-        
-        .week-item.active {
-            background-color: #e3f2fd;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 150;
-            display: none;
-        }
-        
-        .overlay.active {
-            display: block;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: var(--primary-color);
-        }
-        
-        .error {
-            text-align: center;
-            padding: 2rem;
-            color: #f44336;
-        }
-        
-        .debug-info {
-            background: #ffeb3b;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        @media (max-width: 768px) {
-            .day-btn {
-                font-size: 0.9rem;
-                padding: 0.75rem 0.25rem;
-            }
-            
-            .lesson-card {
-                padding: 0.75rem;
-            }
+        .card-body.empty {
+            color: #999;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div id="week-menu"></div>
+    </div>
+
     <header>
-        <button class="menu-btn">☰</button>
-        <h1>Ders Programı Takip</h1>
-        <div style="width: 40px;"></div>
+        <div class="header-top">
+            <span class="menu-icon material-icons" onclick="openNav()">menu</span>
+            <h1 id="week-title-display">Yükleniyor...</h1>
+        </div>
+        <h2 id="date-display"></h2>
     </header>
-    
-    <div class="week-selector">
-        <!-- Hafta butonları JavaScript ile eklenecek -->
-    </div>
-    
-    <div class="day-selector">
-        <button class="day-btn active" data-day="0">Pazartesi</button>
-        <button class="day-btn" data-day="1">Salı</button>
-        <button class="day-btn" data-day="2">Çarşamba</button>
-        <button class="day-btn" data-day="3">Perşembe</button>
-        <button class="day-btn" data-day="4">Cuma</button>
-    </div>
-    
-    <div class="schedule-container">
-        <div class="date-info" id="date-info">
-            <!-- Tarih bilgisi JavaScript ile eklenecek -->
-        </div>
-        <div id="debug-info" class="debug-info"></div>
-        <div id="schedule">
-            <div class="loading">Ders programı yükleniyor...</div>
-        </div>
-    </div>
-    
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>Hafta Seçin</h2>
-            <button class="close-btn">×</button>
-        </div>
-        <ul class="week-list">
-            <!-- Hafta listesi JavaScript ile eklenecek -->
-        </ul>
-    </div>
-    
-    <div class="overlay"></div>
+
+    <nav id="day-nav" class="day-nav"></nav>
+    <main id="schedule-container" class="main-container"></main>
 
     <script>
-        // Debug bilgisi için element
-        const debugInfo = document.getElementById('debug-info');
-
-        // UI Elementleri
-        const menuBtn = document.querySelector('.menu-btn');
-        const closeBtn = document.querySelector('.close-btn');
-        const sidebar = document.querySelector('.sidebar');
-        const overlay = document.querySelector('.overlay');
-        const weekSelector = document.querySelector('.week-selector');
-        const dayBtns = document.querySelectorAll('.day-btn');
-        const dateInfo = document.getElementById('date-info');
-        const schedule = document.getElementById('schedule');
-        const weekList = document.querySelector('.week-list');
-
-        // Şu anki hafta ve gün
-        let currentWeek = 1;
-        let currentDay = 0;
+        // --- Global Variables ---
         let scheduleData = {};
+        let currentWeekId = '';
+        let currentDayId = '';
 
-        // JSON dosyasını yükle
-        async function loadScheduleData() {
-            try {
-                debugInfo.innerHTML = 'JSON dosyası yükleniyor...';
-                
-                const response = await fetch('schedule-data.json');
-                debugInfo.innerHTML += `<br>Response status: ${response.status}`;
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.text();
-                debugInfo.innerHTML += `<br>Veri uzunluğu: ${data.length} karakter`;
-                
-                // JSON'ı parse et
-                scheduleData = JSON.parse(data);
-                debugInfo.innerHTML += `<br>JSON başarıyla parse edildi. Hafta sayısı: ${Object.keys(scheduleData).length}`;
-                
-                initializeApp();
-            } catch (error) {
-                console.error('Hata:', error);
-                debugInfo.innerHTML += `<br style="color: red;">HATA: ${error.message}`;
-                schedule.innerHTML = '<div class="error">Ders programı yüklenirken hata oluştu. Lütfen sayfayı yenileyin.<br>Hata: ' + error.message + '</div>';
+        // --- DOM Elements ---
+        const weekMenu = document.getElementById('week-menu');
+        const dayNav = document.getElementById('day-nav');
+        const scheduleContainer = document.getElementById('schedule-container');
+        const weekTitleDisplay = document.getElementById('week-title-display');
+        const dateDisplay = document.getElementById('date-display');
+        
+        // --- Functions ---
+        function openNav() { document.getElementById("mySidenav").style.width = "250px"; }
+        function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
+
+        function populateWeekMenu() {
+            weekMenu.innerHTML = '';
+            for (const weekId in scheduleData) {
+                const week = scheduleData[weekId];
+                const link = document.createElement('a');
+                link.href = "javascript:void(0)";
+                link.textContent = week.name;
+                link.dataset.week = weekId;
+                link.onclick = () => {
+                    displayWeek(weekId);
+                    closeNav();
+                };
+                weekMenu.appendChild(link);
             }
         }
 
-        // Uygulamayı başlat
-        function initializeApp() {
-            debugInfo.innerHTML += '<br>Uygulama başlatılıyor...';
-            updateWeekSelector();
-            updateWeekList();
-            updateDaySchedule();
-            debugInfo.innerHTML += '<br>Uygulama başlatıldı!';
+        function populateDayMenu(weekId) {
+            const days = scheduleData[weekId].days;
+            dayNav.innerHTML = '';
+            const dayNames = { pazartesi: "Pzt", sali: "Sal", carsamba: "Çar", persembe: "Per", cuma: "Cum" };
+            
+            for(const dayId in dayNames){
+                 if(days[dayId]){
+                    const button = document.createElement('button');
+                    button.textContent = dayNames[dayId];
+                    button.dataset.day = dayId;
+                    button.onclick = () => displayDay(weekId, dayId);
+                    dayNav.appendChild(button);
+                 }
+            }
         }
 
-        // Hamburger menü aç/kapat
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.add('active');
-            overlay.classList.add('active');
-        });
+        function displayWeek(weekId) {
+            currentWeekId = weekId;
+            const week = scheduleData[weekId];
 
-        closeBtn.addEventListener('click', () => {
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-
-        overlay.addEventListener('click', () => {
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-
-        // Hafta seçimi
-        function selectWeek(week) {
-            currentWeek = week;
-            updateWeekSelector();
-            updateDaySchedule();
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        }
-
-        // Gün seçimi
-        dayBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                dayBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentDay = parseInt(btn.dataset.day);
-                updateDaySchedule();
+            weekTitleDisplay.textContent = week.name;
+            dateDisplay.textContent = week.dates;
+            
+            document.querySelectorAll('#week-menu a').forEach(a => {
+                a.classList.toggle('active', a.dataset.week === weekId);
             });
-        });
 
-        // Hafta seçiciyi güncelle
-        function updateWeekSelector() {
-            weekSelector.innerHTML = '';
-            for (let i = 1; i <= 19; i++) {
-                const btn = document.createElement('button');
-                btn.className = `week-btn ${i === currentWeek ? 'active' : ''}`;
-                btn.textContent = `Hafta ${i}`;
-                btn.addEventListener('click', () => selectWeek(i));
-                weekSelector.appendChild(btn);
-            }
+            populateDayMenu(weekId);
+            displayDay(weekId, 'pazartesi');
         }
 
-        // Hafta listesini güncelle
-        function updateWeekList() {
-            weekList.innerHTML = '';
-            for (let i = 1; i <= 19; i++) {
-                const li = document.createElement('li');
-                li.className = `week-item ${i === currentWeek ? 'active' : ''}`;
-                const weekData = scheduleData[i];
-                const dateRange = weekData ? `${weekData.startDate} - ${weekData.endDate}` : 'Veri yok';
-                li.textContent = `Hafta ${i} ${dateRange}`;
-                li.addEventListener('click', () => selectWeek(i));
-                weekList.appendChild(li);
-            }
-        }
+        function displayDay(weekId, dayId) {
+            currentDayId = dayId;
+            const lessons = scheduleData[weekId].days[dayId];
+            scheduleContainer.innerHTML = '';
 
-        // Günlük ders programını güncelle
-        function updateDaySchedule() {
-            const dayData = scheduleData[currentWeek]?.days?.[currentDay];
-            debugInfo.innerHTML += `<br>Güncel hafta: ${currentWeek}, gün: ${currentDay}`;
-            
-            if (!dayData) {
-                dateInfo.textContent = 'Veri bulunamadı';
-                schedule.innerHTML = `<p>Hafta ${currentWeek} ${getDayName(currentDay)} günü için ders programı verisi bulunamadı.</p>`;
-                return;
+            if (lessons) {
+                lessons.forEach(lesson => {
+                    const card = document.createElement('div');
+                    card.className = 'schedule-card';
+                    const bodyClass = (lesson.objective === 'Kazanım belirtilmemiş.' || lesson.objective === 'Etkinlik belirtilmemiş.') ? 'card-body empty' : 'card-body';
+                    
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <span class="lesson-name">${lesson.name}</span>
+                            <span class="lesson-time">${lesson.time}</span>
+                        </div>
+                        <div class="${bodyClass}">${lesson.objective}</div>
+                    `;
+                    scheduleContainer.appendChild(card);
+                });
             }
 
-            dateInfo.textContent = `${getDayName(currentDay)}, ${formatDate(dayData.date)}`;
-            
-            schedule.innerHTML = '';
-            dayData.lessons.forEach(lesson => {
-                const lessonCard = document.createElement('div');
-                lessonCard.className = 'lesson-card';
-                lessonCard.innerHTML = `
-                    <div class="lesson-time">${lesson.time}</div>
-                    <div class="lesson-name">${lesson.name}</div>
-                    <div class="lesson-outcomes">${lesson.outcomes || 'Kazanım bilgisi bulunmuyor'}</div>
-                `;
-                schedule.appendChild(lessonCard);
+            document.querySelectorAll('#day-nav button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.day === dayId);
             });
         }
 
-        // Gün adını döndür
-        function getDayName(dayIndex) {
-            const days = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma'];
-            return days[dayIndex];
-        }
-
-        // Tarihi formatla
-        function formatDate(dateString) {
-            const parts = dateString.split('-');
-            return `${parts[0]}.${parts[1]}.${parts[2]}`;
-        }
-
-        // Sayfa yüklendiğinde JSON'ı yükle
-        document.addEventListener('DOMContentLoaded', loadScheduleData);
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('program.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    scheduleData = data;
+                    populateWeekMenu();
+                    const firstWeekId = Object.keys(scheduleData)[0];
+                    if(firstWeekId) {
+                        displayWeek(firstWeekId);
+                    }
+                })
+                .catch(error => {
+                    console.error('JSON dosyası yüklenirken hata oluştu:', error);
+                    weekTitleDisplay.textContent = "Hata!";
+                    dateDisplay.textContent = "program.json dosyası bulunamadı veya hatalı.";
+                });
+        });
     </script>
 </body>
 </html>
