@@ -9,16 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
+        /* --- Gece Modu Değişiklikleri --- */
         :root {
-            --background-start-color: #a3bded;
-            --background-end-color: #6991c7;
-            --glass-bg-color: rgba(255, 255, 255, 0.1);
-            --glass-border-color: rgba(255, 255, 255, 0.2);
-            --text-color: #f0f0f0;
-            --text-secondary-color: #cccccc;
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --active-color: rgba(255, 255, 255, 0.25);
-            --accent-color: #89b4fa; 
+            --glass-bg-color: rgba(27, 38, 59, 0.35); /* Koyu cam rengi */
+            --glass-border-color: rgba(255, 255, 255, 0.15); /* Açık çerçeve rengi */
+            --text-color: #ffffff; /* Ana metin rengi: Beyaz */
+            --text-secondary-color: #b0b0b0; /* İkincil metin rengi: Açık Gri */
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --active-color: rgba(162, 210, 255, 0.2); /* Aktif buton rengi: Yarı saydam açık mavi */
+            --accent-color: #a2d2ff; /* Vurgu rengi: Açık Mavi */
         }
 
         * {
@@ -29,13 +28,13 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--background-start-color), var(--background-end-color));
+            background: #0d1b2a; /* Koyu başlangıç rengi */
             color: var(--text-color);
             overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* Animated Gradient Background */
+        /* Animated Dark Gradient Background */
         body::before {
             content: '';
             position: fixed;
@@ -43,9 +42,9 @@
             left: 0;
             height: 100vh;
             width: 100vw;
-            background: linear-gradient(300deg, #f7797d, #FBD786, #C6FFDD);
+            background: linear-gradient(300deg, #0d1b2a, #1b263b, #415a77);
             background-size: 200% 200%;
-            animation: gradient-animation 18s ease infinite;
+            animation: gradient-animation 25s ease infinite;
             z-index: -1;
         }
         
@@ -58,8 +57,8 @@
         /* --- Glassmorphism Panel --- */
         .glass-panel {
             background: var(--glass-bg-color);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px) saturate(120%);
+            -webkit-backdrop-filter: blur(15px) saturate(120%);
             border-radius: 16px;
             border: 1px solid var(--glass-border-color);
             box-shadow: 0 4px 20px var(--shadow-color);
@@ -76,10 +75,9 @@
             overflow-x: hidden;
             transition: 0.4s ease-out;
             padding-top: 60px;
-            /* Applying glass effect */
-            background: rgba(20, 20, 30, 0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(13, 27, 42, 0.6);
+            backdrop-filter: blur(20px) saturate(120%);
+            -webkit-backdrop-filter: blur(20px) saturate(120%);
             border-right: 1px solid var(--glass-border-color);
         }
 
@@ -118,8 +116,8 @@
             margin: 10px;
             /* Applying glass effect */
             background: var(--glass-bg-color);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px) saturate(120%);
+            -webkit-backdrop-filter: blur(15px) saturate(120%);
             border-radius: 16px;
             border: 1px solid var(--glass-border-color);
             box-shadow: 0 4px 20px var(--shadow-color);
@@ -161,7 +159,8 @@
             font-weight: 500;
             padding: 5px 10px;
             border-radius: 12px;
-            background: rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
         }
 
         header h1 {
@@ -175,6 +174,7 @@
             opacity: 0.8;
             margin-top: 4px;
             text-align: center;
+            color: var(--text-secondary-color);
         }
 
         /* Day Navigation */
@@ -189,8 +189,8 @@
             gap: 5px;
             /* Applying glass effect */
             background: var(--glass-bg-color);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px) saturate(120%);
+            -webkit-backdrop-filter: blur(15px) saturate(120%);
             border-radius: 16px;
             border: 1px solid var(--glass-border-color);
             box-shadow: 0 4px 20px var(--shadow-color);
@@ -211,7 +211,7 @@
 
         .day-nav button.active {
             background-color: var(--active-color);
-            color: #fff;
+            color: var(--accent-color);
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
@@ -223,18 +223,18 @@
         .schedule-card {
             margin-bottom: 12px;
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-            border-left: 4px solid transparent; /* Remove colored border */
             /* Applying glass effect */
             background: var(--glass-bg-color);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px) saturate(120%);
+            -webkit-backdrop-filter: blur(15px) saturate(120%);
             border-radius: 16px;
             border: 1px solid var(--glass-border-color);
             box-shadow: 0 4px 20px var(--shadow-color);
         }
         .schedule-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            border-color: rgba(255, 255, 255, 0.25);
         }
 
         .card-header {
@@ -248,14 +248,14 @@
         .lesson-name {
             font-weight: 700;
             font-size: 1rem;
-            color: #fff;
+            color: var(--text-color);
         }
         
         .lesson-time {
             font-size: 0.8rem;
             padding: 4px 8px;
             border-radius: 8px;
-            background-color: rgba(0,0,0,0.2);
+            background-color: rgba(255, 255, 255, 0.1);
             color: var(--text-secondary-color);
         }
 
@@ -268,7 +268,7 @@
         
         .card-body.empty {
             font-style: italic;
-            color: rgba(240, 240, 240, 0.5);
+            color: rgba(176, 176, 176, 0.5);
         }
     </style>
 </head>
@@ -297,6 +297,7 @@
     <main id="schedule-container" class="main-container"></main>
 
     <script>
+        // JavaScript kodunda herhangi bir değişiklik gerekmedi, bu yüzden aynen kalabilir.
         // Global variables
         let scheduleData = {};
         let currentWeekId = '';
