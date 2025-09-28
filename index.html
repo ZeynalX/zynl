@@ -9,15 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-        /* --- Gece Modu Değişiklikleri --- */
+        /* --- Gece Yarısı Siyahı ve Geliştirilmiş Derinlik --- */
         :root {
-            --glass-bg-color: rgba(27, 38, 59, 0.35); /* Koyu cam rengi */
-            --glass-border-color: rgba(255, 255, 255, 0.15); /* Açık çerçeve rengi */
-            --text-color: #ffffff; /* Ana metin rengi: Beyaz */
-            --text-secondary-color: #b0b0b0; /* İkincil metin rengi: Açık Gri */
-            --shadow-color: rgba(0, 0, 0, 0.2);
-            --active-color: rgba(162, 210, 255, 0.2); /* Aktif buton rengi: Yarı saydam açık mavi */
-            --accent-color: #a2d2ff; /* Vurgu rengi: Açık Mavi */
+            --glass-bg-color: rgba(0, 0, 0, 0.45); /* Daha koyu yarı saydam siyah cam */
+            --glass-border-color: rgba(255, 255, 255, 0.1); /* İnce, hafif beyaz çerçeve */
+            --text-color: #FFFFFF; /* Ana metin rengi: Saf Beyaz */
+            --text-secondary-color: #E0E0E0; /* İkincil metin rengi: Çok açık gri */
+            --shadow-color: rgba(0, 0, 0, 0.5); /* Daha belirgin gölge rengi */
+            --active-color: rgba(162, 210, 255, 0.15); /* Aktif buton arka planı: Yarı saydam açık mavi */
+            --accent-color: #A2D2FF; /* Vurgu rengi: Parlak Açık Mavi */
         }
 
         * {
@@ -28,13 +28,13 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0d1b2a; /* Koyu başlangıç rengi */
+            background: #000000; /* Gerçek Siyah */
             color: var(--text-color);
             overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* Animated Dark Gradient Background */
+        /* Animated Dark Gradient Background (daha derin gece tonları) */
         body::before {
             content: '';
             position: fixed;
@@ -42,9 +42,9 @@
             left: 0;
             height: 100vh;
             width: 100vw;
-            background: linear-gradient(300deg, #0d1b2a, #1b263b, #415a77);
+            background: linear-gradient(300deg, #000000, #0A0A0A, #1A1A1A); /* Çok koyu gradyan */
             background-size: 200% 200%;
-            animation: gradient-animation 25s ease infinite;
+            animation: gradient-animation 30s ease infinite; /* Daha yavaş animasyon */
             z-index: -1;
         }
         
@@ -54,14 +54,14 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Glassmorphism Panel --- */
+        /* --- Glassmorphism Panel (Geliştirilmiş Derinlik) --- */
         .glass-panel {
             background: var(--glass-bg-color);
-            backdrop-filter: blur(15px) saturate(120%);
-            -webkit-backdrop-filter: blur(15px) saturate(120%);
+            backdrop-filter: blur(20px) saturate(150%); /* Daha fazla bulanıklık ve doygunluk */
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
             border-radius: 16px;
             border: 1px solid var(--glass-border-color);
-            box-shadow: 0 4px 20px var(--shadow-color);
+            box-shadow: 0 8px 30px var(--shadow-color); /* Daha belirgin gölge */
         }
 
         /* Hamburger Menu (Sidenav) */
@@ -75,9 +75,9 @@
             overflow-x: hidden;
             transition: 0.4s ease-out;
             padding-top: 60px;
-            background: rgba(13, 27, 42, 0.6);
-            backdrop-filter: blur(20px) saturate(120%);
-            -webkit-backdrop-filter: blur(20px) saturate(120%);
+            background: rgba(0, 0, 0, 0.6); /* Yan menü için daha koyu arka plan */
+            backdrop-filter: blur(25px) saturate(150%);
+            -webkit-backdrop-filter: blur(25px) saturate(150%);
             border-right: 1px solid var(--glass-border-color);
         }
 
@@ -91,8 +91,8 @@
         }
 
         .sidenav a:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.08); /* Hafif vurgulu hover */
         }
         
         .sidenav a.active {
@@ -116,11 +116,11 @@
             margin: 10px;
             /* Applying glass effect */
             background: var(--glass-bg-color);
-            backdrop-filter: blur(15px) saturate(120%);
-            -webkit-backdrop-filter: blur(15px) saturate(120%);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
             border-radius: 16px;
             border: 1px solid var(--glass-border-color);
-            box-shadow: 0 4px 20px var(--shadow-color);
+            box-shadow: 0 8px 30px var(--shadow-color);
         }
         
         .header-top {
@@ -140,11 +140,11 @@
             transition: background 0.3s;
         }
         .menu-icon:hover, .nav-button:hover:not(:disabled) {
-             background: rgba(255, 255, 255, 0.1);
+             background: rgba(255, 255, 255, 0.15); /* Hafif vurgu */
         }
         
         .nav-button:disabled {
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.2); /* Daha az belirgin disabled butonu */
             cursor: not-allowed;
         }
 
@@ -166,6 +166,7 @@
         header h1 {
             font-size: 1.1rem;
             font-weight: 500;
+            color: var(--text-color);
         }
         
         header h2 {
@@ -189,11 +190,11 @@
             gap: 5px;
             /* Applying glass effect */
             background: var(--glass-bg-color);
-            backdrop-filter: blur(15px) saturate(120%);
-            -webkit-backdrop-filter: blur(15px) saturate(120%);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
             border-radius: 16px;
             border: 1px solid var(--glass-border-color);
-            box-shadow: 0 4px 20px var(--shadow-color);
+            box-shadow: 0 8px 30px var(--shadow-color);
         }
 
         .day-nav button {
@@ -212,7 +213,7 @@
         .day-nav button.active {
             background-color: var(--active-color);
             color: var(--accent-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Aktif buton için belirgin gölge */
         }
 
         /* Main Content */
@@ -222,19 +223,19 @@
 
         .schedule-card {
             margin-bottom: 12px;
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out;
             /* Applying glass effect */
             background: var(--glass-bg-color);
-            backdrop-filter: blur(15px) saturate(120%);
-            -webkit-backdrop-filter: blur(15px) saturate(120%);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
             border-radius: 16px;
             border: 1px solid var(--glass-border-color);
-            box-shadow: 0 4px 20px var(--shadow-color);
+            box-shadow: 0 8px 30px var(--shadow-color);
         }
         .schedule-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-7px); /* Daha belirgin kalkış efekti */
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6); /* Daha belirgin hover gölgesi */
+            border-color: rgba(255, 255, 255, 0.2); /* Hover'da hafif çerçeve vurgusu */
         }
 
         .card-header {
@@ -255,7 +256,7 @@
             font-size: 0.8rem;
             padding: 4px 8px;
             border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.15); /* Hafif ışıklı zaman etiketi */
             color: var(--text-secondary-color);
         }
 
@@ -268,7 +269,7 @@
         
         .card-body.empty {
             font-style: italic;
-            color: rgba(176, 176, 176, 0.5);
+            color: rgba(224, 224, 224, 0.5);
         }
     </style>
 </head>
@@ -297,7 +298,7 @@
     <main id="schedule-container" class="main-container"></main>
 
     <script>
-        // JavaScript kodunda herhangi bir değişiklik gerekmedi, bu yüzden aynen kalabilir.
+        // JavaScript kodu aynı kalabilir.
         // Global variables
         let scheduleData = {};
         let currentWeekId = '';
