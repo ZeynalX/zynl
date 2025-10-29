@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
     <title>6. Sınıf İnteraktif Haftalık Plan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,21 +14,21 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 500px;
+            max-width: 400px;
             height: auto;
             min-height: 300px;
-            max-height: 400px;
+            max-height: 350px;
             margin-left: auto;
             margin-right: auto;
         }
         .nav-btn {
-            @apply px-3 py-2 sm:px-4 rounded-lg text-sm sm:text-base font-semibold transition-all duration-200 shadow-sm;
+            @apply px-4 py-2 rounded-full text-sm sm:text-base font-semibold transition-all duration-200 shadow-sm;
         }
         .nav-btn-active {
-            @apply bg-blue-600 text-white shadow-lg scale-105;
+            @apply bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg scale-105;
         }
         .nav-btn-inactive {
-            @apply bg-blue-50 text-blue-800 hover:bg-blue-100 hover:shadow-md;
+            @apply bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md;
         }
         
         .editable-lesson {
@@ -38,8 +38,8 @@
             @apply ring-2 ring-blue-500 outline-none shadow-inner;
         }
 
-        .passive-activity {
-            @apply text-gray-400 italic;
+        .passive-activity-icon {
+            @apply flex-1 text-3xl text-center text-gray-500;
         }
 
         @media print {
@@ -83,8 +83,8 @@
                 vertical-align: top;
                 white-space: normal;
                 word-break: break-word;
-                min-height: 60px; 
-                height: 60px;
+                min-height: 65px; 
+                height: 65px;
             }
             #full-week-view th {
                 background-color: #f3f4f6 !important;
@@ -96,7 +96,9 @@
                 background-color: #EFF6FF !important;
             }
             .print-passive {
-                color: #9ca3af !important;
+                text-align: center;
+                font-size: 1.5rem;
+                padding-top: 5px;
             }
             .print-active {
                 color: #1e40af !important;
@@ -147,14 +149,14 @@
                 <button id="btn-Cuma" class="nav-btn nav-btn-inactive">Cuma</button>
                 <button id="btn-Cumartesi" class="nav-btn nav-btn-inactive">Cumartesi</button>
                 <button id="btn-Pazar" class="nav-btn nav-btn-inactive">Pazar</button>
-                <button id="btn-FullWeek" class="nav-btn nav-btn-inactive border border-blue-600">Tüm Hafta</button>
+                <button id="btn-FullWeek" class="nav-btn nav-btn-inactive border border-gray-300">Tüm Hafta</button>
             </div>
         </nav>
 
         
-        <main class="flex flex-col gap-8">
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <section id="program-section">
+            <section id="program-section" class="lg:col-span-2 flex flex-col gap-6">
                 <div id="plan-view" class="bg-white p-4 sm:p-6 rounded-lg shadow-md print:hidden">
                     <div class="flex justify-between items-center mb-4">
                         <h2 id="plan-title" class="text-2xl font-semibold text-slate-700"></h2>
@@ -191,12 +193,14 @@
             </section>
 
             
-            <section id="chart-section" class="bg-white p-4 sm:p-6 rounded-lg shadow-md print:hidden">
-                <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Haftalık Zaman Dağılımı</h3>
-                <div class="chart-container">
-                    <canvas id="time-allocation-chart"></canvas>
-                </div>
-            </section>
+            <aside id="chart-section-wrapper" class="lg:col-span-1 print:hidden">
+                <section id="chart-section" class="bg-white p-4 sm:p-6 rounded-lg shadow-md print:hidden sticky top-24">
+                    <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Haftalık Zaman Dağılımı</h3>
+                    <div class="chart-container">
+                        <canvas id="time-allocation-chart"></canvas>
+                    </div>
+                </section>
+            </aside>
 
         </main>
     </div>
@@ -285,6 +289,20 @@
         const dayNames = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
         let activeDayButton = null;
 
+        
+        function getPassiveActivityIcon(activity) {
+            if (activity.includes('OKUL')) return '🏫';
+            if (activity.includes('Eve Dönüş')) return '🏠';
+            if (activity.includes('Yemeği')) return '🍽️';
+            if (activity.includes('Akşam Rutini')) return '😴';
+            if (activity.includes('Esnek Zaman')) return '⏳';
+            if (activity.includes('Sosyal Zaman')) return '👫';
+            if (activity.includes('Ekran Süresi')) return '📱';
+            if (activity.includes('Haftaya Hazırlık')) return '🗓️';
+            if (activity.includes('Aile')) return '👨‍👩‍👧‍👦';
+            return '📝'; 
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             
             const planTitle = document.getElementById('plan-title');
@@ -328,8 +346,13 @@
                         let content = '';
                         const timeText = item.time.includes('+') ? item.time : item.time.replace(':', '.').replace(':', '.');
                         const timeEl = `<div class="w-28 sm:w-32 font-medium text-blue-700 text-sm sm:text-base">${timeText}</div>`;
+                        
+                        const icon = getPassiveActivityIcon(item.activity);
 
-                        if (item.activity.startsWith("Ders 1")) {
+                        if (icon !== '📝') {
+                            
+                            content = `${timeEl}<div class="passive-activity-icon">${icon}</div>`;
+                        } else if (item.activity.startsWith("Ders 1")) {
                             content = `${timeEl}<input type="text" value="${studyPlan[dayName][0]}" data-day="${dayName}" data-block="0" class="editable-lesson" placeholder="Ders 1 Planı...">`;
                         } else if (item.activity.startsWith("Ders 2")) {
                             content = `${timeEl}<input type="text" value="${studyPlan[dayName][1]}" data-day="${dayName}" data-block="1" class="editable-lesson" placeholder="Ders 2 Planı...">`;
@@ -384,7 +407,12 @@
 
                         if (item) {
                             const timeText = item.time.includes('+') ? item.time : item.time.replace(':', '.').replace(':', '.');
-                            if (item.activity.startsWith("Ders 1")) {
+                            const icon = getPassiveActivityIcon(item.activity);
+
+                            if (icon !== '📝') {
+                                content = `<strong class="block text-xs font-medium text-gray-400">${timeText}</strong>
+                                           <div class="text-3xl text-center text-gray-500 pt-2 print-passive">${icon}</div>`;
+                            } else if (item.activity.startsWith("Ders 1")) {
                                 content = `<strong class="block text-xs font-medium text-blue-700">${timeText}</strong>
                                         <span class="font-semibold text-blue-800 print-active">${studyPlan[day][0]}</span>`;
                             } else if (item.activity.startsWith("Ders 2")) {
@@ -394,7 +422,7 @@
                                 content = `<strong class="block text-xs font-medium text-blue-700">${timeText}</strong>
                                         <span class="font-semibold text-blue-800 print-active">${studyPlan[day][2]}</span>`;
                             } else {
-                                content = `<strong class="block text-xs font-medium text-gray-400">${timeText}</strong>
+                                 content = `<strong class="block text-xs font-medium text-gray-400">${timeText}</strong>
                                         <span class="text-gray-500 print-passive">${item.activity}</span>`;
                             }
                         }
@@ -468,7 +496,7 @@
                 let nextActivity = "--";
 
                 function getActivityName(day, index) {
-                    if (index < 0) return "UYKU"; 
+                    if (index < 0) return daySchedule[daySchedule.length - 1].activity; 
                     if (index >= daySchedule.length) return daySchedule[0].activity; 
                     
                     const item = daySchedule[index];
@@ -483,21 +511,19 @@
                     prevActivity = getActivityName(currentDay, currentIdx - 1);
                     nextActivity = getActivityName(currentDay, currentIdx + 1);
                 } else {
-                    
-                    currentActivity = "UYKU";
+                    currentActivity = "UYKU"; 
                     prevActivity = daySchedule[daySchedule.length - 2].activity; 
                     nextActivity = daySchedule[0].activity; 
                 }
-                
-                if (currentActivity.includes("Uyku") && currentIdx > 0) {
-                     prevActivity = getActivityName(currentDay, currentIdx - 1);
-                     nextActivity = daySchedule[0].activity;
-                }
 
+                function getDisplayFormat(activity) {
+                    const icon = getPassiveActivityIcon(activity);
+                    return icon === '📝' ? activity : icon;
+                }
                 
-                document.getElementById('prev-activity').textContent = prevActivity;
-                document.getElementById('current-activity').textContent = currentActivity;
-                document.getElementById('next-activity').textContent = nextActivity;
+                document.getElementById('prev-activity').textContent = getDisplayFormat(prevActivity);
+                document.getElementById('current-activity').textContent = getDisplayFormat(currentActivity);
+                document.getElementById('next-activity').textContent = getDisplayFormat(nextActivity);
             }
 
             
