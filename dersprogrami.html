@@ -83,8 +83,8 @@
                 vertical-align: top;
                 white-space: normal;
                 word-break: break-word;
-                min-height: 45px; 
-                height: 45px;
+                min-height: 60px; 
+                height: 60px;
             }
             #full-week-view th {
                 background-color: #f3f4f6 !important;
@@ -209,109 +209,75 @@
             "Çarşamba": ["Günün Ödevleri (MAT, DİN)", "Seçmeli Ders Tekrarı", "Din Kültürü Konu Tekrarı"],
             "Perşembe": ["Günün Ödevleri (SOS, FEN, MAT, YD)", "Matematik Soru Çözümü", "Fen Bilimleri Konu Tekrarı"],
             "Cuma": ["Türkçe Ödevleri", "Haftalık Fen Tekrarı", "Haftalık Matematik Tekrarı"],
-            "Cumartesi": ["Genel Tekrar (Matematik)", "Genel Tekrar (Fen Bilimleri)", ""],
-            "Pazar": ["Genel Tekrar (Türkçe)", "Haftaya Hazırlık (Ödev Kontrolü)", ""]
+            "Cumartesi": ["Genel Tekrar (Matematik)", "", ""],
+            "Pazar": ["Genel Tekrar (Türkçe)", "", ""]
         };
 
         
         const scheduleData = {
             "Pazartesi": [
                 { time: "08:30 - 14:35", activity: "OKUL" },
-                { time: "14:35 - 15:30", activity: "Eve Dönüş & Dinlenme" },
-                { time: "15:30 - 16:30", activity: "Sosyal Zaman / Arkadaşlar" },
+                { time: "14:35 - 16:30", activity: "Eve Dönüş & Sosyal Zaman" },
                 { time: "16:30 - 17:30", activity: "Ders 1" },
-                { time: "17:30 - 18:30", activity: "Mola / Aile Zamanı" },
-                { time: "18:30 - 19:30", activity: "Akşam Yemeği" },
+                { time: "17:30 - 19:30", activity: "Mola & Akşam Yemeği" },
                 { time: "19:30 - 20:10", activity: "Ders 2" },
                 { time: "20:10 - 20:50", activity: "Ders 3" },
-                { time: "20:50 - 21:00", activity: "Serbest Zaman" },
-                { time: "21:00 - 21:30", activity: "Uyku Hazırlığı" },
-                { time: "21:30 - 22:00", activity: "Kitap Okuma" },
-                { time: "22:00", activity: "UYKU" }
+                { time: "20:50 - 22:00+", activity: "Akşam Rutini & Uyku" }
             ],
             "Salı": [
                 { time: "08:30 - 14:35", activity: "OKUL" },
-                { time: "14:35 - 15:30", activity: "Eve Dönüş & Dinlenme" },
-                { time: "15:30 - 16:30", activity: "Sosyal Zaman / Arkadaşlar" },
+                { time: "14:35 - 16:30", activity: "Eve Dönüş & Sosyal Zaman" },
                 { time: "16:30 - 17:30", activity: "Ders 1" },
-                { time: "17:30 - 18:30", activity: "Mola / Aile Zamanı" },
-                { time: "18:30 - 19:30", activity: "Akşam Yemeği" },
+                { time: "17:30 - 19:30", activity: "Mola & Akşam Yemeği" },
                 { time: "19:30 - 20:10", activity: "Ders 2" },
                 { time: "20:10 - 20:50", activity: "Ders 3" },
-                { time: "20:50 - 21:00", activity: "Serbest Zaman" },
-                { time: "21:00 - 21:30", activity: "Uyku Hazırlığı" },
-                { time: "21:30 - 22:00", activity: "Kitap Okuma" },
-                { time: "22:00", activity: "UYKU" }
+                { time: "20:50 - 22:00+", activity: "Akşam Rutini & Uyku" }
             ],
             "Çarşamba": [
                 { time: "08:30 - 14:35", activity: "OKUL" },
-                { time: "14:35 - 15:30", activity: "Eve Dönüş & Dinlenme" },
-                { time: "15:30 - 16:30", activity: "Sosyal Zaman / Arkadaşlar" },
+                { time: "14:35 - 16:30", activity: "Eve Dönüş & Sosyal Zaman" },
                 { time: "16:30 - 17:30", activity: "Ders 1" },
-                { time: "17:30 - 18:30", activity: "Mola / Aile Zamanı" },
-                { time: "18:30 - 19:30", activity: "Akşam Yemeği" },
+                { time: "17:30 - 19:30", activity: "Mola & Akşam Yemeği" },
                 { time: "19:30 - 20:10", activity: "Ders 2" },
                 { time: "20:10 - 20:50", activity: "Ders 3" },
-                { time: "20:50 - 21:00", activity: "Serbest Zaman" },
-                { time: "21:00 - 21:30", activity: "Uyku Hazırlığı" },
-                { time: "21:30 - 22:00", activity: "Kitap Okuma" },
-                { time: "22:00", activity: "UYKU" }
+                { time: "20:50 - 22:00+", activity: "Akşam Rutini & Uyku" }
             ],
             "Perşembe": [
                 { time: "08:30 - 14:35", activity: "OKUL" },
-                { time: "14:35 - 15:30", activity: "Eve Dönüş & Dinlenme" },
-                { time: "15:30 - 16:30", activity: "Sosyal Zaman / Arkadaşlar" },
+                { time: "14:35 - 16:30", activity: "Eve Dönüş & Sosyal Zaman" },
                 { time: "16:30 - 17:30", activity: "Ders 1" },
-                { time: "17:30 - 18:30", activity: "Mola / Aile Zamanı" },
-                { time: "18:30 - 19:30", activity: "Akşam Yemeği" },
+                { time: "17:30 - 19:30", activity: "Mola & Akşam Yemeği" },
                 { time: "19:30 - 20:10", activity: "Ders 2" },
                 { time: "20:10 - 20:50", activity: "Ders 3" },
-                { time: "20:50 - 21:00", activity: "Serbest Zaman" },
-                { time: "21:00 - 21:30", activity: "Uyku Hazırlığı" },
-                { time: "21:30 - 22:00", activity: "Kitap Okuma" },
-                { time: "22:00", activity: "UYKU" }
+                { time: "20:50 - 22:00+", activity: "Akşam Rutini & Uyku" }
             ],
             "Cuma": [
                 { time: "08:30 - 14:35", activity: "OKUL" },
-                { time: "14:35 - 15:30", activity: "Eve Dönüş & Dinlenme" },
-                { time: "15:30 - 16:30", activity: "Sosyal Zaman / Arkadaşlar" },
+                { time: "14:35 - 16:30", activity: "Eve Dönüş & Sosyal Zaman" },
                 { time: "16:30 - 17:30", activity: "Ders 1" },
-                { time: "17:30 - 18:30", activity: "Mola / Aile Zamanı" },
-                { time: "18:30 - 19:30", activity: "Akşam Yemeği" },
+                { time: "17:30 - 19:30", activity: "Mola & Akşam Yemeği" },
                 { time: "19:30 - 20:10", activity: "Ders 2" },
                 { time: "20:10 - 20:50", activity: "Ders 3" },
-                { time: "20:50 - 21:00", activity: "Serbest Zaman" },
-                { time: "21:00 - 21:30", activity: "Uyku Hazırlığı" },
-                { time: "21:30 - 22:00", activity: "Kitap Okuma" },
-                { time: "22:00", activity: "UYKU" }
+                { time: "20:50 - 22:00+", activity: "Akşam Rutini & Uyku" }
             ],
             "Cumartesi": [
                 { time: "07:30 - 14:40", activity: "Esnek Zaman" },
                 { time: "14:40 - 15:30", activity: "Öğle Yemeği" },
                 { time: "15:30 - 16:30", activity: "Ders 1" },
-                { time: "16:30 - 17:30", activity: "Sosyal Zaman / Hobi" },
-                { time: "17:30 - 18:30", activity: "Hobi / Serbest Zaman" },
+                { time: "16:30 - 18:30", activity: "Sosyal Zaman & Hobi" },
                 { time: "18:30 - 19:30", activity: "Akşam Yemeği" },
-                { time: "19:30 - 20:10", activity: "Ekran Süresi" },
-                { time: "20:10 - 20:50", activity: "Ekran Süresi" },
-                { time: "20:50 - 21:00", activity: "Serbest Zaman" },
-                { time: "21:00 - 21:30", activity: "Uyku Hazırlığı" },
-                { time: "21:30 - 22:00", activity: "Kitap Okuma" },
-                { time: "22:00", activity: "UYKU" }
+                { time: "19:30 - 20:50", activity: "Ekran Süresi" },
+                { time: "20:50 - 22:00+", activity: "Akşam Rutini & Uyku" }
             ],
             "Pazar": [
                 { time: "07:30 - 14:40", activity: "Esnek Zaman" },
                 { time: "14:40 - 15:30", activity: "Öğle Yemeği" },
                 { time: "15:30 - 16:30", activity: "Ders 1" },
-                { time: "16:30 - 17:30", activity: "Aile Aktivitesi" },
-                { time: "17:30 - 18:30", activity: "Aile Zamanı" },
+                { time: "16:30 - 18:30", activity: "Aile Aktivitesi & Zamanı" },
                 { time: "18:30 - 19:30", activity: "Akşam Yemeği" },
-                { time: "19:30 - 20:10", activity: "Ekran Süresi" },
-                { time: "20:10 - 20:50", activity: "Ekran Süresi" },
+                { time: "19:30 - 20:50", activity: "Ekran Süresi" },
                 { time: "20:50 - 21:00", activity: "Haftaya Hazırlık" },
-                { time: "21:00 - 21:30", activity: "Uyku Hazırlığı" },
-                { time: "21:30 - 22:00", activity: "Kitap Okuma" },
-                { time: "22:00", activity: "UYKU" }
+                { time: "21:00 - 22:00+", activity: "Akşam Rutini & Uyku" }
             ]
         };
 
@@ -360,7 +326,8 @@
                         listItem.className = `flex items-center p-3 ${bgColor} rounded-lg gap-3`;
                         
                         let content = '';
-                        const timeEl = `<div class="w-28 sm:w-32 font-medium text-blue-700 text-sm sm:text-base">${item.time.replace('22:00', '22:00+')}</div>`;
+                        const timeText = item.time.includes('+') ? item.time : item.time.replace(':', '.').replace(':', '.');
+                        const timeEl = `<div class="w-28 sm:w-32 font-medium text-blue-700 text-sm sm:text-base">${timeText}</div>`;
 
                         if (item.activity.startsWith("Ders 1")) {
                             content = `${timeEl}<input type="text" value="${studyPlan[dayName][0]}" data-day="${dayName}" data-block="0" class="editable-lesson" placeholder="Ders 1 Planı...">`;
@@ -399,40 +366,43 @@
             
             
             function buildFullWeekTable() {
-                const timeSlots = scheduleData['Pazartesi'].map(item => item.time);
+                const maxRows = Math.max(...Object.values(scheduleData).map(d => d.length));
                 const days = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'];
                 const tbody = document.getElementById('full-week-tbody');
                 tbody.innerHTML = '';
 
-                timeSlots.forEach((time, index) => {
+                for (let i = 0; i < maxRows; i++) {
                     const tr = document.createElement('tr');
-                    const bgColor = index % 2 === 0 ? 'bg-white' : 'bg-blue-50';
+                    const bgColor = i % 2 === 0 ? 'bg-white' : 'bg-blue-50';
                     tr.className = bgColor;
 
                     days.forEach(day => {
-                        const item = scheduleData[day][index];
+                        const item = scheduleData[day][i];
                         const td = document.createElement('td');
                         td.className = 'px-3 py-2 whitespace-normal align-top';
                         let content = '';
 
-                        if (item.activity.startsWith("Ders 1")) {
-                            content = `<strong class="block text-xs font-medium text-blue-700">${item.time}</strong>
-                                       <span class="font-semibold text-blue-800 print-active">${studyPlan[day][0]}</span>`;
-                        } else if (item.activity.startsWith("Ders 2")) {
-                            content = `<strong class="block text-xs font-medium text-blue-700">${item.time}</strong>
-                                       <span class="font-semibold text-blue-800 print-active">${studyPlan[day][1]}</span>`;
-                        } else if (item.activity.startsWith("Ders 3")) {
-                            content = `<strong class="block text-xs font-medium text-blue-700">${item.time}</strong>
-                                       <span class="font-semibold text-blue-800 print-active">${studyPlan[day][2]}</span>`;
-                        } else {
-                            content = `<strong class="block text-xs font-medium text-gray-400">${item.time}</strong>
-                                       <span class="text-gray-500 print-passive">${item.activity}</span>`;
+                        if (item) {
+                            const timeText = item.time.includes('+') ? item.time : item.time.replace(':', '.').replace(':', '.');
+                            if (item.activity.startsWith("Ders 1")) {
+                                content = `<strong class="block text-xs font-medium text-blue-700">${timeText}</strong>
+                                        <span class="font-semibold text-blue-800 print-active">${studyPlan[day][0]}</span>`;
+                            } else if (item.activity.startsWith("Ders 2")) {
+                                content = `<strong class="block text-xs font-medium text-blue-700">${timeText}</strong>
+                                        <span class="font-semibold text-blue-800 print-active">${studyPlan[day][1]}</span>`;
+                            } else if (item.activity.startsWith("Ders 3")) {
+                                content = `<strong class="block text-xs font-medium text-blue-700">${timeText}</strong>
+                                        <span class="font-semibold text-blue-800 print-active">${studyPlan[day][2]}</span>`;
+                            } else {
+                                content = `<strong class="block text-xs font-medium text-gray-400">${timeText}</strong>
+                                        <span class="text-gray-500 print-passive">${item.activity}</span>`;
+                            }
                         }
                         td.innerHTML = content;
                         tr.appendChild(td);
                     });
                     tbody.appendChild(tr);
-                });
+                }
             }
 
             
@@ -467,15 +437,16 @@
                 const daySchedule = scheduleData[currentDay];
                 let currentIdx = -1;
                 
-                const startTime = (currentDay === "Cumartesi" || currentDay === "Pazar") ? 7.5 : 8.3;
+                const startTime = (currentDay === "Cumartesi" || currentDay === "Pazar") ? 7.5 : 8.5; 
 
                 if (currentTime < startTime) {
                     currentIdx = daySchedule.length - 1; 
                 } else {
                     for (let i = 0; i < daySchedule.length; i++) {
                         const item = daySchedule[i];
-                        if (item.time === "22:00") {
-                            if (currentTime >= 22.00) {
+                        if (item.time.includes('+')) {
+                            const start = parseFloat(item.time.replace(':', '.').replace('+', ''));
+                            if (currentTime >= start) {
                                 currentIdx = i;
                                 break;
                             }
@@ -490,9 +461,6 @@
                             }
                         }
                     }
-                    if (currentIdx === -1 && currentTime >= 22) {
-                        currentIdx = daySchedule.length - 1;
-                    }
                 }
                 
                 let prevActivity = "--";
@@ -500,8 +468,8 @@
                 let nextActivity = "--";
 
                 function getActivityName(day, index) {
-                    if (index < 0) return "UYKU";
-                    if (index >= daySchedule.length) return "UYKU";
+                    if (index < 0) return "UYKU"; 
+                    if (index >= daySchedule.length) return daySchedule[0].activity; 
                     
                     const item = daySchedule[index];
                     if (item.activity.startsWith("Ders 1")) return studyPlan[day][0];
@@ -515,9 +483,15 @@
                     prevActivity = getActivityName(currentDay, currentIdx - 1);
                     nextActivity = getActivityName(currentDay, currentIdx + 1);
                 } else {
+                    
                     currentActivity = "UYKU";
-                    prevActivity = "Kitap Okuma"; 
+                    prevActivity = daySchedule[daySchedule.length - 2].activity; 
                     nextActivity = daySchedule[0].activity; 
+                }
+                
+                if (currentActivity.includes("Uyku") && currentIdx > 0) {
+                     prevActivity = getActivityName(currentDay, currentIdx - 1);
+                     nextActivity = daySchedule[0].activity;
                 }
 
                 
@@ -531,16 +505,15 @@
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Uyku', 'Okul', 'Ders Çalışma', 'Kişisel & Sosyal Yaşam', 'Kitap Okuma'],
+                    labels: ['Uyku', 'Okul', 'Ders Çalışma', 'Kişisel & Diğer'],
                     datasets: [{
                         label: 'Haftalık Saat',
-                        data: [69, 30.4, 13.7, 51.4, 3.5], 
+                        data: [69, 30.4, 13.7, 54.9], 
                         backgroundColor: [
                             '#3b82f6', 
                             '#10b981', 
                             '#f97616', 
-                            '#eab308', 
-                            '#6366f1'  
+                            '#eab308' 
                         ],
                         hoverOffset: 4
                     }]
