@@ -7,24 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Chosen Palette: Warm Neutral (Beige/White, Slate, and a soft Blue accent) -->
-    <!-- Application Structure Plan: Bu SPA (Tek Sayfa Uygulama), statik bir program tablosunu interaktif bir 'gösterge paneline' dönüştürür. Ana yapı, kullanıcının (öğrencinin) "bugün" ve "şimdi" ne yapması gerektiğine odaklanır. 
-    1. Üst Navigasyon: Günleri filtrelemek için butonlar.
-    2. 'Günün Özeti' Alanı: O anki aktiviteyi ve zaman dağılımı grafiğini gösteren bir yan panel. Bu, "Şu an ne yapmalıyım?" ve "Zamanımı nasıl harcıyorum?" sorularına anında yanıt verir.
-    3. 'Günün Planı' Alanı: Seçilen günün programını, orijinal tablodan çok daha okunaklı bir dikey zaman çizelgesi formatında gösterir.
-    Kullanıcı Akışı: Kullanıcı uygulamayı açar -> o günün programını ve o anki aktiviteyi görür -> zaman dağılımı grafiğine göz atar -> diğer günlere tıklayarak ilerisini planlar. Bu yapı, programı 'tüketmeyi' kolaylaştırır. -->
-    <!-- Visualization & Content Choices: 
-    1. Rapor Bilgisi: 7 günlük, 14 zaman dilimli program tablosu.
-    2. Gösterim: 'Günün Planı' (Dinamik HTML Liste) -> Goal: Inform (O gün ne var?). Interaction: Gün filtresi (JS) ile içeriği dinamik değiştirme.
-    3. Rapor Bilgisi: Tüm tablodaki verilerin haftalık toplamı.
-    4. Gösterim: 'Haftalık Zaman Dağılımı' (Doughnut Chart - Chart.js) -> Goal: Synthesize (Zamanım nereye gidiyor?). Interaction: Hover ile detay görme. (Hesaplama: Uyku 59.5, Okul 33.3, Ders 13.7, Serbest/Sosyal/Yemek 58, Kitap Okuma 3.5 saat/hafta).
-    5. Rapor Bilgisi: O anki saat ve gün.
-    6. Gösterim: 'Şu An Ne Yapıyorum?' (Dinamik Metin Kutusu) -> Goal: Inform (Şu an ne yapmalıyım?). Interaction: `setInterval` ile her dakika otomatik güncelleme.
-    7. Rapor Bilgisi: Orijinal tablo.
-    8. Gösterim: 'Tüm Hafta' (HTML Tablo) -> Goal: Referans. Interaction: 'Tüm Hafta' butonu ile göster/gizle.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -32,10 +14,10 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             height: auto;
             min-height: 300px;
-            max-height: 350px;
+            max-height: 400px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -48,25 +30,63 @@
         .nav-btn-inactive {
             @apply bg-white text-blue-700 hover:bg-blue-50;
         }
+        
         @media print {
             @page {
                 size: A4 landscape;
                 margin: 1cm;
             }
+            body {
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+            #current-activity-bar, header, nav, #print-schedule-btn, #chart-section {
+                display: none !important;
+            }
+            #full-week-view {
+                display: block !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+            }
             #full-week-view table {
                 font-size: 10pt;
                 line-height: 1.2;
             }
-            #full-week-view {
-                box-shadow: none !important;
-                border: none !important;
-                padding: 0 !important;
+            #full-week-view td, #full-week-view th {
+                white-space: nowrap;
+            }
+            .bg-blue-50 {
+                background-color: #EFF6FF !important;
             }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-50 text-slate-800">
+<body class="bg-gray-100 text-slate-800">
+
+    
+    <div id="current-activity-bar" class="bg-gray-800 text-white p-3 shadow-lg print:hidden">
+        <div class="container mx-auto max-w-7xl">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 text-center">
+                
+                <div class="md:text-right">
+                    <span class="text-xs uppercase text-gray-400">Önceki</span>
+                    <p id="prev-activity" class="font-medium text-sm sm:text-base">--</p>
+                </div>
+                
+                <div class="border-t border-b border-gray-700 md:border-0 md:border-l md:border-r md:border-gray-600 py-2 md:py-0">
+                    <span class="text-xs uppercase text-blue-300">Şu Anki Aktivite</span>
+                    <p id="current-activity" class="font-bold text-base sm:text-lg text-blue-300">Yükleniyor...</p>
+                </div>
+                
+                <div class="md:text-left">
+                    <span class="text-xs uppercase text-gray-400">Sonraki</span>
+                    <p id="next-activity" class="font-medium text-sm sm:text-base">--</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         
@@ -89,9 +109,9 @@
         </nav>
 
         
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <main class="flex flex-col gap-8">
             
-            <section class="lg:col-span-2 order-2 lg:order-1">
+            <section id="program-section">
                 <div id="plan-view" class="bg-white p-4 sm:p-6 rounded-lg shadow-md print:hidden">
                     <h2 id="plan-title" class="text-2xl font-semibold text-slate-700 mb-4"></h2>
                     <div id="plan-container" class="space-y-3">
@@ -102,61 +122,47 @@
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-2xl font-semibold text-slate-700">Tüm Haftalık Plan</h2>
                         <button id="print-schedule-btn" class="print:hidden px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
-                            Yazdır
+                            Yazdır (A4 Yatay)
                         </button>
                     </div>
                     <table class="min-w-full divide-y divide-gray-200 border">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Zaman</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pazartesi</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Salı</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Çarşamba</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Perşembe</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cuma</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cumartesi</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pazar</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Zaman</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Pazartesi</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Salı</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Çarşamba</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Perşembe</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Cuma</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Cumartesi</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Pazar</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 text-sm">
-                            <tr class="bg-white"><td class="px-3 py-2 font-medium">08.00 - 14.40</td><td>OKUL</td><td>OKUL</td><td>OKUL</td><td>OKUL</td><td>OKUL</td><td>Esnek Zaman</td><td>Esnek Zaman</td></tr>
-                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium">14.40 - 15.30</td><td>Eve Dönüş & Dinlenme</td><td>Eve Dönüş & Dinlenme</td><td>Eve Dönüş & Dinlenme</td><td>Eve Dönüş & Dinlenme</td><td>Eve Dönüş & Dinlenme</td><td>Öğle Yemeği</td><td>Öğle Yemeği</td></tr>
-                            <tr class="bg-white"><td class="px-3 py-2 font-medium">15.30 - 16.30</td><td>Sosyal Zaman / Arkadaşlar</td><td>Sosyal Zaman / Arkadaşlar</td><td>Sosyal Zaman / Arkadaşlar</td><td>Sosyal Zaman / Arkadaşlar</td><td>Sosyal Zaman / Arkadaşlar</td><td>Haftalık Tekrar</td><td>Haftalık Tekrar</td></tr>
-                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium">16.30 - 17.30</td><td>Ders 1: Ödevler</td><td>Ders 1: Ödevler</td><td>Ders 1: Ödevler</td><td>Ders 1: Ödevler</td><td>Ders 1: Ödevler</td><td>Sosyal Zaman / Hobi</td><td>Aile Aktivitesi</td></tr>
-                            <tr class="bg-white"><td class="px-3 py-2 font-medium">17.30 - 18.30</td><td>Mola / Aile Zamanı</td><td>Mola / Aile Zamanı</td><td>Mola / Aile Zamanı</td><td>Mola / Aile Zamanı</td><td>Mola / Aile Zamanı</td><td>Hobi / Serbest Zaman</td><td>Aile Zamanı</td></tr>
-                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium">18.30 - 19.30</td><td>Akşam Yemeği</td><td>Akşam Yemeği</td><td>Akşam Yemeği</td><td>Akşam Yemeği</td><td>Akşam Yemeği</td><td>Akşam Yemeği</td><td>Akşam Yemeği</td></tr>
-                            <tr class="bg-white"><td class="px-3 py-2 font-medium">19.30 - 20.10</td><td>Ders 2: Soru Çözme</td><td>Ders 2: Soru Çözme</td><td>Ders 2: Soru Çözme</td><td>Ders 2: Soru Çözme</td><td>Ders 2: Soru Çözme</td><td>Ekran Süresi</td><td>Ekran Süresi</td></tr>
-                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium">20.10 - 20.50</td><td>Ders 3: Konu Tekrarı</td><td>Ders 3: Konu Tekrarı</td><td>Ders 3: Konu Tekrarı</td><td>Ders 3: Konu Tekrarı</td><td>Ders 3: Konu Tekrarı</td><td>Ekran Süresi</td><td>Ekran Süresi</td></tr>
-                            <tr class="bg-white"><td class="px-3 py-2 font-medium">20.50 - 21.00</td><td>Serbest Zaman</td><td>Serbest Zaman</td><td>Serbest Zaman</td><td>Serbest Zaman</td><td>Serbest Zaman</td><td>Serbest Zaman</td><td>Haftaya Hazırlık</td></tr>
-                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium">21.00 - 21.30</td><td>Uyku Hazırlığı</td><td>Uyku Hazırlığı</td><td>Uyku Hazırlığı</td><td>Uyku Hazırlığı</td><td>Uyku Hazırlığı</td><td>Uyku Hazırlığı</td><td>Uyku Hazırlığı</td></tr>
-                            <tr class="bg-white"><td class="px-3 py-2 font-medium">21.30 - 22.00</td><td>Kitap Okuma</td><td>Kitap Okuma</td><td>Kitap Okuma</td><td>Kitap Okuma</td><td>Kitap Okuma</td><td>Kitap Okuma</td><td>Kitap Okuma</td></tr>
-                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium">22.00</td><td>UYKU</td><td>UYKU</td><td>UYKU</td><td>UYKU</td><td>UYKU</td><td>UYKU</td><td>UYKU</td></tr>
+                            <tr class="bg-white"><td class="px-3 py-2 font-medium whitespace-nowrap">08.00 - 14.40</td><td class="px-3 py-2 whitespace-nowrap">OKUL</td><td class="px-3 py-2 whitespace-nowrap">OKUL</td><td class="px-3 py-2 whitespace-nowrap">OKUL</td><td class="px-3 py-2 whitespace-nowrap">OKUL</td><td class="px-3 py-2 whitespace-nowrap">OKUL</td><td class="px-3 py-2 whitespace-nowrap">Esnek Zaman</td><td class="px-3 py-2 whitespace-nowrap">Esnek Zaman</td></tr>
+                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium whitespace-nowrap">14.40 - 15.30</td><td class="px-3 py-2 whitespace-nowrap">Eve Dönüş & Dinlenme</td><td class="px-3 py-2 whitespace-nowrap">Eve Dönüş & Dinlenme</td><td class="px-3 py-2 whitespace-nowrap">Eve Dönüş & Dinlenme</td><td class="px-3 py-2 whitespace-nowrap">Eve Dönüş & Dinlenme</td><td class="px-3 py-2 whitespace-nowrap">Eve Dönüş & Dinlenme</td><td class="px-3 py-2 whitespace-nowrap">Öğle Yemeği</td><td class="px-3 py-2 whitespace-nowrap">Öğle Yemeği</td></tr>
+                            <tr class="bg-white"><td class="px-3 py-2 font-medium whitespace-nowrap">15.30 - 16.30</td><td class="px-3 py-2 whitespace-nowrap">Sosyal Zaman / Arkadaşlar</td><td class="px-3 py-2 whitespace-nowrap">Sosyal Zaman / Arkadaşlar</td><td class="px-3 py-2 whitespace-nowrap">Sosyal Zaman / Arkadaşlar</td><td class="px-3 py-2 whitespace-nowrap">Sosyal Zaman / Arkadaşlar</td><td class="px-3 py-2 whitespace-nowrap">Sosyal Zaman / Arkadaşlar</td><td class="px-3 py-2 whitespace-nowrap">Haftalık Tekrar</td><td class="px-3 py-2 whitespace-nowrap">Haftalık Tekrar</td></tr>
+                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium whitespace-nowrap">16.30 - 17.30</td><td class="px-3 py-2 whitespace-nowrap">Ders 1: Ödevler</td><td class="px-3 py-2 whitespace-nowrap">Ders 1: Ödevler</td><td class="px-3 py-2 whitespace-nowrap">Ders 1: Ödevler</td><td class="px-3 py-2 whitespace-nowrap">Ders 1: Ödevler</td><td class="px-3 py-2 whitespace-nowrap">Ders 1: Ödevler</td><td class="px-3 py-2 whitespace-nowrap">Sosyal Zaman / Hobi</td><td class="px-3 py-2 whitespace-nowrap">Aile Aktivitesi</td></tr>
+                            <tr class="bg-white"><td class="px-3 py-2 font-medium whitespace-nowrap">17.30 - 18.30</td><td class="px-3 py-2 whitespace-nowrap">Mola / Aile Zamanı</td><td class="px-3 py-2 whitespace-nowrap">Mola / Aile Zamanı</td><td class="px-3 py-2 whitespace-nowrap">Mola / Aile Zamanı</td><td class="px-3 py-2 whitespace-nowrap">Mola / Aile Zamanı</td><td class="px-3 py-2 whitespace-nowrap">Mola / Aile Zamanı</td><td class="px-3 py-2 whitespace-nowrap">Hobi / Serbest Zaman</td><td class="px-3 py-2 whitespace-nowrap">Aile Zamanı</td></tr>
+                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium whitespace-nowrap">18.30 - 19.30</td><td class="px-3 py-2 whitespace-nowrap">Akşam Yemeği</td><td class="px-3 py-2 whitespace-nowrap">Akşam Yemeği</td><td class="px-3 py-2 whitespace-nowrap">Akşam Yemeği</td><td class="px-3 py-2 whitespace-nowrap">Akşam Yemeği</td><td class="px-3 py-2 whitespace-nowrap">Akşam Yemeği</td><td class="px-3 py-2 whitespace-nowrap">Akşam Yemeği</td><td class="px-3 py-2 whitespace-nowrap">Akşam Yemeği</td></tr>
+                            <tr class="bg-white"><td class="px-3 py-2 font-medium whitespace-nowrap">19.30 - 20.10</td><td class="px-3 py-2 whitespace-nowrap">Ders 2: Soru Çözme</td><td class="px-3 py-2 whitespace-nowrap">Ders 2: Soru Çözme</td><td class="px-3 py-2 whitespace-nowrap">Ders 2: Soru Çözme</td><td class="px-3 py-2 whitespace-nowrap">Ders 2: Soru Çözme</td><td class="px-3 py-2 whitespace-nowrap">Ders 2: Soru Çözme</td><td class="px-3 py-2 whitespace-nowrap">Ekran Süresi</td><td class="px-3 py-2 whitespace-nowrap">Ekran Süresi</td></tr>
+                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium whitespace-nowrap">20.10 - 20.50</td><td class="px-3 py-2 whitespace-nowrap">Ders 3: Konu Tekrarı</td><td class="px-3 py-2 whitespace-nowrap">Ders 3: Konu Tekrarı</td><td class="px-3 py-2 whitespace-nowrap">Ders 3: Konu Tekrarı</td><td class="px-3 py-2 whitespace-nowrap">Ders 3: Konu Tekrarı</td><td class="px-3 py-2 whitespace-nowrap">Ders 3: Konu Tekrarı</td><td class="px-3 py-2 whitespace-nowrap">Ekran Süresi</td><td class="px-3 py-2 whitespace-nowrap">Ekran Süresi</td></tr>
+                            <tr class="bg-white"><td class="px-3 py-2 font-medium whitespace-nowrap">20.50 - 21.00</td><td class="px-3 py-2 whitespace-nowrap">Serbest Zaman</td><td class="px-3 py-2 whitespace-nowrap">Serbest Zaman</td><td class="px-3 py-2 whitespace-nowrap">Serbest Zaman</td><td class="px-3 py-2 whitespace-nowrap">Serbest Zaman</td><td class="px-3 py-2 whitespace-nowrap">Serbest Zaman</td><td class="px-3 py-2 whitespace-nowrap">Serbest Zaman</td><td class="px-3 py-2 whitespace-nowrap">Haftaya Hazırlık</td></tr>
+                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium whitespace-nowrap">21.00 - 21.30</td><td class="px-3 py-2 whitespace-nowrap">Uyku Hazırlığı</td><td class="px-3 py-2 whitespace-nowrap">Uyku Hazırlığı</td><td class="px-3 py-2 whitespace-nowrap">Uyku Hazırlığı</td><td class="px-3 py-2 whitespace-nowrap">Uyku Hazırlığı</td><td class="px-3 py-2 whitespace-nowrap">Uyku Hazırlığı</td><td class="px-3 py-2 whitespace-nowrap">Uyku Hazırlığı</td><td class="px-3 py-2 whitespace-nowrap">Uyku Hazırlığı</td></tr>
+                            <tr class="bg-white"><td class="px-3 py-2 font-medium whitespace-nowrap">21.30 - 22.00</td><td class="px-3 py-2 whitespace-nowrap">Kitap Okuma</td><td class="px-3 py-2 whitespace-nowrap">Kitap Okuma</td><td class="px-3 py-2 whitespace-nowrap">Kitap Okuma</td><td class="px-3 py-2 whitespace-nowrap">Kitap Okuma</td><td class="px-3 py-2 whitespace-nowrap">Kitap Okuma</td><td class="px-3 py-2 whitespace-nowrap">Kitap Okuma</td><td class="px-3 py-2 whitespace-nowrap">Kitap Okuma</td></tr>
+                            <tr class="bg-blue-50"><td class="px-3 py-2 font-medium whitespace-nowrap">22.00</td><td class="px-3 py-2 whitespace-nowrap">UYKU</td><td class="px-3 py-2 whitespace-nowrap">UYKU</td><td class="px-3 py-2 whitespace-nowrap">UYKU</td><td class="px-3 py-2 whitespace-nowrap">UYKU</td><td class="px-3 py-2 whitespace-nowrap">UYKU</td><td class="px-3 py-2 whitespace-nowrap">UYKU</td><td class="px-3 py-2 whitespace-nowrap">UYKU</td></tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
             
-            <aside class="lg:col-span-1 order-1 lg:order-2 flex flex-col gap-6 print:hidden">
-                
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-600">
-                    <h3 class="text-xl font-semibold text-slate-700 mb-2">Şu An Ne Yapıyorum?</h3>
-                    <div id="current-activity-text" class="text-2xl sm:text-3xl font-bold text-blue-700">
-                        Yükleniyor...
-                    </div>
-                    <div id="current-activity-time" class="text-sm text-slate-500 mt-1">
-                        &nbsp;
-                    </div>
+            <section id="chart-section" class="bg-white p-4 sm:p-6 rounded-lg shadow-md print:hidden">
+                <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Haftalık Zaman Dağılımı</h3>
+                <div class="chart-container">
+                    <canvas id="time-allocation-chart"></canvas>
                 </div>
-
-                
-                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Haftalık Zaman Dağılımı</h3>
-                    <div class="chart-container">
-                        <canvas id="time-allocation-chart"></canvas>
-                    </div>
-                </div>
-            </aside>
+            </section>
 
         </main>
     </div>
@@ -266,8 +272,7 @@
 
         
         const dayNames = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
-        let
-            activeDayButton = null;
+        let activeDayButton = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             
@@ -361,36 +366,65 @@
                 const currentTime = currentHours + (currentMinutes / 100); 
 
                 const daySchedule = scheduleData[currentDay];
-                let currentActivity = "UYKU";
-                let currentSlot = "22.00+";
+                let currentIdx = -1;
                 
-                if (currentTime >= 7.5) { 
-                    for (const item of daySchedule) {
+                const startTime = (currentDay === "Cumartesi" || currentDay === "Pazar") ? 7.5 : 8.0;
+
+                if (currentTime < startTime) {
+                    currentIdx = daySchedule.length - 1; 
+                } else {
+                    for (let i = 0; i < daySchedule.length; i++) {
+                        const item = daySchedule[i];
                         if (item.time === "22.00") {
                             if (currentTime >= 22.00) {
-                                currentActivity = item.activity;
-                                currentSlot = "22.00+";
+                                currentIdx = i;
                                 break;
                             }
                         } else if (item.time.includes('-')) {
                             const [start, end] = item.time.split(' - ').map(t => parseFloat(t.replace('.', '.')));
                             if (currentTime >= start && currentTime < end) {
-                                currentActivity = item.activity;
-                                currentSlot = item.time;
+                                currentIdx = i;
                                 break;
                             }
                         }
                     }
-                } else if (currentTime < 7.5 && currentDay !== "Pazar" && currentDay !== "Cumartesi" && currentTime >= 6.5) {
-                    currentActivity = "UYKU";
-                    currentSlot = "22:00 - 08:00";
-                } else if (currentTime < 7.5 && (currentDay === "Pazar" || currentDay === "Cumartesi")) {
-                     currentActivity = "UYKU";
-                     currentSlot = "22:00 - 07:30";
+                    if (currentIdx === -1 && currentTime >= 22) {
+                        currentIdx = daySchedule.length - 1;
+                    }
                 }
                 
-                document.getElementById('current-activity-text').textContent = currentActivity;
-                document.getElementById('current-activity-time').textContent = `Şu anki zaman dilimi: ${currentSlot}`;
+                
+                let prevActivity = "--";
+                let currentActivity = "UYKU";
+                let nextActivity = "--";
+
+                if (currentIdx !== -1) {
+                    currentActivity = daySchedule[currentIdx].activity;
+                    
+                    if (currentIdx > 0) {
+                        prevActivity = daySchedule[currentIdx - 1].activity;
+                    } else {
+                        
+                        prevActivity = "UYKU";
+                    }
+                    
+                    if (currentIdx < daySchedule.length - 1) {
+                        nextActivity = daySchedule[currentIdx + 1].activity;
+                    } else {
+                        
+                        nextActivity = "UYKU";
+                    }
+                } else {
+                    
+                    currentActivity = "UYKU";
+                    prevActivity = "Kitap Okuma"; 
+                    nextActivity = daySchedule[0].activity; 
+                }
+
+                
+                document.getElementById('prev-activity').textContent = prevActivity;
+                document.getElementById('current-activity').textContent = currentActivity;
+                document.getElementById('next-activity').textContent = nextActivity;
             }
 
             
@@ -449,7 +483,3 @@
     </script>
 </body>
 </html>
-
-
-
-
