@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gezegenleri Tahmin Et!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Güneş Sistemi Bilgini Test Et!</h1>
+    <p>Gezegenlerin adlarını tahmin et.</p>
+
+    <div class="solar-system">
+
+        <div class="planet-container">
+            <div class="planet" id="sun"></div>
+            <div class="cloud-box">
+                <strong>GÜNEŞ</strong>
+            </div>
+        </div>
+
+        <div class="planet-container">
+            <div class="planet" id="mercury"></div>
+            <span class="astronaut">🧑‍🚀</span>
+            <div class="cloud-box">
+                <input type="text" id="input-mercury" placeholder="Gezegenin adı...">
+                <button onclick="checkPlanet('mercury', 'Merkür')">Kontrol Et</button>
+                <p class="feedback" id="feedback-mercury"></p>
+            </div>
+        </div>
+
+        <div class="planet-container">
+            <div class="planet" id="venus"></div>
+            <span class="astronaut">🧑‍🚀</span>
+            <div class="cloud-box">
+                <input type="text" id="input-venus" placeholder="Gezegenin adı...">
+                <button onclick="checkPlanet('venus', 'Venüs')">Kontrol Et</button>
+                <p class="feedback" id="feedback-venus"></p>
+            </div>
+        </div>
+
+        <div class="planet-container">
+            <div class="planet" id="earth"></div>
+            <span class="astronaut">🧑‍🚀</span>
+            <div class="cloud-box">
+                <input type="text" id="input-earth" placeholder="Gezegenin adı...">
+                <button onclick="checkPlanet('earth', 'Dünya')">Kontrol Et</button>
+                <p class="feedback" id="feedback-earth"></p>
+            </div>
+        </div>
+
+        <div class="planet-container">
+            <div class="planet" id="mars"></div>
+            <span class="astronaut">🧑‍🚀</span>
+            <div class="cloud-box">
+                <input type="text" id="input-mars" placeholder="Gezegenin adı...">
+                <button onclick="checkPlanet('mars', 'Mars')">Kontrol Et</button>
+                <p class="feedback" id="feedback-mars"></p>
+            </div>
+        </div>
+
+        <div class="planet-container">
+            <div class="planet" id="jupiter"></div>
+            <span class="astronaut">🧑‍🚀</span>
+            <div class="cloud-box">
+                <input type="text" id="input-jupiter" placeholder="Gezegenin adı...">
+                <button onclick="checkPlanet('jupiter', 'Jüpiter')">Kontrol Et</button>
+                <p class="feedback" id="feedback-jupiter"></p>
+            </div>
+        </div>
+
+        <div class="planet-container">
+            <div class="planet" id="saturn"></div>
+            <span class="astronaut">🧑‍🚀</span>
+            <div class="cloud-box">
+                <input type="text" id="input-saturn" placeholder="Gezegenin adı...">
+                <button onclick="checkPlanet('saturn', 'Satürn')">Kontrol Et</button>
+                <p class="feedback" id="feedback-saturn"></p>
+            </div>
+        </div>
+
+        <div class="planet-container">
+            <div class="planet" id="uranus"></div>
+            <span class="astronaut">🧑‍🚀</span>
+            <div class="cloud-box">
+                <input type="text" id="input-uranus" placeholder="Gezegenin adı...">
+                <button onclick="checkPlanet('uranus', 'Uranüs')">Kontrol Et</button>
+                <p class="feedback" id="feedback-uranus"></p>
+            </div>
+        </div>
+
+        <div class="planet-container">
+            <div class="planet" id="neptune"></div>
+            <span class="astronaut">🧑‍🚀</span>
+            <div class="cloud-box">
+                <input type="text" id="input-neptune" placeholder="Gezegenin adı...">
+                <button onclick="checkPlanet('neptune', 'Neptün')">Kontrol Et</button>
+                <p class="feedback" id="feedback-neptune"></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
