@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana Bir Sürprizim Var...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden; /* Kalplerin taşmasını engellemek için */
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #2b2b2b;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        /* Adımları gizlemek için */
+        .step {
+            display: none;
+        }
+        /* Aktif adımı göstermek için */
+        .active {
+            display: block;
+        }
+        h1 {
+            color: #ff8a80; /* Romantik bir pembe/kırmızı */
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+            border: 2px solid #555;
+            background-color: #333;
+            color: #eee;
+            margin-top: 15px;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #ff8a80;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #ff5252;
+            transform: scale(1.05);
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        /* YouTube Video Konteyneri */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 oran */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        /* Kalp Animasyonu */
+        .heart {
+            position: fixed;
+            top: -10vh;
+            left: 50%;
+            font-size: 2rem;
+            animation: fall 5s linear forwards;
+            opacity: 0.8;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="step-1" class="container step active">
+        <h1>Sana Bir Sorum Var...</h1>
+        <p>Bu gizemli yolculuğa başlamak için sadece ikimizin bildiği o sihirli kelimeyi yaz.</p>
+        
+        <p><strong>Bilmece: İlk buluştuğumuz kafenin adı neydi?</strong></p>
+        
+        <input type="text" id="riddle-input" placeholder="Cevabın...">
+        <br>
+        <button onclick="checkRiddle()">Kapıyı Aç</button>
+        <p id="error-message" style="color: #ff5252; display: none;">Hımm, bu değil... Tekrar dene!</p>
+    </div>
+
+    <div id="step-2" class="container step">
+        <h1>Yolculuğun İlk Durağı</h1>
+        <p>Bu mısralar hep seni hatırlatıyor...</p>
+        
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/S_Yy2T7i-2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        
+        <button onclick="showStep('step-3')">Bir sonraki adıma geç...</button>
+    </div>
+
+    <div id="step-3" class="container step">
+        <h1>Bu Melodi İkimizin</h1>
+        <p>Gözlerini kapat ve bu şarkının bizi götürdüğü o anı hatırla.</p>
+        
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/EtTfwgTI_n4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        
+        <button onclick="showFinalStep()">Ve... Final!</button>
+    </div>
+
+    <div id="step-4" class="container step">
+        <h1>Seni Seviyorum</h1>
+        
+        <p>Bu küçük yolculuğun sonuna geldin. Hayatımdaki en güzel yolculuk sensin.</p>
+        <p>Her adımda, her mısrada ve her melodide seni ne kadar sevdiğimi anlaman için...</p>
+        <p>Benim dünyam olduğun için teşekkür ederim.</p>
+        
+        <h2>❤️</h2>
+    </div>
+
+    <script>
+        // Aktif adımı gösteren fonksiyon
+        function showStep(stepId) {
+            // Tüm adımları gizle
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            // İstenen adımı göster
+            document.getElementById(stepId).classList.add('active');
+        }
+
+        // Bilmeceyi kontrol et
+        function checkRiddle() {
+            // BURAYI DEĞİŞTİR: Doğru cevabı küçük harflerle buraya yazın
+            const dogruCevap = "limon kafe"; 
+            const kullaniciCevabi = document.getElementById('riddle-input').value.toLowerCase().trim();
+            const hataMesaji = document.getElementById('error-message');
+
+            if (kullaniciCevabi === dogruCevap) {
+                hataMesaji.style.display = 'none';
+                showStep('step-2');
+            } else {
+                hataMesaji.style.display = 'block';
+            }
+        }
+
+        // Final adımını göster ve kalpleri başlat
+        function showFinalStep() {
+            showStep('step-4');
+            // Kalp yağmurunu başlat
+            setInterval(createHeart, 200);
+        }
+
+        // Kalp oluşturma fonksiyonu
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3-5 saniye arası
+            heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; // Farklı boyutlar
+            
+            const heartIcons = ['❤️', '💖', '💗', '💕', '💓'];
+            heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+            
+            document.body.appendChild(heart);
+            
+            // Kalp DOM'dan kaldır
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+    </script>
+
+</body>
+</html>
