@@ -99,9 +99,9 @@
 
     <div id="step-1" class="container step active">
         <h1>Sana Bir Sorum Var...</h1>
-        <p>Bu gizemli yolculuğa başlamak için sadece ikimizin bildiği o sihirli kelimeyi yaz.</p>
+        <p>Bu gizemli yolculuğa başlamak için o sihirli kelimeleri yaz.</p>
         
-        <p><strong>Bilmece: İlk buluştuğumuz kafenin adı neydi?</strong></p>
+        <p><strong>Soru: Her zaman senin için dinlediği şarkı yaz.</strong></p>
         
         <input type="text" id="riddle-input" placeholder="Cevabın...">
         <br>
@@ -110,33 +110,21 @@
     </div>
 
     <div id="step-2" class="container step">
-        <h1>Yolculuğun İlk Durağı</h1>
+        <h1>Yolculuğun Tek Durağı</h1>
         <p>Bu mısralar hep seni hatırlatıyor...</p>
         
         <div class="video-container">
             <iframe src="https://www.youtube.com/embed/S_Yy2T7i-2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         
-        <button onclick="showStep('step-3')">Bir sonraki adıma geç...</button>
-    </div>
-
-    <div id="step-3" class="container step">
-        <h1>Bu Melodi İkimizin</h1>
-        <p>Gözlerini kapat ve bu şarkının bizi götürdüğü o anı hatırla.</p>
-        
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/EtTfwgTI_n4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        
         <button onclick="showFinalStep()">Ve... Final!</button>
     </div>
-
-    <div id="step-4" class="container step">
-        <h1>Seni Seviyorum</h1>
+    
+    <div id="step-3" class="container step">
         
-        <p>Bu küçük yolculuğun sonuna geldin. Hayatımdaki en güzel yolculuk sensin.</p>
-        <p>Her adımda, her mısrada ve her melodide seni ne kadar sevdiğimi anlaman için...</p>
-        <p>Benim dünyam olduğun için teşekkür ederim.</p>
+        <h1>Seni Çok Özledim</h1>
+        
+        <p>Sesini, Ruhunu, kahve gözlerinden dünyayı görmeyi, başımı omuzuna yaslamayı seninle gülmeyi seninle kitap okumayı çok özledim.</p>
         
         <h2>❤️</h2>
     </div>
@@ -152,29 +140,37 @@
             document.getElementById(stepId).classList.add('active');
         }
 
-        // Bilmeceyi kontrol et
+        // Bilmeceyi kontrol et (GÜNCELLENDİ)
         function checkRiddle() {
-            // BURAYI DEĞİŞTİR: Doğru cevabı küçük harflerle buraya yazın
-            const dogruCevap = "limon kafe"; 
-            const kullaniciCevabi = document.getElementById('riddle-input').value.toLowerCase().trim();
+            // Cevapları Türkçeye uygun küçük harfe çevir
+            const kullaniciCevabi = document.getElementById('riddle-input').value.toLocaleLowerCase('tr-TR').trim();
             const hataMesaji = document.getElementById('error-message');
+            
+            // YENİ DOĞRU CEVAP LİSTENİZ
+            const dogruCevaplar = [
+                "rinde", 
+                "rınde", 
+                "koma amed rindê",
+                "koma amed rinde"
+            ];
 
-            if (kullaniciCevabi === dogruCevap) {
+            // Kullanıcının girdiği cevap listede var mı?
+            if (dogruCevaplar.includes(kullaniciCevabi)) {
                 hataMesaji.style.display = 'none';
-                showStep('step-2');
+                showStep('step-2'); // Adım 2'ye (şiir) git
             } else {
                 hataMesaji.style.display = 'block';
             }
         }
 
-        // Final adımını göster ve kalpleri başlat
+        // Final adımını göster ve kalpleri başlat (GÜNCELLENDİ)
         function showFinalStep() {
-            showStep('step-4');
+            showStep('step-3'); // Adım 3'e (yeni final) git
             // Kalp yağmurunu başlat
             setInterval(createHeart, 200);
         }
 
-        // Kalp oluşturma fonksiyonu
+        // Kalp oluşturma fonksiyonu (Değişiklik yok)
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -182,7 +178,7 @@
             heart.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3-5 saniye arası
             heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; // Farklı boyutlar
             
-            const heartIcons = ['❤️', '💖', '💗', '💕', '💓'];
+            const heartIcons = ['❤️', '💖', '💗', '💕', '💓','Y', 'E', 'T', 'E', 'R'];
             heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
             
             document.body.appendChild(heart);
