@@ -101,7 +101,7 @@
         <h1>Sana Bir Sorum Var...</h1>
         <p>Bu gizemli yolculuğa başlamak için o sihirli kelimeleri yaz.</p>
         
-        <p><strong>Soru: Her zaman senin için dinlediği şarkı yaz.</strong></p>
+        <p><strong>Her zaman senin için dinlediği o şarkı.</strong></p>
         
         <input type="text" id="riddle-input" placeholder="Cevabın...">
         <br>
@@ -110,11 +110,12 @@
     </div>
 
     <div id="step-2" class="container step">
+        
         <h1>Yolculuğun Tek Durağı</h1>
-        <p>Bu mısralar hep seni hatırlatıyor...</p>
+        <p>Bu mısralar hep seni hatırlatıyor... Her zaman bu şarkıyı senin için dinliyor.</p>
         
         <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/S_Yy2T7i-2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/EtTfwgTI_n4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         
         <button onclick="showFinalStep()">Ve... Final!</button>
@@ -123,7 +124,6 @@
     <div id="step-3" class="container step">
         
         <h1>Seni Çok Özledim</h1>
-        
         <p>Sesini, Ruhunu, kahve gözlerinden dünyayı görmeyi, başımı omuzuna yaslamayı seninle gülmeyi seninle kitap okumayı çok özledim.</p>
         
         <h2>❤️</h2>
@@ -140,13 +140,13 @@
             document.getElementById(stepId).classList.add('active');
         }
 
-        // Bilmeceyi kontrol et (GÜNCELLENDİ)
+        // Bilmeceyi kontrol et (DEĞİŞİKLİK YOK)
         function checkRiddle() {
             // Cevapları Türkçeye uygun küçük harfe çevir
             const kullaniciCevabi = document.getElementById('riddle-input').value.toLocaleLowerCase('tr-TR').trim();
             const hataMesaji = document.getElementById('error-message');
             
-            // YENİ DOĞRU CEVAP LİSTENİZ
+            // DOĞRU CEVAP LİSTESİ
             const dogruCevaplar = [
                 "rinde", 
                 "rınde", 
@@ -157,15 +157,15 @@
             // Kullanıcının girdiği cevap listede var mı?
             if (dogruCevaplar.includes(kullaniciCevabi)) {
                 hataMesaji.style.display = 'none';
-                showStep('step-2'); // Adım 2'ye (şiir) git
+                showStep('step-2'); // Adım 2'ye (şarkı) git
             } else {
                 hataMesaji.style.display = 'block';
             }
         }
 
-        // Final adımını göster ve kalpleri başlat (GÜNCELLENDİ)
+        // Final adımını göster ve kalpleri başlat (DEĞİŞİKLİK YOK)
         function showFinalStep() {
-            showStep('step-3'); // Adım 3'e (yeni final) git
+            showStep('step-3'); // Adım 3'e (final) git
             // Kalp yağmurunu başlat
             setInterval(createHeart, 200);
         }
