@@ -21,17 +21,9 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        /* Adımları gizlemek için */
-        .step {
-            display: none;
-        }
-        /* Aktif adımı göstermek için */
-        .active {
-            display: block;
-        }
-        h1 {
-            color: #ff8a80; /* Romantik bir pembe/kırmızı */
-        }
+        .step { display: none; }
+        .active { display: block; }
+        h1 { color: #ff8a80; }
         input[type="text"] {
             padding: 10px;
             width: 80%;
@@ -56,12 +48,7 @@
             background-color: #ff5252;
             transform: scale(1.05);
         }
-        p {
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-        
-        /* Kalp Animasyonu */
+        p { font-size: 1.1em; line-height: 1.6; }
         .heart {
             position: fixed;
             top: -10vh;
@@ -69,15 +56,11 @@
             font-size: 2rem;
             animation: fall 5s linear forwards;
             opacity: 0.8;
-            font-weight: bold; /* Harflerin daha belirgin olması için */
+            font-weight: bold;
         }
         @keyframes fall {
-            to {
-                transform: translateY(105vh) rotate(360deg);
-                opacity: 0;
-            }
+            to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
-        
         /* SMULE ÇALARI GİZLEME */
         #smule-audio {
             position: absolute;
@@ -94,7 +77,6 @@
         <h1>Sana Bir Sorum Var...</h1>
         <p>Bu gizemli yolculuğa başlamak için o sihirli kelimeleri yaz.</p>
         <p><strong>Sana hep derim ki? ..... gibisin</strong></p>
-        
         <input type="text" id="riddle-input" placeholder="Cevabın...">
         <br>
         <button onclick="checkRiddle()">Kapıyı Aç</button>
@@ -103,8 +85,10 @@
 
     <div id="step-2" class="container step">
         <h1>İkimizin Kaydı</h1>
-        <p>Bu kayıttaki her kelime, her nefes ikimiz için... Birlikte söylediğimiz o anı hatırla.</p>
-        <p style="font-size: 0.9em; color: #888;">(Şimdi final geliyor...)</p>
+        <p>Bu kayıttaki her kelime, her nefes ikimiz için...</p>
+        <p><strong>Lütfen şiiri başlatmak ve finale geçmek için aşağıdaki butona bas.</strong></p>
+        
+        <button id="start-button" onclick="playAndShowFinal()">Şiiri Başlat ve Finali Bekle</button>
     </div>
     
     <div id="step-3" class="container step">
@@ -122,71 +106,68 @@
         height="125" 
         allow="autoplay"
         src=""> 
-        </iframe>
-
+    </iframe>
 
     <script>
         // Aktif adımı gösteren fonksiyon
         function showStep(stepId) {
-            // Tüm adımları gizle
             document.querySelectorAll('.step').forEach(step => {
                 step.classList.remove('active');
             });
-            // İstenen adımı göster
             document.getElementById(stepId).classList.add('active');
         }
 
-        // Bilmeceyi kontrol et
+        // Bilmeceyi kontrol et (GÜNCELLENDİ)
         function checkRiddle() {
             const kullaniciCevabi = document.getElementById('riddle-input').value.toLocaleLowerCase('tr-TR').trim();
             const hataMesaji = document.getElementById('error-message');
             
             const dogruCevaplar = [
-                "benjamin button", 
-                "button", 
-                "bütton", 
+                "benjamin button", "button", "bütton", 
                 "benjamin button'un tuhaf hikayesi", 
-                "benjamin buttonun tuhaf hikayesi",
-                "benjamin"
+                "benjamin buttonun tuhaf hikayesi", "benjamin"
             ];
 
             if (dogruCevaplar.includes(kullaniciCevabi)) {
                 hataMesaji.style.display = 'none';
                 
-                // Adım 2'yi (şiir başlığı) göster
+                // Artık sadece Adım 2'yi gösteriyor, sesi başlatmıyor.
                 showStep('step-2'); 
                 
-                // 1. GİZLİ SES ÇALARI BAŞLAT
-                const smulePlayer = document.getElementById('smule-audio');
-                smulePlayer.src = "https://www.smule.com/recording/okan-savc%C4%B1-beni-g%C3%BCzel-hat%C4%B1rla-%C5%9Fiir/2663861638_5113565181/frame?autoplay=1";
-
-                // 2. FİNAL MESAJI İÇİN 20 SANİYE BEKLE
-                setTimeout(function() {
-                    showFinalStep();
-                }, 20000); // 20 saniye
-
             } else {
                 hataMesaji.style.display = 'block';
             }
         }
 
+        // YENİ FONKSİYON: Sesi başlat ve zamanlayıcıyı çalıştır
+        function playAndShowFinal() {
+            // Butonu gizle ki tekrar basılmasın
+            document.getElementById('start-button').style.display = 'none';
+
+            // 1. GİZLİ SES ÇALARI ŞİMDİ BAŞLAT
+            const smulePlayer = document.getElementById('smule-audio');
+            smulePlayer.src = "https://www.smule.com/recording/okan-savc%C4%B1-beni-g%C3%BCzel-hat%C4%B1rla-%C5%9Fiir/2663861638_5113565181/frame?autoplay=1";
+
+            // 2. FİNAL MESAJI İÇİN 20 SANİYE BEKLE
+            setTimeout(function() {
+                showFinalStep();
+            }, 20000); // 20 saniye
+        }
+
         // Final adımını göster ve kalpleri başlat
         function showFinalStep() {
             showStep('step-3'); // Adım 3'e (final) git
-            
-            // Kalp yağmurunu başlat
             setInterval(createHeart, 200);
         }
 
-        // Kalp oluşturma fonksiyonu (GÜNCELLENDİ)
+        // Kalp oluşturma fonksiyonu
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3-5 saniye arası
-            heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; // Farklı boyutlar
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
             
-            // YENİ heartIcons DİZİSİ
             const heartIcons = ['❤️', 'F', '💗', 'A', '💓','T', '💖', 'M', '💕', 'A'];
             heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
             
