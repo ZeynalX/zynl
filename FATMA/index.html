@@ -6,57 +6,97 @@
     <title>Sana Bir Sürprizim Var...</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #f0f0f0;
+            font-family: 'Gabriola', cursive, sans-serif; /* Daha romantik bir font deneyelim */
+            background-color: #f7e0e7; /* Açık pembe arka plan */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="%23f0c0c0" d="M50 0 C75 25 75 75 50 100 C25 75 25 25 50 0z" /><path fill="%23f0c0c0" d="M0 50 C25 25 75 25 100 50 C75 75 25 75 0 50z" /></svg>'); /* Hafif, romantik desen */
+            background-size: 80px 80px;
+            color: #4a2c3c; /* Koyu bordo yazı rengi */
             text-align: center;
             padding: 20px;
-            overflow: hidden; /* Kalplerin taşmasını engellemek için */
+            overflow: hidden;
+            line-height: 1.8; /* Daha okunaklı satır aralığı */
         }
+        @font-face {
+            font-family: 'Gabriola';
+            src: url('https://fonts.cdnfonts.com/s/7222/Gabriola.woff') format('woff'); /* Gabriola fontunu dışarıdan yükleyelim */
+        }
+
         .container {
-            max-width: 600px;
+            max-width: 650px; /* Daha geniş bir mektup için */
             margin: 40px auto;
             padding: 30px;
-            background-color: #2b2b2b;
+            background-color: #fffaf0; /* Açık krem rengi mektup kağıdı */
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); /* Daha belirgin gölge */
+            position: relative;
+            border: 2px solid #e0b0bb; /* Mektup kenarı rengi */
         }
+        /* Mektup kağıdına hafif doku verelim */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYUM+o4AAAACHRSTlMA/////////9kdXYcAAAASdEVYdFNvZnR3YXJlPUxpbmVhcml0eSBQYXR0ZXJucyBTdHVkaW9iZUy3hGAAAAAVSURBVDjLY2AYBGCAAhjECwIApAAGA3wL8/UAAAAASUVORK5CYII=');
+            opacity: 0.05;
+            pointer-events: none; /* Üstüne tıklamayı engelle */
+        }
+
         .step { display: none; }
         .active { display: block; }
-        h1 { color: #ff8a80; }
+
+        h1 {
+            font-family: 'Gabriola', cursive;
+            color: #b33951; /* Daha koyu pembe/kırmızı başlık */
+            font-size: 3em; /* Daha büyük başlık */
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .container p {
+            font-size: 1.3em; /* Mektup metni daha büyük */
+            margin-bottom: 15px;
+            color: #5a3c4c;
+        }
+        
         input[type="text"] {
-            padding: 10px;
-            width: 80%;
-            border-radius: 5px;
-            border: 2px solid #555;
-            background-color: #333;
-            color: #eee;
-            margin-top: 15px;
+            padding: 12px;
+            width: 70%;
+            border-radius: 8px;
+            border: 1px solid #d4a7b7;
+            background-color: #fcf6f8;
+            color: #4a2c3c;
+            margin-top: 20px;
+            font-size: 1.1em;
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
         }
         button {
-            padding: 12px 25px;
-            background-color: #ff8a80;
-            color: #1a1a1a;
+            padding: 14px 30px;
+            background-color: #e07a8f; /* Daha canlı bir buton rengi */
+            color: #ffffff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 20px;
-            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 25px;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            font-size: 1.2em;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         button:hover {
-            background-color: #ff5252;
-            transform: scale(1.05);
+            background-color: #c95d73;
+            transform: scale(1.03);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
-        p { font-size: 1.1em; line-height: 1.6; }
+        
         .heart {
             position: fixed;
             top: -10vh;
             left: 50%;
-            font-size: 2rem;
+            font-size: 2.5rem; /* Kalpler/harfler daha büyük */
             animation: fall 5s linear forwards;
-            opacity: 0.8;
+            opacity: 0.9;
             font-weight: bold;
+            color: #ff6b81; /* Kalplerin rengi */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         @keyframes fall {
             to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
@@ -64,9 +104,40 @@
         
         /* GÖRÜNÜR SES ÇALAR İÇİN STİL */
         #siir-sesi-player {
-            width: 90%; /* Kutunun %90'ı genişliğinde */
-            margin-top: 25px; /* Mesajla arasına boşluk koy */
+            width: 80%; /* Mektup kutusunun %80'i genişliğinde */
+            max-width: 450px; /* Çok büyük olmasın */
+            margin-top: 30px; /* Mesajla arasına daha fazla boşluk */
+            background-color: #f0e6e6; /* Player arka plan rengi */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 10px;
+            border: 1px solid #d4a7b7;
         }
+
+        /* Çiçek ve kalp süslemeleri (mevcut container içinde emojilerle) */
+        .decoration-top-left, .decoration-top-right,
+        .decoration-bottom-left, .decoration-bottom-right {
+            position: absolute;
+            font-size: 2.5em; /* Emoji boyutları */
+            opacity: 0.8;
+            pointer-events: none;
+            color: #ff6b81; /* Kalplerin rengi */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .decoration-top-left { top: 15px; left: 15px; transform: rotate(-15deg); }
+        .decoration-top-right { top: 15px; right: 15px; transform: rotate(15deg); }
+        .decoration-bottom-left { bottom: 15px; left: 15px; transform: rotate(15deg); }
+        .decoration-bottom-right { bottom: 15px; right: 15px; transform: rotate(-15deg); }
+
+        .signature {
+            font-family: 'Gabriola', cursive;
+            font-size: 2em;
+            margin-top: 30px;
+            color: #b33951;
+            text-align: right;
+            padding-right: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -82,11 +153,19 @@
     </div>
 
     <div id="step-3" class="container step">
+        <div class="decoration-top-left">🌹❤️</div>
+        <div class="decoration-top-right">💖🌸</div>
+        <div class="decoration-bottom-left">🌷💕</div>
+        <div class="decoration-bottom-right">💓🌼</div>
+
         <h1>Ey Bebeksi Yüzüne anaç Kalbine aşık olduğum,</h1>
         <p>Ben Seni hep güzel ve özel hatırlıyorum sen dünyada ulaşamadığım en güzel en özel olansın.</p>
         <p>O kahve gözlerin o ipeksi sesin o öpülesi yanakların herşeyden mükemmel dudakların.. seni anlatmaya cümlelerim yetmiyor.</p>
         <p>Seni çok seviyorum çok çok özlüyorum.... İyi ki varsın.</p>
-        <h2>❤️</h2>
+        
+        <div class="signature">
+            - Senin Canın
+        </div>
 
         <audio id="siir-sesi-player" 
                src="https://c-cdnet.cdn.smule.com/smule-gg-uw1-r-5/sing/performance/rendered/89/88/7257ff56-d60b-4e8a-aa7e-88ab59af3aed.m4a" 
@@ -106,7 +185,7 @@
             document.getElementById(stepId).classList.add('active');
         }
 
-        // Bilmeceyi kontrol et (GÜNCELLENDİ)
+        // Bilmeceyi kontrol et
         function checkRiddle() {
             const kullaniciCevabi = document.getElementById('riddle-input').value.toLocaleLowerCase('tr-TR').trim();
             const hataMesaji = document.getElementById('error-message');
@@ -119,26 +198,16 @@
 
             if (dogruCevaplar.includes(kullaniciCevabi)) {
                 hataMesaji.style.display = 'none';
-                
-                // Cevap doğruysa, 20 saniye bekleme YOK.
-                // Sesi otomatik çalma YOK.
-                // DOĞRUDAN FİNALİ GÖSTER:
-                showFinalStep(); 
+                showFinalStep(); // Doğrudan final adımına git
                 
             } else {
                 hataMesaji.style.display = 'block';
             }
         }
 
-        // (playAndShowFinal fonksiyonu kaldırıldı, artık gerek yok)
-
-        // Final adımını göster ve kalpleri başlat (GÜNCELLENDİ)
+        // Final adımını göster ve kalpleri başlat
         function showFinalStep() {
             showStep('step-3'); // Adım 3'e (final + player) git
-            
-            // Player'ı göstermek için ekstra bir koda gerek yok,
-            // çünkü zaten Adım 3'ün içinde ve görünür durumda.
-            
             // Kalp/Harf yağmurunu başlat
             setInterval(createHeart, 200);
         }
