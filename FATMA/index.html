@@ -69,6 +69,7 @@
             font-size: 2rem;
             animation: fall 5s linear forwards;
             opacity: 0.8;
+            font-weight: bold; /* Harflerin daha belirgin olması için */
         }
         @keyframes fall {
             to {
@@ -77,7 +78,7 @@
             }
         }
         
-        /* SMULE ÇALARI GİZLEME (Boyutlar 100%x125 olarak ayarlandı) */
+        /* SMULE ÇALARI GİZLEME */
         #smule-audio {
             position: absolute;
             left: -9999px;
@@ -155,7 +156,7 @@
                 // Adım 2'yi (şiir başlığı) göster
                 showStep('step-2'); 
                 
-                // 1. GİZLİ SES ÇALARI BAŞLAT (ESKİ LİNKE GERİ DÖNÜLDÜ)
+                // 1. GİZLİ SES ÇALARI BAŞLAT
                 const smulePlayer = document.getElementById('smule-audio');
                 smulePlayer.src = "https://www.smule.com/recording/okan-savc%C4%B1-beni-g%C3%BCzel-hat%C4%B1rla-%C5%9Fiir/2663861638_5113565181/frame?autoplay=1";
 
@@ -177,7 +178,7 @@
             setInterval(createHeart, 200);
         }
 
-        // Kalp oluşturma fonksiyonu
+        // Kalp oluşturma fonksiyonu (GÜNCELLENDİ)
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -185,7 +186,8 @@
             heart.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3-5 saniye arası
             heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; // Farklı boyutlar
             
-            const heartIcons = ['❤️', '💖', '💗', '💕', '💓'];
+            // YENİ heartIcons DİZİSİ
+            const heartIcons = ['❤️', 'F', '💗', 'A', '💓','T', '💖', 'M', '💕', 'A'];
             heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
             
             document.body.appendChild(heart);
