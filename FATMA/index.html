@@ -77,9 +77,13 @@
             }
         }
         
-        /* Arka planda çalacak Smule çaları gizle */
+        /* SMULE ÇALARI GİZLEME (Boyutlar 100%x125 olarak ayarlandı) */
         #smule-audio {
-            display: none;
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            width: 100%;
+            height: 125px;
         }
     </style>
 </head>
@@ -100,8 +104,7 @@
         <h1>İkimizin Kaydı</h1>
         <p>Bu kayıttaki her kelime, her nefes ikimiz için... Birlikte söylediğimiz o anı hatırla.</p>
         <p style="font-size: 0.9em; color: #888;">(Şimdi final geliyor...)</p>
-        
-        </div>
+    </div>
     
     <div id="step-3" class="container step">
         <h1>Ey Bebeksi Yüzüne anaç Kalbine aşık olduğum,</h1>
@@ -114,8 +117,8 @@
     <iframe 
         id="smule-audio" 
         frameborder="0" 
-        width="300" 
-        height="300" 
+        width="100%" 
+        height="125" 
         allow="autoplay"
         src=""> 
         </iframe>
@@ -132,7 +135,7 @@
             document.getElementById(stepId).classList.add('active');
         }
 
-        // Bilmeceyi kontrol et (GÜNCELLENDİ)
+        // Bilmeceyi kontrol et
         function checkRiddle() {
             const kullaniciCevabi = document.getElementById('riddle-input').value.toLocaleLowerCase('tr-TR').trim();
             const hataMesaji = document.getElementById('error-message');
@@ -152,14 +155,14 @@
                 // Adım 2'yi (şiir başlığı) göster
                 showStep('step-2'); 
                 
-                // 1. GİZLİ SES ÇALARI BAŞLAT (src'yi ayarla ve autoplay=1 ekle)
+                // 1. GİZLİ SES ÇALARI BAŞLAT (ESKİ LİNKE GERİ DÖNÜLDÜ)
                 const smulePlayer = document.getElementById('smule-audio');
-                smulePlayer.src = "https://www.smule.com/recording/okan-savc%C4%B1-beni-g%C3%BCzel-hat%C4%B1rla-%C5%9Fiir/2663861638_5113565181/frame/box?autoplay=1";
+                smulePlayer.src = "https://www.smule.com/recording/okan-savc%C4%B1-beni-g%C3%BCzel-hat%C4%B1rla-%C5%9Fiir/2663861638_5113565181/frame?autoplay=1";
 
-                // 2. FİNAL MESAJI İÇİN 8 SANİYE BEKLE
+                // 2. FİNAL MESAJI İÇİN 20 SANİYE BEKLE
                 setTimeout(function() {
                     showFinalStep();
-                }, 8000); // 8000 milisaniye = 8 saniye
+                }, 20000); // 20 saniye
 
             } else {
                 hataMesaji.style.display = 'block';
@@ -171,7 +174,6 @@
             showStep('step-3'); // Adım 3'e (final) git
             
             // Kalp yağmurunu başlat
-            // Ses çalmaya devam ederken kalpler başlayacak
             setInterval(createHeart, 200);
         }
 
@@ -183,7 +185,7 @@
             heart.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3-5 saniye arası
             heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; // Farklı boyutlar
             
-            const heartIcons = ['❤️', 'F', '💗', 'A', '💓','T', '💖', 'M', '💕', 'A'];
+            const heartIcons = ['❤️', '💖', '💗', '💕', '💓'];
             heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
             
             document.body.appendChild(heart);
