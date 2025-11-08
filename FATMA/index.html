@@ -62,10 +62,10 @@
             to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
         
-        /* GÖRÜNMEZ SES ÇALAR */
-        /* iframe kaldırıldı, yerine bu geldi */
-        #siir-sesi {
-            display: none;
+        /* GÖRÜNÜR SES ÇALAR İÇİN STİL */
+        #siir-sesi-player {
+            width: 90%; /* Kutunun %90'ı genişliğinde */
+            margin-top: 25px; /* Mesajla arasına boşluk koy */
         }
     </style>
 </head>
@@ -81,23 +81,20 @@
         <p id="error-message" style="color: #ff5252; display: none;">Hımm, bu değil... Tekrar dene!</p>
     </div>
 
-    <div id="step-2" class="container step">
-        <h1>İkimizin Kaydı</h1>
-        <p>Bu kayıttaki her kelime, her nefes ikimiz için...</p>
-        <p><strong>Lütfen şiiri başlatmak ve finale geçmek için aşağıdaki butona bas.</strong></p>
-        
-        <button id="start-button" onclick="playAndShowFinal()">Şiiri Başlat ve Finali Bekle</button>
-    </div>
-    
     <div id="step-3" class="container step">
         <h1>Ey Bebeksi Yüzüne anaç Kalbine aşık olduğum,</h1>
         <p>Ben Seni hep güzel ve özel hatırlıyorum sen dünyada ulaşamadığım en güzel en özel olansın.</p>
         <p>O kahve gözlerin o ipeksi sesin o öpülesi yanakların herşeyden mükemmel dudakların.. seni anlatmaya cümlelerim yetmiyor.</p>
         <p>Seni çok seviyorum çok çok özlüyorum.... İyi ki varsın.</p>
         <h2>❤️</h2>
-    </div>
 
-    <audio id="siir-sesi" src="https://c-cdnet.cdn.smule.com/smule-gg-uw1-r-5/sing/performance/rendered/89/88/7257ff56-d60b-4e8a-aa7e-88ab59af3aed.m4a" preload="auto"></audio>
+        <audio id="siir-sesi-player" 
+               src="https://c-cdnet.cdn.smule.com/smule-gg-uw1-r-5/sing/performance/rendered/89/88/7257ff56-d60b-4e8a-aa7e-88ab59af3aed.m4a" 
+               preload="auto" 
+               controls>
+            Tarayıcınız bu sesi çalamıyor.
+        </audio>
+    </div>
 
 
     <script>
@@ -109,7 +106,7 @@
             document.getElementById(stepId).classList.add('active');
         }
 
-        // Bilmeceyi kontrol et
+        // Bilmeceyi kontrol et (GÜNCELLENDİ)
         function checkRiddle() {
             const kullaniciCevabi = document.getElementById('riddle-input').value.toLocaleLowerCase('tr-TR').trim();
             const hataMesaji = document.getElementById('error-message');
@@ -122,31 +119,27 @@
 
             if (dogruCevaplar.includes(kullaniciCevabi)) {
                 hataMesaji.style.display = 'none';
-                showStep('step-2'); // Adım 2'yi (Başlatma butonu) göster
+                
+                // Cevap doğruysa, 20 saniye bekleme YOK.
+                // Sesi otomatik çalma YOK.
+                // DOĞRUDAN FİNALİ GÖSTER:
+                showFinalStep(); 
+                
             } else {
                 hataMesaji.style.display = 'block';
             }
         }
 
-        // YENİ FONKSİYON: Sesi başlat ve zamanlayıcıyı çalıştır (GÜNCELLENDİ)
-        function playAndShowFinal() {
-            // Butonu gizle ki tekrar basılmasın
-            document.getElementById('start-button').style.display = 'none';
+        // (playAndShowFinal fonksiyonu kaldırıldı, artık gerek yok)
 
-            // 1. GİZLİ SES ÇALARI ŞİMDİ BAŞLAT
-            // Artık iframe yerine <audio> elementini çalıyoruz
-            const siirPlayer = document.getElementById('siir-sesi');
-            siirPlayer.play();
-
-            // 2. FİNAL MESAJI İÇİN 20 SANİYE BEKLE
-            setTimeout(function() {
-                showFinalStep();
-            }, 20000); // 20 saniye
-        }
-
-        // Final adımını göster ve kalpleri başlat
+        // Final adımını göster ve kalpleri başlat (GÜNCELLENDİ)
         function showFinalStep() {
-            showStep('step-3'); // Adım 3'e (final) git
+            showStep('step-3'); // Adım 3'e (final + player) git
+            
+            // Player'ı göstermek için ekstra bir koda gerek yok,
+            // çünkü zaten Adım 3'ün içinde ve görünür durumda.
+            
+            // Kalp/Harf yağmurunu başlat
             setInterval(createHeart, 200);
         }
 
