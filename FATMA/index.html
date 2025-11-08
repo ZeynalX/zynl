@@ -5,54 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sana Bir Sürprizim Var...</title>
     <style>
+        /* YENİ FONTU İNTERNETTEN ÇEKİYORUZ */
+        @import url('https://fonts.cdnfonts.com/css/super-malibu');
+        
         body {
-            font-family: 'Gabriola', cursive, sans-serif; /* Daha romantik bir font deneyelim */
-            background-color: #f7e0e7; /* Açık pembe arka plan */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="%23f0c0c0" d="M50 0 C75 25 75 75 50 100 C25 75 25 25 50 0z" /><path fill="%23f0c0c0" d="M0 50 C25 25 75 25 100 50 C75 75 25 75 0 50z" /></svg>'); /* Hafif, romantik desen */
+            /* FONT GÜNCELLENDİ: Super Malibu */
+            font-family: 'Super Malibu', sans-serif;
+            background-color: #f7e0e7; 
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="%23f0c0c0" d="M50 0 C75 25 75 75 50 100 C25 75 25 25 50 0z" /><path fill="%23f0c0c0" d="M0 50 C25 25 75 25 100 50 C75 75 25 75 0 50z" /></svg>');
             background-size: 80px 80px;
-            color: #4a2c3c; /* Koyu bordo yazı rengi */
+            color: #4a2c3c; 
             text-align: center;
             padding: 20px;
             overflow: hidden;
-            line-height: 1.8; /* Daha okunaklı satır aralığı */
+            line-height: 1.6; /* Yeni font için satır aralığı */
         }
-        @font-face {
-            font-family: 'Gabriola';
-            src: url('https://fonts.cdnfonts.com/s/7222/Gabriola.woff') format('woff'); /* Gabriola fontunu dışarıdan yükleyelim */
-        }
-
+        
+        /* Mektup kutusu */
         .container {
-            max-width: 650px; /* Daha geniş bir mektup için */
+            max-width: 650px; 
             margin: 40px auto;
-            padding: 30px;
-            background-color: #fffaf0; /* Açık krem rengi mektup kağıdı */
+            padding: 30px 40px; 
+            background-color: #fffaf0; /* Krem rengi */
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); /* Daha belirgin gölge */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); 
             position: relative;
-            border: 2px solid #e0b0bb; /* Mektup kenarı rengi */
+            border: 2px solid #e0b0bb; 
         }
-        /* Mektup kağıdına hafif doku verelim */
+        
+        /* Mektup kağıdı dokusu */
         .container::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYUM+o4AAAACHRSTlMA/////////9kdXYcAAAASdEVYdFNvZnR3YXJlPUxpbmVhcml0eSBQYXR0ZXJucyBTdHVkaW9iZUy3hGAAAAAVSURBVDjLY2AYBGCAAhjECwIApAAGA3wL8/UAAAAASUVORK5CYII=');
             opacity: 0.05;
-            pointer-events: none; /* Üstüne tıklamayı engelle */
+            pointer-events: none;
+            border-radius: 15px;
         }
 
         .step { display: none; }
         .active { display: block; }
 
         h1 {
-            font-family: 'Gabriola', cursive;
-            color: #b33951; /* Daha koyu pembe/kırmızı başlık */
-            font-size: 3em; /* Daha büyük başlık */
+            /* FONT GÜNCELLENDİ */
+            font-family: 'Super Malibu', sans-serif;
+            font-weight: normal; /* Bu font zaten kalın, ekstra kalınlığa gerek yok */
+            color: #b33951; 
+            font-size: 2.8em; /* Yeni fonta göre ayarlandı */
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
+        
         .container p {
-            font-size: 1.3em; /* Mektup metni daha büyük */
+            /* FONT GÜNCELLENDİ */
+            font-family: 'Super Malibu', sans-serif;
+            font-size: 1.3em; /* Yeni fonta göre ayarlandı */
             margin-bottom: 15px;
             color: #5a3c4c;
         }
@@ -65,12 +73,14 @@
             background-color: #fcf6f8;
             color: #4a2c3c;
             margin-top: 20px;
-            font-size: 1.1em;
+            font-size: 1em; 
+            font-family: 'Super Malibu', sans-serif; /* Fontu eşitle */
             box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
         }
+        
         button {
             padding: 14px 30px;
-            background-color: #e07a8f; /* Daha canlı bir buton rengi */
+            background-color: #e07a8f; 
             color: #ffffff;
             border: none;
             border-radius: 8px;
@@ -78,7 +88,8 @@
             font-weight: bold;
             margin-top: 25px;
             transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-            font-size: 1.2em;
+            font-size: 1.1em; 
+            font-family: 'Super Malibu', sans-serif; /* Fontu eşitle */
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         button:hover {
@@ -87,41 +98,41 @@
             box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
         
+        /* FATMA harfleri ve kalp animasyonu */
         .heart {
             position: fixed;
             top: -10vh;
             left: 50%;
-            font-size: 2.5rem; /* Kalpler/harfler daha büyük */
+            font-size: 2.5rem; 
             animation: fall 5s linear forwards;
             opacity: 0.9;
             font-weight: bold;
-            color: #ff6b81; /* Kalplerin rengi */
+            color: #ff6b81;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         @keyframes fall {
             to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
         
-        /* GÖRÜNÜR SES ÇALAR İÇİN STİL */
-        #siir-sesi-player {
-            width: 80%; /* Mektup kutusunun %80'i genişliğinde */
-            max-width: 450px; /* Çok büyük olmasın */
-            margin-top: 30px; /* Mesajla arasına daha fazla boşluk */
-            background-color: #f0e6e6; /* Player arka plan rengi */
+        /* GÖRÜNÜR SMULE IFRAME ÇALARI İÇİN STİL */
+        #smule-player-iframe {
+            width: 100%; /* Telefon ekranına sığsın */
+            max-width: 500px; /* Ama en fazla 500px olsun */
+            height: 500px; /* Yüksekliği istediğiniz gibi 500px */
+            margin-top: 30px; 
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 10px;
             border: 1px solid #d4a7b7;
         }
 
-        /* Çiçek ve kalp süslemeleri (mevcut container içinde emojilerle) */
+        /* Çiçek süslemeleri */
         .decoration-top-left, .decoration-top-right,
         .decoration-bottom-left, .decoration-bottom-right {
             position: absolute;
-            font-size: 2.5em; /* Emoji boyutları */
+            font-size: 2.5em;
             opacity: 0.8;
             pointer-events: none;
-            color: #ff6b81; /* Kalplerin rengi */
+            color: #ff6b81;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         .decoration-top-left { top: 15px; left: 15px; transform: rotate(-15deg); }
@@ -129,9 +140,12 @@
         .decoration-bottom-left { bottom: 15px; left: 15px; transform: rotate(15deg); }
         .decoration-bottom-right { bottom: 15px; right: 15px; transform: rotate(-15deg); }
 
+        /* İmza */
         .signature {
-            font-family: 'Gabriola', cursive;
-            font-size: 2em;
+            /* FONT GÜNCELLENDİ */
+            font-family: 'Super Malibu', sans-serif;
+            font-style: normal; /* Bu fontta italik güzel durmaz */
+            font-size: 1.8em; /* Yeni fonta göre ayarlandı */
             margin-top: 30px;
             color: #b33951;
             text-align: right;
@@ -143,6 +157,9 @@
 <body>
 
     <div id="step-1" class="container step active">
+        <div class="decoration-top-left">🌹</div>
+        <div class="decoration-top-right">🌸</div>
+        
         <h1>Sana Bir Sorum Var...</h1>
         <p>Bu gizemli yolculuğa başlamak için o sihirli kelimeleri yaz.</p>
         <p><strong>Sana hep derim ki? ..... gibisin</strong></p>
@@ -167,12 +184,13 @@
             - Senin Canın
         </div>
 
-        <audio id="siir-sesi-player" 
-               src="https://c-cdnet.cdn.smule.com/smule-gg-uw1-r-5/sing/performance/rendered/89/88/7257ff56-d60b-4e8a-aa7e-88ab59af3aed.m4a" 
-               preload="auto" 
-               controls>
-            Tarayıcınız bu sesi çalamıyor.
-        </audio>
+        <iframe 
+            id="smule-player-iframe"
+            frameborder="0" 
+            width="500" 
+            height="500" 
+            src="https://www.smule.com/recording/okan-savc%C4%B1-beni-g%C3%BCzel-hat%C4%B1rla-%C5%9Fiir/2663861638_5113565181/frame/box">
+        </iframe>
     </div>
 
 
@@ -198,21 +216,22 @@
 
             if (dogruCevaplar.includes(kullaniciCevabi)) {
                 hataMesaji.style.display = 'none';
-                showFinalStep(); // Doğrudan final adımına git
+                // Cevap doğruysa, doğrudan final adımını göster
+                showFinalStep(); 
                 
             } else {
                 hataMesaji.style.display = 'block';
             }
         }
 
-        // Final adımını göster ve kalpleri başlat
+        // Final adımını göster ve kalpleri/harfleri başlat
         function showFinalStep() {
-            showStep('step-3'); // Adım 3'e (final + player) git
-            // Kalp/Harf yağmurunu başlat
+            showStep('step-3'); // Adım 3'ü (Mektup) göster
+            // Animasyonu başlat
             setInterval(createHeart, 200);
         }
 
-        // Kalp oluşturma fonksiyonu (FATMA harfleriyle)
+        // Kalp/Harf oluşturma fonksiyonu
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -220,6 +239,7 @@
             heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
             heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
             
+            // Sizin istediğiniz FATMA harfleri ve kalpler
             const heartIcons = ['❤️', 'F', '💗', 'A', '💓','T', '💖', 'M', '💕', 'A'];
             heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
             
