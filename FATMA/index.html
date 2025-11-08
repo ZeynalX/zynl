@@ -61,13 +61,11 @@
         @keyframes fall {
             to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
-        /* SMULE ÇALARI GİZLEME */
-        #smule-audio {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
-            width: 100%;
-            height: 125px;
+        
+        /* GÖRÜNMEZ SES ÇALAR */
+        /* iframe kaldırıldı, yerine bu geldi */
+        #siir-sesi {
+            display: none;
         }
     </style>
 </head>
@@ -99,14 +97,8 @@
         <h2>❤️</h2>
     </div>
 
-    <iframe 
-        id="smule-audio" 
-        frameborder="0" 
-        width="100%" 
-        height="125" 
-        allow="autoplay"
-        src=""> 
-    </iframe>
+    <audio id="siir-sesi" src="https://c-cdnet.cdn.smule.com/smule-gg-uw1-r-5/sing/performance/rendered/89/88/7257ff56-d60b-4e8a-aa7e-88ab59af3aed.m4a" preload="auto"></audio>
+
 
     <script>
         // Aktif adımı gösteren fonksiyon
@@ -117,7 +109,7 @@
             document.getElementById(stepId).classList.add('active');
         }
 
-        // Bilmeceyi kontrol et (GÜNCELLENDİ)
+        // Bilmeceyi kontrol et
         function checkRiddle() {
             const kullaniciCevabi = document.getElementById('riddle-input').value.toLocaleLowerCase('tr-TR').trim();
             const hataMesaji = document.getElementById('error-message');
@@ -130,23 +122,21 @@
 
             if (dogruCevaplar.includes(kullaniciCevabi)) {
                 hataMesaji.style.display = 'none';
-                
-                // Artık sadece Adım 2'yi gösteriyor, sesi başlatmıyor.
-                showStep('step-2'); 
-                
+                showStep('step-2'); // Adım 2'yi (Başlatma butonu) göster
             } else {
                 hataMesaji.style.display = 'block';
             }
         }
 
-        // YENİ FONKSİYON: Sesi başlat ve zamanlayıcıyı çalıştır
+        // YENİ FONKSİYON: Sesi başlat ve zamanlayıcıyı çalıştır (GÜNCELLENDİ)
         function playAndShowFinal() {
             // Butonu gizle ki tekrar basılmasın
             document.getElementById('start-button').style.display = 'none';
 
             // 1. GİZLİ SES ÇALARI ŞİMDİ BAŞLAT
-            const smulePlayer = document.getElementById('smule-audio');
-            smulePlayer.src = "https://www.smule.com/recording/okan-savc%C4%B1-beni-g%C3%BCzel-hat%C4%B1rla-%C5%9Fiir/2663861638_5113565181/frame?autoplay=1";
+            // Artık iframe yerine <audio> elementini çalıyoruz
+            const siirPlayer = document.getElementById('siir-sesi');
+            siirPlayer.play();
 
             // 2. FİNAL MESAJI İÇİN 20 SANİYE BEKLE
             setTimeout(function() {
@@ -160,7 +150,7 @@
             setInterval(createHeart, 200);
         }
 
-        // Kalp oluşturma fonksiyonu
+        // Kalp oluşturma fonksiyonu (FATMA harfleriyle)
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
