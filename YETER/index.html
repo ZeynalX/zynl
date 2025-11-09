@@ -302,7 +302,7 @@
         const WORD_LENGTH = 5;
         let currentRow = 0;
         let isGameOver = false;
-        let guessedWords = []; // YENİ: Tahmin edilen kelimeleri tutan dizi
+        let guessedWords = []; // Tahmin edilen kelimeleri tutan dizi
 
         const guessInput = document.getElementById('guess-input');
         const errorMessage = document.getElementById('error-message');
@@ -322,16 +322,15 @@
 
             // Giriş kontrolleri
             if (guess.length !== WORD_LENGTH) {
-                showError(`Lütfen 5 harfli bir kelime girin.`); // 3 saniye görünür (varsayılan)
+                showError(`Lütfen 5 harfli bir kelime girin.`);
                 return;
             }
 
-            // YENİ: KELİME TEKRARI KONTROLÜ
+            // KELİME TEKRARI KONTROLÜ
             if (guessedWords.includes(guess)) {
-                showError("Bu kelimeyi zaten denedin!"); // 3 saniye görünür (varsayılan)
+                showError("Bu kelimeyi zaten denedin!");
                 return;
             }
-            // YENİ KONTROL SONU
 
             // Kelime geçerli ve yeni, listeye ekle
             guessedWords.push(guess);
@@ -345,17 +344,22 @@
             // Kontrol et
             if (guess === TARGET_WORD) {
                 // Kazandı!
-                showError("Tebrikler! Buldun!", "green", 999999); // Süresiz kalması için çok uzun süre
+                // *** DÜZELTME BAŞLANGICI ***
+                // Bu bölüm yanlışlıkla silinmişti, geri eklendi.
+                showError("Tebrikler! Buldun!", "green"); // Başarı mesajını göster (kalıcı)
+                isGameOver = true; // Oyunu bitir
+                setTimeout(showFinalStep, 2000); // 2 saniye sonra finali göster
+                // *** DÜZELTME SONU ***
             } else {
                 // Sonraki satıra geç
                 currentRow++;
                 if (currentRow >= MAX_GUESSES) {
                     // Kaybetti!
-                    showError(`Bilemedin! Doğru cevap: ${TARGET_WORD}`, '#ff5252', 999999); // Süresiz kalması için
+                    showError(`Bilemedin! Doğru cevap: ${TARGET_WORD}`, '#ff5252', 999999); // Kaybetme mesajı kalıcı
+                    isGameOver = true;
                 } else if (isYeterGuess) {
                     // "YETER" ÖZEL MESAJI BURADA
-                    // GÜNCELLENDİ: Süre 5000ms (5 saniye) olarak ayarlandı
-                    showError("😜 Bu kadar kolay sormam", '#ff5252', 5000); 
+                    showError("😜 Bu kadar kolay sormam", '#ff5252', 5000); // 5 saniye göster
                 }
             }
 
@@ -404,13 +408,13 @@
             }
         }
         
-        // GÜNCELLENDİ: Fonksiyon artık bir 'duration' (süre) parametresi alıyor
+        // GÜNCELLENDİ: Fonksiyon artık 'duration' alıyor ve sadece hata mesajlarını gizliyor
         function showError(message, color = '#ff5252', duration = 3000) {
             errorMessage.textContent = message;
             errorMessage.style.color = color;
             errorMessage.style.display = 'block';
 
-            // Yeşil 'Tebrikler' mesajı gibi kalıcı olması gerekmeyen (kırmızı) mesajları sil
+            // Sadece kırmızı (hata) mesajlarını gizle. Yeşil (başarı) veya kalıcı kaybetme mesajları kalsın.
             if (color === '#ff5252' || color === undefined) {
                  setTimeout(() => {
                     if (errorMessage.textContent === message) { // Başka bir mesaj gelmediyse temizle
