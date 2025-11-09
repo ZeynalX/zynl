@@ -157,13 +157,15 @@
             padding-right: 20px;
         }
 
-        /* --- KELİME OYUNU (WORDLE) STİLLERİ --- */
+        /* --- KELİME OYUNU (WORDLE) STİLLERİ (MOBİL UYUMLU) --- */
         #wordle-grid {
             display: grid;
             grid-template-rows: repeat(6, 1fr); /* 6 tahmin hakkı */
             gap: 5px;
-            max-width: 300px; /* 5 harf * (50px + 10px margin) */
-            margin: 20px auto;
+            /* DÜZELTME: Sabit max-width yerine % ve ortalama */
+            width: 100%;
+            max-width: 300px; /* Kutuların çok büyümesini engeller */
+            margin: 20px auto; /* Ortalamayı sağlar */
         }
         .wordle-row {
             display: grid;
@@ -171,12 +173,18 @@
             gap: 5px;
         }
         .wordle-box {
-            width: 50px;
-            height: 50px;
+            /* DÜZELTME: Sabit boyutlar kaldırıldı */
+            /* width: 50px; */
+            /* height: 50px; */
+            aspect-ratio: 1 / 1; /* YENİ: Genişliği ne olursa olsun kare olmasını sağlar */
+            
             border: 2px solid #d4a7b7;
             border-radius: 5px;
             background-color: #fcf6f8;
-            font-size: 2em;
+            
+            /* DÜZELTME: Yazı tipi boyutu kutuya göre ayarlandı (viewport width) */
+            font-size: clamp(1.5em, 5vw, 2em); 
+            
             font-weight: bold;
             display: flex;
             align-items: center;
