@@ -5,186 +5,427 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sana Bir Sürprizim Var...</title>
     <style>
+        /* YENİ FONTU İNTERNETTEN ÇEKİYORUZ */
+        @import url('https://fonts.cdnfonts.com/css/super-malibu');
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #f0f0f0;
+            /* FONT GÜNCELLENDİ: Super Malibu */
+            font-family: 'Super Malibu', sans-serif;
+            background-color: #f7e0e7;  
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="%23f0c0c0" d="M50 0 C75 25 75 75 50 100 C25 75 25 25 50 0z" /><path fill="%23f0c0c0" d="M0 50 C25 25 75 25 100 50 C75 75 25 75 0 50z" /></svg>');
+            background-size: 80px 80px;
+            color: #4a2c3c;  
             text-align: center;
             padding: 20px;
-            overflow: hidden; /* Kalplerin taşmasını engellemek için */
+            overflow-x: hidden; /* Yatay kaydırmayı engelle */
+            line-height: 1.6; /* Yeni font için satır aralığı */
         }
+        
+        /* Mektup kutusu */
         .container {
-            max-width: 600px;
+            max-width: 650px;  
             margin: 40px auto;
-            padding: 30px;
-            background-color: #2b2b2b;
+            padding: 30px 40px;  
+            background-color: #fffaf0; /* Krem rengi */
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);  
+            position: relative;
+            border: 2px solid #e0b0bb;  
+            box-sizing: border-box; /* Padding'i genişliğe dahil et */
         }
-        /* Adımları gizlemek için */
-        .step {
-            display: none;
+        
+        /* Mektup kağıdı dokusu */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYUM+o4AAAACHRSTlMA/////////9kdXYcAAAASdEVYdFNvZnR3YXJlPUxpbmVhcml0eSBQYXR0ZXJucyBTdHVkaW9iZUy3hGAAAAAVSURBVDjLY2AYBGCAAhjECwIApAAGA3wL8/UAAAAASUVORK5CYII=');
+            opacity: 0.05;
+            pointer-events: none;
+            border-radius: 15px;
         }
-        /* Aktif adımı göstermek için */
-        .active {
-            display: block;
-        }
+
+        .step { display: none; }
+        .active { display: block; }
+
         h1 {
-            color: #ff8a80; /* Romantik bir pembe/kırmızı */
+            /* FONT GÜNCELLENDİ */
+            font-family: 'Super Malibu', sans-serif;
+            font-weight: normal; 
+            color: #b33951;  
+            font-size: 2.8em; /* Yeni fonta göre ayarlandı */
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
+        
+        .container p {
+            /* FONT GÜNCELLENDİ */
+            font-family: 'Super Malibu', sans-serif;
+            font-size: 1.3em; /* Yeni fonta göre ayarlandı */
+            margin-bottom: 15px;
+            color: #5a3c4c;
+        }
+        
         input[type="text"] {
-            padding: 10px;
-            width: 80%;
-            border-radius: 5px;
-            border: 2px solid #555;
-            background-color: #333;
-            color: #eee;
-            margin-top: 15px;
+            padding: 12px;
+            width: 70%;
+            max-width: 250px; /* Kelime oyunu için daha toplu */
+            border-radius: 8px;
+            border: 1px solid #d4a7b7;
+            background-color: #fcf6f8;
+            color: #4a2c3c;
+            margin-top: 20px;
+            font-size: 1.2em; /* Biraz daha büyük */
+            font-family: 'Super Malibu', sans-serif; /* Fontu eşitle */
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
+            text-transform: uppercase; /* Harfleri büyük yaz */
+            text-align: center;
         }
+        
         button {
-            padding: 12px 25px;
-            background-color: #ff8a80;
-            color: #1a1a1a;
+            padding: 14px 30px;
+            background-color: #e07a8f;  
+            color: #ffffff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 20px;
-            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 25px;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            font-size: 1.1em;  
+            font-family: 'Super Malibu', sans-serif; /* Fontu eşitle */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         button:hover {
-            background-color: #ff5252;
-            transform: scale(1.05);
+            background-color: #c95d73;
+            transform: scale(1.03);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
-        p {
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-        /* YouTube Video Konteyneri */
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 oran */
-            height: 0;
-            overflow: hidden;
-            max-width: 100%;
-            background: #000;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        /* Kalp Animasyonu */
+        
+        /* YETER harfleri ve kalp animasyonu */
         .heart {
             position: fixed;
             top: -10vh;
             left: 50%;
-            font-size: 2rem;
+            font-size: 2.5rem;  
             animation: fall 5s linear forwards;
-            opacity: 0.8;
+            opacity: 0.9;
+            font-weight: bold;
+            color: #ff6b81;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            z-index: 1000; /* Diğer her şeyin üstünde */
         }
         @keyframes fall {
-            to {
-                transform: translateY(105vh) rotate(360deg);
-                opacity: 0;
-            }
+            to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
+        
+        /* GÜNCELLENEN VİDEO IFRAME STİLİ */
+        #video-player-iframe {
+            width: 100%; /* Telefon ekranına sığsın */
+            max-width: 560px; /* Standart 16:9 için */
+            height: 315px; /* Standart 16:9 için */
+            margin-top: 30px;  
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #d4a7b7;
+        }
+
+        /* Çiçek süslemeleri */
+        .decoration-top-left, .decoration-top-right,
+        .decoration-bottom-left, .decoration-bottom-right {
+            position: absolute;
+            font-size: 2.5em;
+            opacity: 0.8;
+            pointer-events: none;
+            color: #ff6b81;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .decoration-top-left { top: 15px; left: 15px; transform: rotate(-15deg); }
+        .decoration-top-right { top: 15px; right: 15px; transform: rotate(15deg); }
+        .decoration-bottom-left { bottom: 15px; left: 15px; transform: rotate(15deg); }
+        .decoration-bottom-right { bottom: 15px; right: 15px; transform: rotate(-15deg); }
+
+        /* İmza */
+        .signature {
+            /* FONT GÜNCELLENDİ */
+            font-family: 'Super Malibu', sans-serif;
+            font-style: normal; 
+            font-size: 1.8em; 
+            margin-top: 30px;
+            color: #b33951;
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        /* --- KELİME OYUNU (WORDLE) STİLLERİ --- */
+        #wordle-grid {
+            display: grid;
+            grid-template-rows: repeat(6, 1fr); /* 6 tahmin hakkı */
+            gap: 5px;
+            max-width: 300px; /* 5 harf * (50px + 10px margin) */
+            margin: 20px auto;
+        }
+        .wordle-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 harf */
+            gap: 5px;
+        }
+        .wordle-box {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #d4a7b7;
+            border-radius: 5px;
+            background-color: #fcf6f8;
+            font-size: 2em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a2c3c;
+            font-family: sans-serif; /* Kutu içi harfler daha okunaklı bir font olabilir */
+            transition: all 0.3s ease;
+        }
+        
+        /* Tahmin kutusu durumları */
+        .wordle-box.correct {
+            background-color: #79b791; /* Yeşil - Doğru yer */
+            color: white;
+            border-color: #79b791;
+        }
+        .wordle-box.present {
+            background-color: #f7b538; /* Sarı - Yanlış yer */
+            color: white;
+            border-color: #f7b538;
+        }
+        .wordle-box.absent {
+            background-color: #a7a9ac; /* Gri - Yok */
+            color: white;
+            border-color: #a7a9ac;
+        }
+
     </style>
 </head>
 <body>
 
     <div id="step-1" class="container step active">
-        <h1>Sana Bir Sorum Var...</h1>
-        <p>Bu gizemli yolculuğa başlamak için o sihirli kelimeleri yaz.</p>
+        <div class="decoration-top-left">🌹</div>
+        <div class="decoration-top-right">🌸</div>
         
-        <p><strong>Her zaman senin için dinlediği o şarkı.</strong></p>
+        <h1>Kelime Oyunu</h1>
+        <p>Sürprizi görmek için 5 harfli gizli kelimeyi 6 denemede bul!</p>
         
-        <input type="text" id="riddle-input" placeholder="Cevabın...">
+        <div id="wordle-grid">
+            <div class="wordle-row" id="row-0">
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+            </div>
+            <div class="wordle-row" id="row-1">
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+            </div>
+            <div class="wordle-row" id="row-2">
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+            </div>
+            <div class="wordle-row" id="row-3">
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+            </div>
+            <div class="wordle-row" id="row-4">
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+            </div>
+            <div class="wordle-row" id="row-5">
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
+            </div>
+        </div>
+        
+        <input type="text" id="guess-input" placeholder="5 Harfli Tahmin..." maxlength="5">
         <br>
-        <button onclick="checkRiddle()">Kapıyı Aç</button>
+        <button onclick="checkGuess()">Tahmin Et</button>
         <p id="error-message" style="color: #ff5252; display: none;">Hımm, bu değil... Tekrar dene!</p>
     </div>
 
-    <div id="step-2" class="container step">
-        
-        <h1>Yolculuğun Tek Durağı</h1>
-        
-        <p>bu derin anlamlı sözlerde hep seni yaşıyor. Her zaman bu şarkıyı senin için dinliyor.</p>
-        
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/h8Dl7xjX2qU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        
-        <button onclick="showFinalStep()">Ve... Final!</button>
-    </div>
-    
     <div id="step-3" class="container step">
+        <div class="decoration-top-left">🌹❤️</div>
+        <div class="decoration-top-right">💖🌸</div>
+        <div class="decoration-bottom-left">🌷💕</div>
+        <div class="decoration-bottom-right">💓🌼</div>
+
+        <p>Yeterê, çavên te vebûn gelo, ey gula baxçê canê min,</p>
+        <p>Rûyê te her sibeh nû dibe, mîna şaxekî nûhatî, ey hezkiriyê min.</p>
+        <p>Bedewiya te her roj zêdetir dibe, dilê min te bêriya nake,</p>
+        <p>Her sibeh ez bi te re şiyar dibim, evîna te her tim di dilê min de ye.</p>
+        <p>Bi dilê xwe yê melekî dibiriqî, her destdanek te dilovanî ye,</p>
+        <p>Bi rûyê xwe yê şîrîn rojê jî çavnebar dikî, çi hunerek xweş e ev.</p>
+        <p>Sibeh baş ji te re, ey yara ku şahî dide emrê min,</p>
+        <p>Bi te re her sibeh, ev cîhan ji nû ve çêdibe.</p>
         
-        <h1>Seni Çok Özledim</h1>
-        <p>Sesini, Ruhunu, kahve gözlerinden dünyayı görmeyi, başımı omuzuna yaslamayı seninle gülmeyi seninle kitap okumayı çok özledim.</p>
-        
-        <h2>❤️</h2>
+        <div class="signature">
+            - Senin Canın
+        </div>
+
+        <iframe 
+            id="video-player-iframe" 
+            src="https://www.youtube.com/embed/iVxY8MjrykM" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+        </iframe>
     </div>
 
+
     <script>
+        // --- YENİ KELİME OYUNU KODLARI ---
+        const TARGET_WORD = "ÇÖREK";
+        const MAX_GUESSES = 6;
+        const WORD_LENGTH = 5;
+        let currentRow = 0;
+        let isGameOver = false;
+
+        const guessInput = document.getElementById('guess-input');
+        const errorMessage = document.getElementById('error-message');
+
+        // Enter tuşuyla da tahmin yapabilmek için
+        guessInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        function checkGuess() {
+            if (isGameOver) return;
+
+            // Türkçe karakterleri de destekleyerek büyük harfe çevir
+            let guess = guessInput.value.toLocaleUpperCase('tr-TR').trim();
+
+            // Giriş kontrolleri
+            if (guess.length !== WORD_LENGTH) {
+                showError(`Lütfen 5 harfli bir kelime girin.`);
+                return;
+            }
+
+            // Tahmini kutulara yerleştir
+            updateGrid(guess);
+
+            // Kontrol et
+            if (guess === TARGET_WORD) {
+                // Kazandı!
+                showError("Tebrikler! Buldun!", "green");
+                isGameOver = true;
+                setTimeout(showFinalStep, 2000); // 2 saniye sonra finali göster
+            } else {
+                // Sonraki satıra geç
+                currentRow++;
+                if (currentRow >= MAX_GUESSES) {
+                    // Kaybetti!
+                    showError(`Bilemedin! Doğru cevap: ${TARGET_WORD}`);
+                    isGameOver = true;
+                }
+            }
+
+            guessInput.value = ""; // Tahmin kutusunu temizle
+        }
+
+        function updateGrid(guess) {
+            const rowElement = document.getElementById(`row-${currentRow}`);
+            const boxes = rowElement.querySelectorAll('.wordle-box');
+            
+            // Renkleri belirlemek için hedef kelimenin harf sayısını tut
+            let targetLetterCounts = {};
+            for (const letter of TARGET_WORD) {
+                targetLetterCounts[letter] = (targetLetterCounts[letter] || 0) + 1;
+            }
+            
+            // 1. Pas: Doğru (Yeşil) olanları bul
+            for (let i = 0; i < WORD_LENGTH; i++) {
+                const box = boxes[i];
+                const letter = guess[i];
+                box.textContent = letter;
+
+                if (letter === TARGET_WORD[i]) {
+                    box.classList.add('correct');
+                    targetLetterCounts[letter]--;
+                }
+            }
+            
+            // 2. Pas: Mevcut (Sarı) ve Yok (Gri) olanları bul
+            for (let i = 0; i < WORD_LENGTH; i++) {
+                const box = boxes[i];
+                const letter = guess[i];
+
+                // Zaten yeşil olarak işaretlendiyse atla
+                if (box.classList.contains('correct')) {
+                    continue;
+                }
+
+                // Kelimede var mı VE hala kullanılabilecek sayıda mı?
+                if (TARGET_WORD.includes(letter) && targetLetterCounts[letter] > 0) {
+                    box.classList.add('present');
+                    targetLetterCounts[letter]--;
+                } else {
+                    box.classList.add('absent');
+                }
+            }
+        }
+        
+        function showError(message, color = '#ff5252') {
+            errorMessage.textContent = message;
+            errorMessage.style.color = color;
+            errorMessage.style.display = 'block';
+        }
+
+        // --- ESKİ KODLAR (Gerekli olanlar) ---
+
         // Aktif adımı gösteren fonksiyon
         function showStep(stepId) {
-            // Tüm adımları gizle
             document.querySelectorAll('.step').forEach(step => {
                 step.classList.remove('active');
             });
-            // İstenen adımı göster
             document.getElementById(stepId).classList.add('active');
         }
 
-        // Bilmeceyi kontrol et (DEĞİŞİKLİK YOK)
-        function checkRiddle() {
-            // Cevapları Türkçeye uygun küçük harfe çevir
-            const kullaniciCevabi = document.getElementById('riddle-input').value.toLocaleLowerCase('tr-TR').trim();
-            const hataMesaji = document.getElementById('error-message');
-            
-            // DOĞRU CEVAP LİSTESİ
-            const dogruCevaplar = [
-                "rinde", 
-                "rınde", 
-                "koma amed rindê",
-                "koma amed rinde"
-            ];
-
-            // Kullanıcının girdiği cevap listede var mı?
-            if (dogruCevaplar.includes(kullaniciCevabi)) {
-                hataMesaji.style.display = 'none';
-                showStep('step-2'); // Adım 2'ye (şarkı) git
-            } else {
-                hataMesaji.style.display = 'block';
-            }
-        }
-
-        // Final adımını göster ve kalpleri başlat (DEĞİŞİKLİK YOK)
+        // Final adımını göster ve kalpleri/harfleri başlat
         function showFinalStep() {
-            showStep('step-3'); // Adım 3'e (final) git
-            // Kalp yağmurunu başlat
+            showStep('step-3'); // Adım 3'ü (Mektup) göster
+            // Animasyonu başlat
             setInterval(createHeart, 200);
         }
 
-        // Kalp oluşturma fonksiyonu (Değişiklik yok)
+        // Kalp/Harf oluşturma fonksiyonu
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3-5 saniye arası
-            heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; // Farklı boyutlar
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
             
-            const heartIcons = ['❤️', '💖', '💗', '💕', '💓','Y', 'E', 'T', 'E', 'R'];
+            // GÜNCELLENDİ: "YETER" harfleri ve kalpler
+            const heartIcons = ['❤️', 'Y', '💗', 'E', '💓','T', '💖', 'E', '💕', 'R'];
             heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
             
             document.body.appendChild(heart);
             
-            // Kalp DOM'dan kaldır
             setTimeout(() => {
                 heart.remove();
             }, 5000);
