@@ -302,6 +302,7 @@
         const WORD_LENGTH = 5;
         let currentRow = 0;
         let isGameOver = false;
+        let guessedWords = []; // YENİ: Tahmin edilen kelimeleri tutan dizi
 
         const guessInput = document.getElementById('guess-input');
         const errorMessage = document.getElementById('error-message');
@@ -321,9 +322,19 @@
 
             // Giriş kontrolleri
             if (guess.length !== WORD_LENGTH) {
-                showError(`Lütfen 5 harfli bir kelime girin.`);
+                showError(`Lütfen 5 harfli bir kelime girin.`); // 3 saniye görünür (varsayılan)
                 return;
             }
+
+            // YENİ: KELİME TEKRARI KONTROLÜ
+            if (guessedWords.includes(guess)) {
+                showError("Bu kelimeyi zaten denedin!"); // 3 saniye görünür (varsayılan)
+                return;
+            }
+            // YENİ KONTROL SONU
+
+            // Kelime geçerli ve yeni, listeye ekle
+            guessedWords.push(guess);
 
             // "YETER" kelimesinin özel bir mesajı tetikleyip tetiklemeyeceğini kontrol et
             const isYeterGuess = (guess === "YETER");
@@ -334,20 +345,17 @@
             // Kontrol et
             if (guess === TARGET_WORD) {
                 // Kazandı!
-                showError("Tebrikler! Buldun!", "green");
-                isGameOver = true;
-                setTimeout(showFinalStep, 2000); // 2 saniye sonra finali göster
+                showError("Tebrikler! Buldun!", "green", 999999); // Süresiz kalması için çok uzun süre
             } else {
                 // Sonraki satıra geç
                 currentRow++;
                 if (currentRow >= MAX_GUESSES) {
                     // Kaybetti!
-                    showError(`Bilemedin! Doğru cevap: ${TARGET_WORD}`);
-                    isGameOver = true;
+                    showError(`Bilemedin! Doğru cevap: ${TARGET_WORD}`, '#ff5252', 999999); // Süresiz kalması için
                 } else if (isYeterGuess) {
                     // "YETER" ÖZEL MESAJI BURADA
-                    // Oyun bitmedi AMA tahmin "YETER" idi.
-                    showError("😜 Bu kadar kolay sormam");
+                    // GÜNCELLENDİ: Süre 5000ms (5 saniye) olarak ayarlandı
+                    showError("😜 Bu kadar kolay sormam", '#ff5252', 5000); 
                 }
             }
 
@@ -377,7 +385,7 @@
             }
             
             // 2. Pas: Mevcut (Sarı) ve Yok (Gri) olanları bul
-            for (let i = 0; i < WORD_LENGTH; i++) {
+            for (let i =0; i < WORD_LENGTH; i++) {
                 const box = boxes[i];
                 const letter = guess[i];
 
@@ -396,18 +404,19 @@
             }
         }
         
-        function showError(message, color = '#ff5252') {
+        // GÜNCELLENDİ: Fonksiyon artık bir 'duration' (süre) parametresi alıyor
+        function showError(message, color = '#ff5252', duration = 3000) {
             errorMessage.textContent = message;
             errorMessage.style.color = color;
             errorMessage.style.display = 'block';
 
-            // Sadece hata mesajları (kırmızı olanlar) için 3 saniye sonra silme
+            // Yeşil 'Tebrikler' mesajı gibi kalıcı olması gerekmeyen (kırmızı) mesajları sil
             if (color === '#ff5252' || color === undefined) {
                  setTimeout(() => {
                     if (errorMessage.textContent === message) { // Başka bir mesaj gelmediyse temizle
                         errorMessage.style.display = 'none';
                     }
-                }, 3000);
+                }, duration); // Gelen 'duration' parametresini kullan
             }
         }
 
