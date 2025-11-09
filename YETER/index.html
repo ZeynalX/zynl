@@ -162,7 +162,6 @@
             display: grid;
             grid-template-rows: repeat(6, 1fr); /* 6 tahmin hakkı */
             gap: 5px;
-            /* DÜZELTME: Sabit max-width yerine % ve ortalama */
             width: 100%;
             max-width: 300px; /* Kutuların çok büyümesini engeller */
             margin: 20px auto; /* Ortalamayı sağlar */
@@ -173,18 +172,11 @@
             gap: 5px;
         }
         .wordle-box {
-            /* DÜZELTME: Sabit boyutlar kaldırıldı */
-            /* width: 50px; */
-            /* height: 50px; */
             aspect-ratio: 1 / 1; /* YENİ: Genişliği ne olursa olsun kare olmasını sağlar */
-            
             border: 2px solid #d4a7b7;
             border-radius: 5px;
             background-color: #fcf6f8;
-            
-            /* DÜZELTME: Yazı tipi boyutu kutuya göre ayarlandı (viewport width) */
             font-size: clamp(1.5em, 5vw, 2em); 
-            
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -333,6 +325,9 @@
                 return;
             }
 
+            // "YETER" kelimesinin özel bir mesajı tetikleyip tetiklemeyeceğini kontrol et
+            const isYeterGuess = (guess === "YETER");
+
             // Tahmini kutulara yerleştir
             updateGrid(guess);
 
@@ -349,6 +344,10 @@
                     // Kaybetti!
                     showError(`Bilemedin! Doğru cevap: ${TARGET_WORD}`);
                     isGameOver = true;
+                } else if (isYeterGuess) {
+                    // "YETER" ÖZEL MESAJI BURADA
+                    // Oyun bitmedi AMA tahmin "YETER" idi.
+                    showError("😜 Bu kadar kolay sormam");
                 }
             }
 
@@ -401,6 +400,15 @@
             errorMessage.textContent = message;
             errorMessage.style.color = color;
             errorMessage.style.display = 'block';
+
+            // Sadece hata mesajları (kırmızı olanlar) için 3 saniye sonra silme
+            if (color === '#ff5252' || color === undefined) {
+                 setTimeout(() => {
+                    if (errorMessage.textContent === message) { // Başka bir mesaj gelmediyse temizle
+                        errorMessage.style.display = 'none';
+                    }
+                }, 3000);
+            }
         }
 
         // --- ESKİ KODLAR (Gerekli olanlar) ---
