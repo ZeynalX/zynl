@@ -157,18 +157,18 @@
             padding-right: 20px;
         }
 
-        /* --- KELİME OYUNU (WORDLE) STİLLERİ (MOBİL UYUMLU) --- */
+        /* --- KELİME OYUNU (WORDLE) STİLLERİ (6 HARF İÇİN GÜNCELLENDİ) --- */
         #wordle-grid {
             display: grid;
             grid-template-rows: repeat(6, 1fr); /* 6 tahmin hakkı */
             gap: 5px;
             width: 100%;
-            max-width: 300px; /* Kutuların çok büyümesini engeller */
+            max-width: 360px; /* GÜNCELLENDİ: 6 kutu için genişletildi */
             margin: 20px auto; /* Ortalamayı sağlar */
         }
         .wordle-row {
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* 5 harf */
+            grid-template-columns: repeat(6, 1fr); /* GÜNCELLENDİ: 6 harf */
             gap: 5px;
         }
         .wordle-box {
@@ -212,7 +212,7 @@
         <div class="decoration-top-right">🌸</div>
         
         <h1>Kelime Oyunu</h1>
-        <p>Sürprizi görmek için 5 harfli gizli kelimeyi 6 denemede bul!</p>
+        <p>Sürprizi görmek için 6 harfli gizli kelimeyi 6 denemede bul!</p>
         
         <div id="wordle-grid">
             <div class="wordle-row" id="row-0">
@@ -221,8 +221,10 @@
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
+                <div class="wordle-box"></div> 
             </div>
             <div class="wordle-row" id="row-1">
+                <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
@@ -235,8 +237,10 @@
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
             </div>
             <div class="wordle-row" id="row-3">
+                <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
@@ -249,8 +253,10 @@
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
+                <div class="wordle-box"></div>
             </div>
             <div class="wordle-row" id="row-5">
+                <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
@@ -259,7 +265,7 @@
             </div>
         </div>
         
-        <input type="text" id="guess-input" placeholder="5 Harfli Tahmin..." maxlength="5">
+        <input type="text" id="guess-input" placeholder="6 Harfli Tahmin..." maxlength="6">
         <br>
         <button onclick="checkGuess()">Tahmin Et</button>
         <p id="error-message" style="color: #ff5252; display: none;">Hımm, bu değil... Tekrar dene!</p>
@@ -271,14 +277,13 @@
         <div class="decoration-bottom-left">🌷💕</div>
         <div class="decoration-bottom-right">💓🌼</div>
 
-        <p>Yeterê, çavên te vebûn gelo, ey gula baxçê canê min,</p>
-        <p>Rûyê te her sibeh nû dibe, mîna şaxekî nûhatî, ey hezkiriyê min.</p>
-        <p>Bedewiya te her roj zêdetir dibe, dilê min te bêriya nake,</p>
-        <p>Her sibeh ez bi te re şiyar dibim, evîna te her tim di dilê min de ye.</p>
-        <p>Bi dilê xwe yê melekî dibiriqî, her destdanek te dilovanî ye,</p>
-        <p>Bi rûyê xwe yê şîrîn rojê jî çavnebar dikî, çi hunerek xweş e ev.</p>
-        <p>Sibeh baş ji te re, ey yara ku şahî dide emrê min,</p>
-        <p>Bi te re her sibeh, ev cîhan ji nû ve çêdibe.</p>
+        <p>Ozlüyorum seni, zamanla barışamadım</p>
+        <p>Geçip gidiyor ömrüm, günlere doyamadım</p>
+        <p>Geçip gidiyor ömrüm (geçip gidiyor ömrüm) günlere doyamadm (günlere doyamadım)</p>
+        <p>Ucum yok, bucağım yok</p>
+        <p>Saklımdasın ey yar haberin yok</p>
+        <p>Yıllar geçti, sönmedi ateş</p>
+        <p>Yanıyorum ey yar haberin yok</p>
         
         <div class="signature">
             - Senin Canın
@@ -286,7 +291,7 @@
 
         <iframe 
             id="video-player-iframe" 
-            src="https://www.youtube.com/embed/iVxY8MjrykM" 
+            src="https://www.youtube.com/embed/8-Uf-GDfX2s" 
             title="YouTube video player" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -296,10 +301,13 @@
 
 
     <script>
-        // --- YENİ KELİME OYUNU KODLARI ---
-        const TARGET_WORD = "ÇÖREK";
+        // --- YENİ KELİME OYUNU KODLARI (6 HARF İÇİN GÜNCELLENDİ) ---
+        
+        // GÜNCELLENDİ: Kelime ve uzunluk
+        const TARGET_WORD = "VUSLAT";
         const MAX_GUESSES = 6;
-        const WORD_LENGTH = 5;
+        const WORD_LENGTH = 6;
+        
         let currentRow = 0;
         let isGameOver = false;
         let guessedWords = []; // Tahmin edilen kelimeleri tutan dizi
@@ -321,8 +329,9 @@
             let guess = guessInput.value.toLocaleUpperCase('tr-TR').trim();
 
             // Giriş kontrolleri
+            // GÜNCELLENDİ: 6 Harf kontrolü
             if (guess.length !== WORD_LENGTH) {
-                showError(`Lütfen 5 harfli bir kelime girin.`);
+                showError(`Lütfen 6 harfli bir kelime girin.`);
                 return;
             }
 
@@ -417,10 +426,10 @@
             // Sadece kırmızı (hata) mesajlarını gizle. Yeşil (başarı) veya kalıcı kaybetme mesajları kalsın.
             if (color === '#ff5252' || color === undefined) {
                  setTimeout(() => {
-                    if (errorMessage.textContent === message) { // Başka bir mesaj gelmediyse temizle
-                        errorMessage.style.display = 'none';
-                    }
-                }, duration); // Gelen 'duration' parametresini kullan
+                     if (errorMessage.textContent === message) { // Başka bir mesaj gelmediyse temizle
+                         errorMessage.style.display = 'none';
+                     }
+                 }, duration); // Gelen 'duration' parametresini kullan
             }
         }
 
