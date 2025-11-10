@@ -156,7 +156,22 @@
             padding-right: 20px;
         }
 
-        /* --- KELİME OYUNU (WORDLE) STİLLERİ (6 HARF İÇİN GÜNCELLENDİ) --- */
+        /* --- KELİME OYUNU (WORDLE) STİLLERİ --- */
+        
+        /* İPUCU STİLİ */
+        .wordle-hint {
+            font-size: 1.1em;
+            color: #7a5c6c; /* Daha yumuşak bir renk */
+            font-style: italic;
+            margin: 15px auto;
+            padding: 10px 15px;
+            background-color: #fdf6f8; /* Çok açık pembe */
+            border: 1px dashed #d4a7b7;
+            border-radius: 8px;
+            max-width: 90%;
+            line-height: 1.5;
+        }
+        
         #wordle-grid {
             display: grid;
             grid-template-rows: repeat(6, 1fr); /* 6 tahmin hakkı */
@@ -182,17 +197,19 @@
             justify-content: center;
             color: #4a2c3c;
             font-family: sans-serif; 
-            transition: all 0.3s ease, transform 0.6s; /* YENİ: Animasyon eklendi */
-            transform-style: preserve-3d; /* YENİ: 3D çevirme için */
+            transition: all 0.3s ease; /* DÜZELTME: Sadece 'all' geçişi */
+            transform-style: preserve-3d; 
         }
         
-        /* YENİ: Kutu animasyonları */
+        /* Kutu animasyonları */
         .wordle-box.filled {
             border-color: #a7a9ac; /* Dolu kutu sınırı */
             animation: pop 0.1s;
         }
+        
+        /* DÜZELTME: 'transform' kuralı 'animation' kuralı ile değiştirildi */
         .wordle-box.flip {
-            transform: rotateX(180deg);
+            animation: flip 0.5s ease forwards;
         }
         
         /* Tahmin kutusu durumları */
@@ -212,14 +229,21 @@
             border-color: #a7a9ac;
         }
         
-        /* YENİ: Kutu animasyon keyframes */
+        /* Kutu animasyon keyframes */
         @keyframes pop { 
             0% { transform: scale(1); } 
             50% { transform: scale(1.1); } 
             100% { transform: scale(1); } 
         }
 
-        /* --- YENİ: SANAL KLAVYE STİLLERİ --- */
+        /* YENİ: DÜZELTİLMİŞ FLIP ANİMASYONU */
+        @keyframes flip { 
+            0% { transform: rotateX(0deg); } 
+            50% { transform: rotateX(90deg); } 
+            100% { transform: rotateX(0deg); } 
+        }
+
+        /* --- SANAL KLAVYE STİLLERİ --- */
         #wordle-keyboard { 
             display: flex; 
             flex-direction: column; 
@@ -288,6 +312,10 @@
         <h1>Kelime Oyunu</h1>
         <p>Sürprizi görmek için 6 harfli gizli kelimeyi 6 denemede bul!</p>
         
+        <div class="wordle-hint">
+            <strong>İpucu:</strong> Sevenlerin birbirine eriştiği o kutlu an.
+        </div>
+
         <div id="wordle-grid">
             <div class="wordle-row" id="row-0">
                 <div class="wordle-box"></div>
@@ -342,8 +370,8 @@
         <p id="error-message" style="color: #ff5252; display: none; min-height: 1.2em;"></p>
         
         <div id="wordle-keyboard"></div>
-
-        </div>
+        
+    </div>
 
     <div id="step-3" class="container step">
         <div class="decoration-top-left">🌹❤️</div>
@@ -524,7 +552,7 @@
                     // Animasyonun yarısında rengi değiştir (daha gerçekçi)
                     setTimeout(() => {
                         box.classList.add(status);
-                    }, 250); 
+                    }, 250); // 0.5s animasyonun yarısı
                     
                     // Klavyeyi de renklendir
                     const keyBtn = document.querySelector(`.key[data-key="${guess[i]}"]`);
