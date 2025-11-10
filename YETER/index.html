@@ -66,22 +66,22 @@
             color: #5a3c4c;
         }
         
+        /* GİRİŞ KUTUSU VE BUTON (ARTIK KULLANILMIYOR AMA STİLİ KALIYOR) */
         input[type="text"] {
             padding: 12px;
             width: 70%;
-            max-width: 250px; /* Kelime oyunu için daha toplu */
+            max-width: 250px; 
             border-radius: 8px;
             border: 1px solid #d4a7b7;
             background-color: #fcf6f8;
             color: #4a2c3c;
             margin-top: 20px;
-            font-size: 1.2em; /* Biraz daha büyük */
-            font-family: 'Super Malibu', sans-serif; /* Fontu eşitle */
+            font-size: 1.2em; 
+            font-family: 'Super Malibu', sans-serif; 
             box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
-            text-transform: uppercase; /* Harfleri büyük yaz */
+            text-transform: uppercase; 
             text-align: center;
         }
-        
         button {
             padding: 14px 30px;
             background-color: #e07a8f;  
@@ -93,7 +93,7 @@
             margin-top: 25px;
             transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
             font-size: 1.1em;  
-            font-family: 'Super Malibu', sans-serif; /* Fontu eşitle */
+            font-family: 'Super Malibu', sans-serif; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         button:hover {
@@ -119,7 +119,7 @@
             to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
         
-        /* GÜNCELLENEN VİDEO IFRAME STİLİ */
+        /* VİDEO IFRAME STİLİ */
         #video-player-iframe {
             width: 100%; /* Telefon ekranına sığsın */
             max-width: 560px; /* Standart 16:9 için */
@@ -147,7 +147,6 @@
 
         /* İmza */
         .signature {
-            /* FONT GÜNCELLENDİ */
             font-family: 'Super Malibu', sans-serif;
             font-style: normal; 
             font-size: 1.8em; 
@@ -163,16 +162,16 @@
             grid-template-rows: repeat(6, 1fr); /* 6 tahmin hakkı */
             gap: 5px;
             width: 100%;
-            max-width: 360px; /* GÜNCELLENDİ: 6 kutu için genişletildi */
+            max-width: 360px; /* 6 kutu için genişletildi */
             margin: 20px auto; /* Ortalamayı sağlar */
         }
         .wordle-row {
             display: grid;
-            grid-template-columns: repeat(6, 1fr); /* GÜNCELLENDİ: 6 harf */
+            grid-template-columns: repeat(6, 1fr); /* 6 harf */
             gap: 5px;
         }
         .wordle-box {
-            aspect-ratio: 1 / 1; /* YENİ: Genişliği ne olursa olsun kare olmasını sağlar */
+            aspect-ratio: 1 / 1; 
             border: 2px solid #d4a7b7;
             border-radius: 5px;
             background-color: #fcf6f8;
@@ -182,8 +181,18 @@
             align-items: center;
             justify-content: center;
             color: #4a2c3c;
-            font-family: sans-serif; /* Kutu içi harfler daha okunaklı bir font olabilir */
-            transition: all 0.3s ease;
+            font-family: sans-serif; 
+            transition: all 0.3s ease, transform 0.6s; /* YENİ: Animasyon eklendi */
+            transform-style: preserve-3d; /* YENİ: 3D çevirme için */
+        }
+        
+        /* YENİ: Kutu animasyonları */
+        .wordle-box.filled {
+            border-color: #a7a9ac; /* Dolu kutu sınırı */
+            animation: pop 0.1s;
+        }
+        .wordle-box.flip {
+            transform: rotateX(180deg);
         }
         
         /* Tahmin kutusu durumları */
@@ -201,6 +210,71 @@
             background-color: #a7a9ac; /* Gri - Yok */
             color: white;
             border-color: #a7a9ac;
+        }
+        
+        /* YENİ: Kutu animasyon keyframes */
+        @keyframes pop { 
+            0% { transform: scale(1); } 
+            50% { transform: scale(1.1); } 
+            100% { transform: scale(1); } 
+        }
+
+        /* --- YENİ: SANAL KLAVYE STİLLERİ --- */
+        #wordle-keyboard { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+            margin: 20px auto 0 auto; 
+            max-width: 600px; /* Daha geniş klavye */
+            user-select: none; 
+            width: 100%;
+        }
+        .keyboard-row { 
+            display: flex; 
+            justify-content: center; 
+            gap: 6px; 
+            touch-action: manipulation; 
+        }
+        .key {
+            font-family: 'Helvetica', sans-serif; /* Okunaklı font */
+            font-weight: bold; 
+            padding: 0;
+            height: 55px; /* Daha büyük tuşlar */
+            border: none;
+            border-radius: 4px; 
+            cursor: pointer; 
+            user-select: none;
+            background-color: #d3d6da; /* Standart klavye grisi */
+            color: black; 
+            flex: 1;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            text-transform: uppercase;
+            font-size: 1rem; 
+            transition: background-color 0.3s, color 0.3s;
+            -webkit-tap-highlight-color: transparent; /* Mobil tıklama efektini kaldır */
+        }
+        .key:active {
+             background-color: #b0b3b8; /* Tıklama anı efekti */
+        }
+        .key.large { 
+            flex: 1.5; 
+            font-size: 0.9rem; 
+        }
+        
+        /* Klavye tuşu renkleri (Kutu renkleriyle aynı) */
+        .key.correct { 
+            background-color: #79b791; 
+            color: white; 
+        }
+        .key.present { 
+            background-color: #f7b538; 
+            color: white; 
+        }
+        .key.absent { 
+            background-color: #a7a9ac; 
+            color: white; 
         }
 
     </style>
@@ -265,11 +339,11 @@
             </div>
         </div>
         
-        <input type="text" id="guess-input" placeholder="6 Harfli Tahmin..." maxlength="6">
-        <br>
-        <button onclick="checkGuess()">Tahmin Et</button>
-        <p id="error-message" style="color: #ff5252; display: none;">Hımm, bu değil... Tekrar dene!</p>
-    </div>
+        <p id="error-message" style="color: #ff5252; display: none; min-height: 1.2em;"></p>
+        
+        <div id="wordle-keyboard"></div>
+
+        </div>
 
     <div id="step-3" class="container step">
         <div class="decoration-top-left">🌹❤️</div>
@@ -301,139 +375,221 @@
 
 
     <script>
-        // --- YENİ KELİME OYUNU KODLARI (6 HARF İÇİN GÜNCELLENDİ) ---
-        
-        // GÜNCELLENDİ: Kelime ve uzunluk
+        // --- KELİME OYUNU DEĞİŞKENLERİ ---
         const TARGET_WORD = "VUSLAT";
         const MAX_GUESSES = 6;
         const WORD_LENGTH = 6;
         
         let currentRow = 0;
         let isGameOver = false;
-        let guessedWords = []; // Tahmin edilen kelimeleri tutan dizi
-
-        const guessInput = document.getElementById('guess-input');
+        let guessedWords = []; 
+        let currentGuess = ""; // YENİ: Mevcut tahmini tutar
+        
         const errorMessage = document.getElementById('error-message');
 
-        // Enter tuşuyla da tahmin yapabilmek için
-        guessInput.addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                checkGuess();
-            }
+        // --- YENİ: KLAVYE GİRİŞ YÖNETİMİ ---
+
+        // YENİ: Fiziksel klavye desteği
+        document.addEventListener('keydown', (e) => {
+            // Sadece oyun ekranı aktifken çalış
+            if (isGameOver || !document.getElementById('step-1').classList.contains('active')) return;
+            
+            let key = e.key.toLocaleUpperCase('tr-TR');
+            if (key === 'ENTER') handleKeyInput('ENTER');
+            else if (key === 'BACKSPACE') handleKeyInput('DEL');
+            else if (/^[A-ZÇĞİÖŞÜ]$/.test(key)) handleKeyInput(key);
         });
 
-        function checkGuess() {
+        // YENİ: Sanal klavyeyi oluşturan fonksiyon
+        function buildKeyboard() {
+            const kb = document.getElementById('wordle-keyboard');
+            kb.innerHTML = '';
+            // Türkçe QWERTY düzeni
+            const rows = [ "ERTYUIOPĞÜ", "ASDFGHJKLŞİ", "ZCVBNMÖÇ" ];
+            
+            rows.forEach((rowStr, i) => {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'keyboard-row';
+                
+                // 3. Sıraya 'GİR' tuşunu ekle (Başına)
+                if (i === 2) { 
+                    const enter = document.createElement('button'); 
+                    enter.className = 'key large'; 
+                    enter.textContent = 'GİR'; 
+                    enter.onclick = () => handleKeyInput('ENTER'); 
+                    rowEl.appendChild(enter);
+                }
+                
+                // Harf tuşlarını ekle
+                for(let char of rowStr) {
+                    const key = document.createElement('button');
+                    key.className = 'key'; 
+                    key.textContent = char; 
+                    key.dataset.key = char; // Tuşu bulmak için
+                    key.onclick = () => handleKeyInput(char);
+                    rowEl.appendChild(key);
+                }
+                
+                // 3. Sıraya 'SİL' tuşunu ekle (Sonuna)
+                if (i === 2) {
+                    const del = document.createElement('button'); 
+                    del.className = 'key large'; 
+                    del.innerHTML = 'SİL'; // Veya icon: '&#9003;'
+                    del.onclick = () => handleKeyInput('DEL'); 
+                    rowEl.appendChild(del);
+                }
+                kb.appendChild(rowEl);
+            });
+        }
+
+        // YENİ: Tuş girişlerini yöneten ana fonksiyon
+        function handleKeyInput(key) {
             if (isGameOver) return;
 
-            // Türkçe karakterleri de destekleyerek büyük harfe çevir
-            let guess = guessInput.value.toLocaleUpperCase('tr-TR').trim();
-
-            // Giriş kontrolleri
-            // GÜNCELLENDİ: 6 Harf kontrolü
-            if (guess.length !== WORD_LENGTH) {
-                showError(`Lütfen 6 harfli bir kelime girin.`);
-                return;
+            if (key === 'DEL') {
+                // Silme
+                currentGuess = currentGuess.slice(0, -1);
+            } else if (key === 'ENTER') {
+                // Tahmin etme
+                if (currentGuess.length !== WORD_LENGTH) {
+                    showError(`Lütfen ${WORD_LENGTH} harfli bir kelime girin.`);
+                    return;
+                }
+                if (guessedWords.includes(currentGuess)) {
+                    showError("Bu kelimeyi zaten denedin!");
+                    return;
+                }
+                // Geçerliyse, tahmini işle
+                submitGuess();
+                
+            } else if (currentGuess.length < WORD_LENGTH) {
+                // Harf ekleme
+                currentGuess += key;
             }
+            // Girdikten sonra ızgarayı güncelle
+            updateCurrentRowUI();
+        }
 
-            // KELİME TEKRARI KONTROLÜ
-            if (guessedWords.includes(guess)) {
-                showError("Bu kelimeyi zaten denedin!");
-                return;
+        // YENİ: Tahmini kutucuklara yazan (submit öncesi)
+        function updateCurrentRowUI() {
+            const rowElement = document.getElementById(`row-${currentRow}`);
+            const boxes = rowElement.querySelectorAll('.wordle-box');
+            for (let i = 0; i < WORD_LENGTH; i++) {
+                const box = boxes[i];
+                box.textContent = currentGuess[i] || '';
+                // Pop animasyonu için
+                box.classList.toggle('filled', !!currentGuess[i]); 
             }
+        }
 
-            // Kelime geçerli ve yeni, listeye ekle
+        // YENİ: Tahmini kontrol eden ve ızgarayı renklendiren
+        // (Eski checkGuess ve updateGrid'in yerini alır)
+        function submitGuess() {
+            const guess = currentGuess;
             guessedWords.push(guess);
+            
+            const rowElement = document.getElementById(`row-${currentRow}`);
+            const boxes = rowElement.querySelectorAll('.wordle-box');
+            
+            let targetLetterCounts = {};
+            for (const letter of TARGET_WORD) {
+                targetLetterCounts[letter] = (targetLetterCounts[letter] || 0) + 1;
+            }
 
-            // "YETER" kelimesinin özel bir mesajı tetikleyip tetiklemeyeceğini kontrol et
-            const isYeterGuess = (guess === "YETER");
+            let result = Array(WORD_LENGTH).fill('absent');
 
-            // Tahmini kutulara yerleştir
-            updateGrid(guess);
+            // 1. Pas (Yeşiller - Doğru yer)
+            for (let i = 0; i < WORD_LENGTH; i++) {
+                if (guess[i] === TARGET_WORD[i]) {
+                    result[i] = 'correct';
+                    targetLetterCounts[guess[i]]--;
+                }
+            }
+            
+            // 2. Pas (Sarılar - Yanlış yer)
+            for (let i = 0; i < WORD_LENGTH; i++) {
+                if (result[i] !== 'correct' && TARGET_WORD.includes(guess[i]) && targetLetterCounts[guess[i]] > 0) {
+                    result[i] = 'present';
+                    targetLetterCounts[guess[i]]--;
+                }
+            }
 
-            // Kontrol et
+            // Animasyonla renklendir
+            result.forEach((status, i) => {
+                // Her harf için gecikmeli animasyon
+                setTimeout(() => {
+                    const box = boxes[i];
+                    box.classList.add('flip'); // Flip animasyonunu başlat
+                    
+                    // Animasyonun yarısında rengi değiştir (daha gerçekçi)
+                    setTimeout(() => {
+                        box.classList.add(status);
+                    }, 250); 
+                    
+                    // Klavyeyi de renklendir
+                    const keyBtn = document.querySelector(`.key[data-key="${guess[i]}"]`);
+                    if (keyBtn) {
+                        // Statüyü yükselt (correct > present > absent)
+                        if (status === 'correct') {
+                            keyBtn.classList.remove('present', 'absent');
+                            keyBtn.classList.add('correct');
+                        } else if (status === 'present' && !keyBtn.classList.contains('correct')) {
+                            keyBtn.classList.remove('absent');
+                            keyBtn.classList.add('present');
+                        } else if (status === 'absent' && !keyBtn.classList.contains('correct') && !keyBtn.classList.contains('present')) {
+                            keyBtn.classList.add('absent');
+                        }
+                    }
+                    
+                    // Satır bittiğinde (son harf animasyonu bittiğinde)
+                    if (i === WORD_LENGTH - 1) {
+                        checkWinLoss(guess);
+                    }
+                }, i * 350); // Harfleri sırayla (0.35s arayla) animasyona sok
+            });
+        }
+        
+        // YENİ: Kazanma/Kaybetme kontrolü (submitGuess'ten ayrıldı)
+        function checkWinLoss(guess) {
             if (guess === TARGET_WORD) {
                 // Kazandı!
-                // *** DÜZELTME BAŞLANGICI ***
-                // Bu bölüm yanlışlıkla silinmişti, geri eklendi.
-                showError("Tebrikler! Buldun!", "green"); // Başarı mesajını göster (kalıcı)
-                isGameOver = true; // Oyunu bitir
-                setTimeout(showFinalStep, 2000); // 2 saniye sonra finali göster
-                // *** DÜZELTME SONU ***
+                showError("Tebrikler! Buldun!", "green");
+                isGameOver = true;
+                setTimeout(showFinalStep, 2500); // Animasyonun bitmesini bekle
             } else {
                 // Sonraki satıra geç
                 currentRow++;
                 if (currentRow >= MAX_GUESSES) {
                     // Kaybetti!
-                    showError(`Bilemedin! Doğru cevap: ${TARGET_WORD}`, '#ff5252', 999999); // Kaybetme mesajı kalıcı
+                    showError(`Bilemedin! Doğru cevap: ${TARGET_WORD}`, '#ff5252', 999999);
                     isGameOver = true;
-                } else if (isYeterGuess) {
-                    // "YETER" ÖZEL MESAJI BURADA
-                    showError("😜 Bu kadar kolay sormam", '#ff5252', 5000); // 5 saniye göster
+                } else if (guess === "YETER") {
+                     // "YETER" ÖZEL MESAJI BURADA
+                     showError("😜 Bu kadar kolay sormam", '#ff5252', 5000); // 5 saniye göster
                 }
             }
-
-            guessInput.value = ""; // Tahmin kutusunu temizle
+            currentGuess = ""; // Mevcut tahmini sıfırla
         }
 
-        function updateGrid(guess) {
-            const rowElement = document.getElementById(`row-${currentRow}`);
-            const boxes = rowElement.querySelectorAll('.wordle-box');
-            
-            // Renkleri belirlemek için hedef kelimenin harf sayısını tut
-            let targetLetterCounts = {};
-            for (const letter of TARGET_WORD) {
-                targetLetterCounts[letter] = (targetLetterCounts[letter] || 0) + 1;
-            }
-            
-            // 1. Pas: Doğru (Yeşil) olanları bul
-            for (let i = 0; i < WORD_LENGTH; i++) {
-                const box = boxes[i];
-                const letter = guess[i];
-                box.textContent = letter;
-
-                if (letter === TARGET_WORD[i]) {
-                    box.classList.add('correct');
-                    targetLetterCounts[letter]--;
-                }
-            }
-            
-            // 2. Pas: Mevcut (Sarı) ve Yok (Gri) olanları bul
-            for (let i =0; i < WORD_LENGTH; i++) {
-                const box = boxes[i];
-                const letter = guess[i];
-
-                // Zaten yeşil olarak işaretlendiyse atla
-                if (box.classList.contains('correct')) {
-                    continue;
-                }
-
-                // Kelimede var mı VE hala kullanılabilecek sayıda mı?
-                if (TARGET_WORD.includes(letter) && targetLetterCounts[letter] > 0) {
-                    box.classList.add('present');
-                    targetLetterCounts[letter]--;
-                } else {
-                    box.classList.add('absent');
-                }
-            }
-        }
+        // ESKİ: checkGuess() (KALDIRILDI)
+        // ESKİ: updateGrid() (KALDIRILDI)
         
-        // GÜNCELLENDİ: Fonksiyon artık 'duration' alıyor ve sadece hata mesajlarını gizliyor
+        // Hata mesajı fonksiyonu (Aynen korundu)
         function showError(message, color = '#ff5252', duration = 3000) {
             errorMessage.textContent = message;
             errorMessage.style.color = color;
             errorMessage.style.display = 'block';
 
-            // Sadece kırmızı (hata) mesajlarını gizle. Yeşil (başarı) veya kalıcı kaybetme mesajları kalsın.
             if (color === '#ff5252' || color === undefined) {
                  setTimeout(() => {
-                     if (errorMessage.textContent === message) { // Başka bir mesaj gelmediyse temizle
+                     if (errorMessage.textContent === message) { 
                          errorMessage.style.display = 'none';
                      }
-                 }, duration); // Gelen 'duration' parametresini kullan
+                 }, duration); 
             }
         }
 
-        // --- ESKİ KODLAR (Gerekli olanlar) ---
+        // --- ESKİ KODLAR (Gerekli olanlar - Değiştirilmedi) ---
 
         // Aktif adımı gösteren fonksiyon
         function showStep(stepId) {
@@ -446,7 +602,6 @@
         // Final adımını göster ve kalpleri/harfleri başlat
         function showFinalStep() {
             showStep('step-3'); // Adım 3'ü (Mektup) göster
-            // Animasyonu başlat
             setInterval(createHeart, 200);
         }
 
@@ -458,7 +613,6 @@
             heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
             heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
             
-            // GÜNCELLENDİ: "YETER" harfleri ve kalpler
             const heartIcons = ['❤️', 'Y', '💗', 'E', '💓','T', '💖', 'E', '💕', 'R'];
             heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
             
@@ -468,6 +622,10 @@
                 heart.remove();
             }, 5000);
         }
+        
+        // --- YENİ: OYUNU BAŞLAT ---
+        buildKeyboard();
+        
     </script>
 
 </body>
