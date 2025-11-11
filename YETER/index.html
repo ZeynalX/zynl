@@ -8,11 +8,13 @@
         /* YENİ FONTU İNTERNETTEN ÇEKİYORUZ */
         @import url('https://fonts.cdnfonts.com/css/super-malibu');
         
+        /* GÜNCELLENDİ: TEMA DEĞİŞİKLİĞİ (LAVANTA/MOR) */
+        
         body {
-            /* FONT GÜNCELLENDİ: Super Malibu */
+            /* FONT KORUNDU: Super Malibu */
             font-family: 'Super Malibu', sans-serif;
-            background-color: #f7e0e7;  
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="%23f0c0c0" d="M50 0 C75 25 75 75 50 100 C25 75 25 25 50 0z" /><path fill="%23f0c0c0" d="M0 50 C25 25 75 25 100 50 C75 75 25 75 0 50z" /></svg>');
+            background-color: #e6e0f7;  /* GÜNCELLENDİ: Açık lavanta */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="%23d0c0f0" d="M50 0 C75 25 75 75 50 100 C25 75 25 25 50 0z" /><path fill="%23d0c0f0" d="M0 50 C25 25 75 25 100 50 C75 75 25 75 0 50z" /></svg>'); /* GÜNCELLENDİ: Mor desen */
             background-size: 80px 80px;
             color: #4a2c3c;  
             text-align: center;
@@ -26,11 +28,11 @@
             max-width: 650px;  
             margin: 40px auto;
             padding: 30px 40px;  
-            background-color: #fffaf0; /* Krem rengi */
+            background-color: #fffaf0; /* Krem rengi korundu */
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);  
             position: relative;
-            border: 2px solid #e0b0bb;  
+            border: 2px solid #c0b0dd;  /* GÜNCELLENDİ: Mor sınır */
             box-sizing: border-box; /* Padding'i genişliğe dahil et */
         }
         
@@ -49,42 +51,26 @@
         .active { display: block; }
 
         h1 {
-            /* FONT GÜNCELLENDİ */
+            /* FONT KORUNDU */
             font-family: 'Super Malibu', sans-serif;
             font-weight: normal; 
-            color: #b33951;  
-            font-size: 2.8em; /* Yeni fonta göre ayarlandı */
+            color: #6a4a8c;  /* GÜNCELLENDİ: Koyu mor */
+            font-size: 2.8em; 
             margin-bottom: 20px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
         
         .container p {
-            /* FONT GÜNCELLENDİ */
+            /* FONT KORUNDU */
             font-family: 'Super Malibu', sans-serif;
-            font-size: 1.3em; /* Yeni fonta göre ayarlandı */
+            font-size: 1.3em; 
             margin-bottom: 15px;
-            color: #5a3c4c;
+            color: #5a3c4c; /* Korundu */
         }
         
-        /* GİRİŞ KUTUSU VE BUTON (ARTIK KULLANILMIYOR AMA STİLİ KALIYOR) */
-        input[type="text"] {
-            padding: 12px;
-            width: 70%;
-            max-width: 250px; 
-            border-radius: 8px;
-            border: 1px solid #d4a7b7;
-            background-color: #fcf6f8;
-            color: #4a2c3c;
-            margin-top: 20px;
-            font-size: 1.2em; 
-            font-family: 'Super Malibu', sans-serif; 
-            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
-            text-transform: uppercase; 
-            text-align: center;
-        }
         button {
             padding: 14px 30px;
-            background-color: #e07a8f;  
+            background-color: #9b7fbc;  /* GÜNCELLENDİ: Mor */
             color: #ffffff;
             border: none;
             border-radius: 8px;
@@ -97,7 +83,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         button:hover {
-            background-color: #c95d73;
+            background-color: #8468a3; /* GÜNCELLENDİ: Koyu mor */
             transform: scale(1.03);
             box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
@@ -111,7 +97,7 @@
             animation: fall 5s linear forwards;
             opacity: 0.9;
             font-weight: bold;
-            color: #ff6b81;
+            color: #b388dd; /* GÜNCELLENDİ: Lavanta */
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
             z-index: 1000; /* Diğer her şeyin üstünde */
         }
@@ -121,9 +107,9 @@
         
         /* VİDEO IFRAME STİLİ */
         #video-player-iframe {
-            width: 100%; /* Telefon ekranına sığsın */
-            max-width: 560px; /* Standart 16:9 için */
-            height: 315px; /* Standart 16:9 için */
+            width: 100%; 
+            max-width: 560px; 
+            height: 315px; 
             margin-top: 30px;  
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -137,7 +123,7 @@
             font-size: 2.5em;
             opacity: 0.8;
             pointer-events: none;
-            color: #ff6b81;
+            color: #b388dd; /* GÜNCELLENDİ: Lavanta */
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         .decoration-top-left { top: 15px; left: 15px; transform: rotate(-15deg); }
@@ -151,21 +137,21 @@
             font-style: normal; 
             font-size: 1.8em; 
             margin-top: 30px;
-            color: #b33951;
+            color: #6a4a8c; /* GÜNCELLENDİ: Koyu mor */
             text-align: right;
             padding-right: 20px;
         }
 
-        /* --- KELİME OYUNU (WORDLE) STİLLERİ --- */
+        /* --- KELİME OYUNU (WORDLE) STİLLERİ (5 HARF İÇİN GÜNCELLENDİ) --- */
         
         /* İPUCU STİLİ */
         .wordle-hint {
             font-size: 1.1em;
-            color: #7a5c6c; /* Daha yumuşak bir renk */
+            color: #7a5c6c; 
             font-style: italic;
             margin: 15px auto;
             padding: 10px 15px;
-            background-color: #fdf6f8; /* Çok açık pembe */
+            background-color: #fdf6f8; 
             border: 1px dashed #d4a7b7;
             border-radius: 8px;
             max-width: 90%;
@@ -177,12 +163,12 @@
             grid-template-rows: repeat(6, 1fr); /* 6 tahmin hakkı */
             gap: 5px;
             width: 100%;
-            max-width: 360px; /* 6 kutu için genişletildi */
-            margin: 20px auto; /* Ortalamayı sağlar */
+            max-width: 300px; /* GÜNCELLENDİ: 5 kutu için daraltıldı */
+            margin: 20px auto; 
         }
         .wordle-row {
             display: grid;
-            grid-template-columns: repeat(6, 1fr); /* 6 harf */
+            grid-template-columns: repeat(5, 1fr); /* GÜNCELLENDİ: 5 harf */
             gap: 5px;
         }
         .wordle-box {
@@ -197,34 +183,33 @@
             justify-content: center;
             color: #4a2c3c;
             font-family: sans-serif; 
-            transition: all 0.3s ease; /* DÜZELTME: Sadece 'all' geçişi */
+            transition: all 0.3s ease;
             transform-style: preserve-3d; 
         }
         
         /* Kutu animasyonları */
         .wordle-box.filled {
-            border-color: #a7a9ac; /* Dolu kutu sınırı */
+            border-color: #a7a9ac; 
             animation: pop 0.1s;
         }
         
-        /* DÜZELTME: 'transform' kuralı 'animation' kuralı ile değiştirildi */
         .wordle-box.flip {
             animation: flip 0.5s ease forwards;
         }
         
         /* Tahmin kutusu durumları */
         .wordle-box.correct {
-            background-color: #79b791; /* Yeşil - Doğru yer */
+            background-color: #79b791; /* Yeşil */
             color: white;
             border-color: #79b791;
         }
         .wordle-box.present {
-            background-color: #f7b538; /* Sarı - Yanlış yer */
+            background-color: #f7b538; /* Sarı */
             color: white;
             border-color: #f7b538;
         }
         .wordle-box.absent {
-            background-color: #a7a9ac; /* Gri - Yok */
+            background-color: #a7a9ac; /* Gri */
             color: white;
             border-color: #a7a9ac;
         }
@@ -236,7 +221,7 @@
             100% { transform: scale(1); } 
         }
 
-        /* YENİ: DÜZELTİLMİŞ FLIP ANİMASYONU */
+        /* DÜZELTİLMİŞ FLIP ANİMASYONU */
         @keyframes flip { 
             0% { transform: rotateX(0deg); } 
             50% { transform: rotateX(90deg); } 
@@ -249,7 +234,7 @@
             flex-direction: column; 
             gap: 8px; 
             margin: 20px auto 0 auto; 
-            max-width: 600px; /* Daha geniş klavye */
+            max-width: 600px; 
             user-select: none; 
             width: 100%;
         }
@@ -260,15 +245,15 @@
             touch-action: manipulation; 
         }
         .key {
-            font-family: 'Helvetica', sans-serif; /* Okunaklı font */
+            font-family: 'Helvetica', sans-serif; 
             font-weight: bold; 
             padding: 0;
-            height: 55px; /* Daha büyük tuşlar */
+            height: 55px; 
             border: none;
             border-radius: 4px; 
             cursor: pointer; 
             user-select: none;
-            background-color: #d3d6da; /* Standart klavye grisi */
+            background-color: #d3d6da; 
             color: black; 
             flex: 1;
             display: flex; 
@@ -277,17 +262,17 @@
             text-transform: uppercase;
             font-size: 1rem; 
             transition: background-color 0.3s, color 0.3s;
-            -webkit-tap-highlight-color: transparent; /* Mobil tıklama efektini kaldır */
+            -webkit-tap-highlight-color: transparent; 
         }
         .key:active {
-             background-color: #b0b3b8; /* Tıklama anı efekti */
+             background-color: #b0b3b8; 
         }
         .key.large { 
             flex: 1.5; 
             font-size: 0.9rem; 
         }
         
-        /* Klavye tuşu renkleri (Kutu renkleriyle aynı) */
+        /* Klavye tuşu renkleri */
         .key.correct { 
             background-color: #79b791; 
             color: white; 
@@ -310,10 +295,10 @@
         <div class="decoration-top-right">🌸</div>
         
         <h1>Kelime Oyunu</h1>
-        <p>Sürprizi görmek için 6 harfli gizli kelimeyi 6 denemede bul!</p>
+        <p>Sürprizi görmek için 5 harfli gizli kelimeyi 6 denemede bul!</p>
         
         <div class="wordle-hint">
-            <strong>İpucu:</strong> Sevenlerin birbirine eriştiği o kutlu an.
+            <strong>İpucu:</strong> İki konum arasındaki en doğru seçeneklere hakim olan.
         </div>
 
         <div id="wordle-grid">
@@ -323,10 +308,8 @@
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
-                <div class="wordle-box"></div> 
             </div>
             <div class="wordle-row" id="row-1">
-                <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
@@ -339,10 +322,8 @@
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
             </div>
             <div class="wordle-row" id="row-3">
-                <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
@@ -355,10 +336,8 @@
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
             </div>
             <div class="wordle-row" id="row-5">
-                <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
                 <div class="wordle-box"></div>
@@ -379,13 +358,19 @@
         <div class="decoration-bottom-left">🌷💕</div>
         <div class="decoration-bottom-right">💓🌼</div>
 
-        <p>Ozlüyorum seni, zamanla barışamadım</p>
-        <p>Geçip gidiyor ömrüm, günlere doyamadım</p>
-        <p>Geçip gidiyor ömrüm (geçip gidiyor ömrüm) günlere doyamadm (günlere doyamadım)</p>
-        <p>Ucum yok, bucağım yok</p>
-        <p>Saklımdasın ey yar haberin yok</p>
-        <p>Yıllar geçti, sönmedi ateş</p>
-        <p>Yanıyorum ey yar haberin yok</p>
+        <p>Seviyorum seni ekmeği tuza banıp</p>
+        <p>Banıp yer gibi</p>
+        <p>Geceleri ateşler içinde uyanarak</p>
+        <p>Ağzımı dayayıp musluğa</p>
+        <p>Su içer gibi</p>
+        <p>Ne zaman seni düşünsem</p>
+        <p>Bir ceylan su içmeye iner çayırları</p>
+        <p>Büyürken büyürken görürüm gülüm</p>
+        <p>Her sabah her akşam seninle</p>
+        <p>Yeşil bir zeytin tanesi</p>
+        <p>Bir parça mavi deniz alır beni</p>
+        <p>Seni düşündükçe gül dikiyorum</p>
+        <p>Ellerimin değdiği yere..</p>
         
         <div class="signature">
             - Senin Canın
@@ -393,7 +378,7 @@
 
         <iframe 
             id="video-player-iframe" 
-            src="https://www.youtube.com/embed/8-Uf-GDfX2s" 
+            src="https://www.youtube.com/embed/m19V4G89ln4" 
             title="YouTube video player" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -404,22 +389,21 @@
 
     <script>
         // --- KELİME OYUNU DEĞİŞKENLERİ ---
-        const TARGET_WORD = "VUSLAT";
+        const TARGET_WORD = "RENAS"; // GÜNCELLENDİ
         const MAX_GUESSES = 6;
-        const WORD_LENGTH = 6;
+        const WORD_LENGTH = 5; // GÜNCELLENDİ
         
         let currentRow = 0;
         let isGameOver = false;
         let guessedWords = []; 
-        let currentGuess = ""; // YENİ: Mevcut tahmini tutar
+        let currentGuess = ""; 
         
         const errorMessage = document.getElementById('error-message');
 
-        // --- YENİ: KLAVYE GİRİŞ YÖNETİMİ ---
+        // --- KLAVYE GİRİŞ YÖNETİMİ ---
 
-        // YENİ: Fiziksel klavye desteği
+        // Fiziksel klavye desteği
         document.addEventListener('keydown', (e) => {
-            // Sadece oyun ekranı aktifken çalış
             if (isGameOver || !document.getElementById('step-1').classList.contains('active')) return;
             
             let key = e.key.toLocaleUpperCase('tr-TR');
@@ -428,18 +412,16 @@
             else if (/^[A-ZÇĞİÖŞÜ]$/.test(key)) handleKeyInput(key);
         });
 
-        // YENİ: Sanal klavyeyi oluşturan fonksiyon
+        // Sanal klavyeyi oluşturan fonksiyon
         function buildKeyboard() {
             const kb = document.getElementById('wordle-keyboard');
             kb.innerHTML = '';
-            // Türkçe QWERTY düzeni
             const rows = [ "ERTYUIOPĞÜ", "ASDFGHJKLŞİ", "ZCVBNMÖÇ" ];
             
             rows.forEach((rowStr, i) => {
                 const rowEl = document.createElement('div');
                 rowEl.className = 'keyboard-row';
                 
-                // 3. Sıraya 'GİR' tuşunu ekle (Başına)
                 if (i === 2) { 
                     const enter = document.createElement('button'); 
                     enter.className = 'key large'; 
@@ -448,21 +430,19 @@
                     rowEl.appendChild(enter);
                 }
                 
-                // Harf tuşlarını ekle
                 for(let char of rowStr) {
                     const key = document.createElement('button');
                     key.className = 'key'; 
                     key.textContent = char; 
-                    key.dataset.key = char; // Tuşu bulmak için
+                    key.dataset.key = char; 
                     key.onclick = () => handleKeyInput(char);
                     rowEl.appendChild(key);
                 }
                 
-                // 3. Sıraya 'SİL' tuşunu ekle (Sonuna)
                 if (i === 2) {
                     const del = document.createElement('button'); 
                     del.className = 'key large'; 
-                    del.innerHTML = 'SİL'; // Veya icon: '&#9003;'
+                    del.innerHTML = 'SİL'; 
                     del.onclick = () => handleKeyInput('DEL'); 
                     rowEl.appendChild(del);
                 }
@@ -470,16 +450,15 @@
             });
         }
 
-        // YENİ: Tuş girişlerini yöneten ana fonksiyon
+        // Tuş girişlerini yöneten ana fonksiyon
         function handleKeyInput(key) {
             if (isGameOver) return;
 
             if (key === 'DEL') {
-                // Silme
                 currentGuess = currentGuess.slice(0, -1);
             } else if (key === 'ENTER') {
-                // Tahmin etme
                 if (currentGuess.length !== WORD_LENGTH) {
+                    // WORD_LENGTH (5) dinamik olarak kontrol ediliyor
                     showError(`Lütfen ${WORD_LENGTH} harfli bir kelime girin.`);
                     return;
                 }
@@ -487,31 +466,26 @@
                     showError("Bu kelimeyi zaten denedin!");
                     return;
                 }
-                // Geçerliyse, tahmini işle
                 submitGuess();
                 
             } else if (currentGuess.length < WORD_LENGTH) {
-                // Harf ekleme
                 currentGuess += key;
             }
-            // Girdikten sonra ızgarayı güncelle
             updateCurrentRowUI();
         }
 
-        // YENİ: Tahmini kutucuklara yazan (submit öncesi)
+        // Tahmini kutucuklara yazan (submit öncesi)
         function updateCurrentRowUI() {
             const rowElement = document.getElementById(`row-${currentRow}`);
             const boxes = rowElement.querySelectorAll('.wordle-box');
             for (let i = 0; i < WORD_LENGTH; i++) {
                 const box = boxes[i];
                 box.textContent = currentGuess[i] || '';
-                // Pop animasyonu için
                 box.classList.toggle('filled', !!currentGuess[i]); 
             }
         }
 
-        // YENİ: Tahmini kontrol eden ve ızgarayı renklendiren
-        // (Eski checkGuess ve updateGrid'in yerini alır)
+        // Tahmini kontrol eden ve ızgarayı renklendiren
         function submitGuess() {
             const guess = currentGuess;
             guessedWords.push(guess);
@@ -544,20 +518,16 @@
 
             // Animasyonla renklendir
             result.forEach((status, i) => {
-                // Her harf için gecikmeli animasyon
                 setTimeout(() => {
                     const box = boxes[i];
-                    box.classList.add('flip'); // Flip animasyonunu başlat
+                    box.classList.add('flip'); 
                     
-                    // Animasyonun yarısında rengi değiştir (daha gerçekçi)
                     setTimeout(() => {
                         box.classList.add(status);
-                    }, 250); // 0.5s animasyonun yarısı
+                    }, 250); 
                     
-                    // Klavyeyi de renklendir
                     const keyBtn = document.querySelector(`.key[data-key="${guess[i]}"]`);
                     if (keyBtn) {
-                        // Statüyü yükselt (correct > present > absent)
                         if (status === 'correct') {
                             keyBtn.classList.remove('present', 'absent');
                             keyBtn.classList.add('correct');
@@ -569,21 +539,20 @@
                         }
                     }
                     
-                    // Satır bittiğinde (son harf animasyonu bittiğinde)
                     if (i === WORD_LENGTH - 1) {
                         checkWinLoss(guess);
                     }
-                }, i * 350); // Harfleri sırayla (0.35s arayla) animasyona sok
+                }, i * 350); 
             });
         }
         
-        // YENİ: Kazanma/Kaybetme kontrolü (submitGuess'ten ayrıldı)
+        // Kazanma/Kaybetme kontrolü
         function checkWinLoss(guess) {
             if (guess === TARGET_WORD) {
                 // Kazandı!
                 showError("Tebrikler! Buldun!", "green");
                 isGameOver = true;
-                setTimeout(showFinalStep, 2500); // Animasyonun bitmesini bekle
+                setTimeout(showFinalStep, 2500); // Animasyonun bitmesini ve şiir/şarkı adımını göstermesini bekle
             } else {
                 // Sonraki satıra geç
                 currentRow++;
@@ -598,11 +567,8 @@
             }
             currentGuess = ""; // Mevcut tahmini sıfırla
         }
-
-        // ESKİ: checkGuess() (KALDIRILDI)
-        // ESKİ: updateGrid() (KALDIRILDI)
         
-        // Hata mesajı fonksiyonu (Aynen korundu)
+        // Hata mesajı fonksiyonu
         function showError(message, color = '#ff5252', duration = 3000) {
             errorMessage.textContent = message;
             errorMessage.style.color = color;
@@ -617,7 +583,7 @@
             }
         }
 
-        // --- ESKİ KODLAR (Gerekli olanlar - Değiştirilmedi) ---
+        // --- ESKİ KODLAR (Gerekli olanlar) ---
 
         // Aktif adımı gösteren fonksiyon
         function showStep(stepId) {
@@ -651,7 +617,7 @@
             }, 5000);
         }
         
-        // --- YENİ: OYUNU BAŞLAT ---
+        // --- OYUNU BAŞLAT ---
         buildKeyboard();
         
     </script>
