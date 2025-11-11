@@ -398,27 +398,29 @@
         <div class="decoration-bottom-left">🌷💕</div>
         <div class="decoration-bottom-right">💓🌼</div>
 
-        <p>Seviyorum seni ekmeği tuza banıp</p>
-        <p>Banıp yer gibi</p>
-        <p>Geceleri ateşler içinde uyanarak</p>
-        <p>Ağzımı dayayıp musluğa</p>
-        <p>Su içer gibi</p>
-        <p>Ne zaman seni düşünsem</p>
-        <p>Bir ceylan su içmeye iner çayırları</p>
-        <p>Büyürken büyürken görürüm gülüm</p>
-        <p>Her sabah her akşam seninle</p>
-        <p>Yeşil bir zeytin tanesi</p>
-        <p>Bir parça mavi deniz alır beni</p>
-        <p>Seni düşündükçe gül dikiyorum</p>
-        <p>Ellerimin değdiği yere..</p>
+        <p>Kimseyi görmedim ben</p>
+        <p>Senden daha güzel</p>
+        <p>Kimseyi tanımadım ben</p>
+        <p>Senden daha özel</p>
+        <p>Kimselere de bakmadım</p>
+        <p>Aklımdan geçen</p>
+        <p>Kimseyi tanımadım ben</p>
+        <p>Senden daha güzel</p>
+        <p>Senden daha güzel</p>
+        <p>Senden daha güzel</p>
+        <p>Senden daha güzel</p>
+        <p>Sana nerden rastladım?</p>
+        <p>Oldum derbeder</p>
+        <p>Kendimi sana sakladım</p>
+        <p>Senden daha güzel.</p>
         
         <div class="signature">
-            - Senin Canın
+             Yeterkolik
         </div>
 
         <iframe 
             id="video-player-iframe" 
-            src="https://www.youtube.com/embed/m19V4G89ln4" 
+            src="https://www.youtube.com/embed/3bfkyXtuIXk" 
             title="YouTube video player" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -541,7 +543,7 @@
             wordDisplayEl.innerHTML = '';
             revealedLetters = [];
             
-            // GÜNCELLENDİ: Sınıf adı 8 harften uzunsa
+            // Sınıf adı 8 harften uzunsa
             if (question.word.length > 7) { 
                 wordDisplayEl.className = 'word-display-long';
             } else {
@@ -766,22 +768,27 @@
         function endGame(isFinished) { 
             pauseMainTimer();
             if (guessTimerInterval) clearInterval(guessTimerInterval);
-            isGuessingPhase = true; 
+            isGuessingPhase = true; // Oyunu kalıcı olarak kilitle
             
-            questionHintEl.style.display = 'none';
-            wordDisplayEl.style.display = 'none';
-            document.getElementById('controls-area').style.display = 'none';
+            // DÜZELTİLDİ: Butonları ve girişleri inaktif yap
+            btnGetLetter.disabled = true;
+            btnMakeGuess.disabled = true;
+            btnQuickGuess.disabled = true;
+            btnSubmitGuess.disabled = true; // Durdurulmuş alandaki
+            quickGuessInputEl.disabled = true;
+            guessInputEl.disabled = true;
+
+            // Tahmin alanlarını gizle
             guessAreaEl.style.display = 'none';
             quickGuessAreaEl.style.display = 'none'; 
-            document.getElementById('game-stats').style.display = 'none';
             
-            // GÜNCELLENDİ: Final skoru ve KALAN SÜRE
+            // Final skoru ve KALAN SÜRE
             finalScoreSummaryEl.innerHTML = `Oyun Bitti! <br> Toplam Puanınız: ${totalScore} <br> Kalan Süreniz: ${formatTime(mainTimer)}`;
             finalScoreSummaryEl.style.display = 'block';
 
             setTimeout(() => {
                 showFinalStep(); // Step-3'ü (şiir/video) göster
-            }, 3000);
+            }, 3000); // 3 saniye bekle
         }
 
         // --- ESKİ KODLAR (Step-3 için gerekli) ---
