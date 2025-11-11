@@ -207,6 +207,13 @@
             font-family: sans-serif; 
             transition: all 0.3s ease;
         }
+        /* DÜZELTME: BİNAENALEYH (11 harf) için kutuları küçült */
+        .word-length-11 .letter-box {
+            width: 40px;
+            height: 40px;
+            font-size: 1.5em;
+        }
+        
         .letter-box.revealed {
             background-color: #fffaf0;
             border-color: #9b7fbc;
@@ -347,11 +354,11 @@
 
 
     <script>
-        // --- SORU LİSTESİ (ÖNCEKİ İSTEKLERİNİZDEKİ 3 SORU) ---
+        // --- DÜZELTİLMİŞ SORU LİSTESİ ---
         const questions = [
-            { word: "RENAS", hint: "İki konum arasındaki en doğru seçeneklere hakim olan." },
+            { word: "ŞAYET", hint: "bir ihtimalin gerçekleşmesini başka bir şeye bağlar." },
             { word: "HAKEZA", hint: "Az önce söylenen şeyin bir 'benzerinin' daha olduğu." },
-            { word:V: "BİNAENALEYH", hint: "Asıl işi bir önceki cümleyi 'sonuca' bağlamaktır." }
+            { word: "BİNAENALEYH", hint: "Asıl işi bir önceki cümleyi 'sonuca' bağlamaktır." }
         ];
 
         // --- Oyun Değişkenleri ---
@@ -424,6 +431,14 @@
             // Harf kutularını oluştur
             wordDisplayEl.innerHTML = '';
             revealedLetters = [];
+            
+            // DÜZELTME: Uzun kelimeler için CSS sınıfı ekle
+            if (question.word.length > 8) {
+                wordDisplayEl.className = 'word-length-11';
+            } else {
+                wordDisplayEl.className = '';
+            }
+
             for (let i = 0; i < question.word.length; i++) {
                 wordDisplayEl.innerHTML += `<div class="letter-box" data-index="${i}">_</div>`;
                 revealedLetters.push(false); // Başlangıçta hiç harf alınmadı
