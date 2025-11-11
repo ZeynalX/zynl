@@ -168,9 +168,9 @@
             border: 1px dashed #d4a7b7;
             border-radius: 8px;
             padding: 10px;
-            margin-bottom: 10px; /* Azaltıldı */
+            margin-bottom: 10px; 
             font-family: 'Helvetica', sans-serif; 
-            flex-wrap: wrap; /* Küçük ekranlar için */
+            flex-wrap: wrap; 
         }
         #game-stats div {
             font-size: 1.2em;
@@ -186,7 +186,7 @@
         }
         #main-timer { color: #b33951; } 
 
-        /* YENİ: Görsel Zaman Şeridi */
+        /* Görsel Zaman Şeridi */
         #visual-timer-container {
             width: 100%;
             height: 12px;
@@ -194,12 +194,12 @@
             border: 1px solid #c0b0dd;
             border-radius: 6px;
             overflow: hidden;
-            margin: 5px 10px 15px 10px; /* Stats kutusu içinde */
-            flex-basis: 100%; /* Stats içinde tam genişlik */
+            margin: 5px 10px 15px 10px; 
+            flex-basis: 100%; 
         }
         #visual-timer-bar {
             height: 100%;
-            width: 100%; /* Başlangıç */
+            width: 100%; 
             background-color: #28a745; /* Yeşil */
             border-radius: 6px;
             transition: width 1s linear, background-color 0.5s linear;
@@ -245,6 +245,7 @@
             flex-basis: 50px; 
         }
         
+        /* Uzun kelime sınıfı (VELHASIL 8, FILHAKIKA 9) */
         .word-display-long .letter-box {
             width: 40px;
             height: 40px;
@@ -427,11 +428,11 @@
 
 
     <script>
-        // --- SORU LİSTESİ ---
+        // --- GÜNCELLENMİŞ SORU LİSTESİ ---
         const questions = [
-            { word: "ŞAYET", hint: "bir ihtimalin gerçekleşmesini başka bir şeye bağlar." },
-            { word: "HAKEZA", hint: "Az önce söylenen şeyin bir 'benzerinin' daha olduğu." },
-            { word: "BİNAENALEYH", hint: "Asıl işi bir önceki cümleyi 'sonuca' bağlamaktır." }
+            { word: "CEVAZ", hint: "Kökeni Arapça olan ve destur anlamına da gelir." },
+            { word: "VELHASIL", hint: "uzatmadan , detaylandırmadan" },
+            { word: "FİLHAKİKA", hint: "İşin özü, yalancıktan olmayan." }
         ];
 
         // --- Oyun Değişkenleri ---
@@ -448,7 +449,7 @@
 
         // --- HTML Elementleri ---
         const mainTimerEl = document.getElementById('main-timer');
-        const visualTimerBarEl = document.getElementById('visual-timer-bar'); // YENİ
+        const visualTimerBarEl = document.getElementById('visual-timer-bar'); 
         const gameScoreEl = document.getElementById('game-score');
         const questionHintEl = document.getElementById('question-hint');
         const wordDisplayEl = document.getElementById('word-display');
@@ -479,7 +480,7 @@
             return `${min}:${sec}`;
         }
         
-        // YENİ: Ana Zamanlayıcı Arayüz Güncelleme
+        // Ana Zamanlayıcı Arayüz Güncelleme
         function updateMainTimerUI() {
             // Metni güncelle
             mainTimerEl.textContent = formatTime(mainTimer);
@@ -507,7 +508,7 @@
             isGuessingPhase = false;
             
             gameScoreEl.textContent = totalScore;
-            updateMainTimerUI(); // YENİ: Hem metni hem şeridi ayarla
+            updateMainTimerUI(); 
             
             loadQuestion(currentQuestionIndex);
             startMainTimer();
@@ -540,7 +541,8 @@
             wordDisplayEl.innerHTML = '';
             revealedLetters = [];
             
-            if (question.word.length > 8) {
+            // GÜNCELLENDİ: Sınıf adı 8 harften uzunsa
+            if (question.word.length > 7) { 
                 wordDisplayEl.className = 'word-display-long';
             } else {
                 wordDisplayEl.className = '';
@@ -575,7 +577,7 @@
             mainTimerInterval = setInterval(() => {
                 if (isGuessingPhase) return; 
                 mainTimer--;
-                updateMainTimerUI(); // YENİ: Arayüzü güncelle
+                updateMainTimerUI(); 
                 if (mainTimer <= 0) {
                     endGame(false); // Ana süre doldu
                 }
