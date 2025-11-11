@@ -94,6 +94,7 @@
         #btn-make-guess {
             background-color: #dc3545; /* Kırmızı */
             box-shadow: 0 4px 10px rgba(100,0,0,0.2);
+            margin-top: 20px; /* Altta olduğu için boşluk ver */
         }
         #btn-make-guess:hover {
             background-color: #c82333; /* Koyu Kırmızı */
@@ -102,7 +103,6 @@
             background-color: #cccccc;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-
 
         /* YETER harfleri ve kalp animasyonu */
         .heart {
@@ -168,13 +168,15 @@
             border: 1px dashed #d4a7b7;
             border-radius: 8px;
             padding: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* Azaltıldı */
             font-family: 'Helvetica', sans-serif; 
+            flex-wrap: wrap; /* Küçük ekranlar için */
         }
         #game-stats div {
             font-size: 1.2em;
             color: #6a4a8c;
             font-weight: bold;
+            padding: 5px 10px;
         }
         #game-stats span {
             font-size: 1.5em;
@@ -183,6 +185,25 @@
             font-weight: 900;
         }
         #main-timer { color: #b33951; } 
+
+        /* YENİ: Görsel Zaman Şeridi */
+        #visual-timer-container {
+            width: 100%;
+            height: 12px;
+            background-color: #fcf6f8;
+            border: 1px solid #c0b0dd;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 5px 10px 15px 10px; /* Stats kutusu içinde */
+            flex-basis: 100%; /* Stats içinde tam genişlik */
+        }
+        #visual-timer-bar {
+            height: 100%;
+            width: 100%; /* Başlangıç */
+            background-color: #28a745; /* Yeşil */
+            border-radius: 6px;
+            transition: width 1s linear, background-color 0.5s linear;
+        }
 
         #question-hint {
             font-size: 1.1em;
@@ -237,18 +258,11 @@
             transform: scale(1.05);
         }
 
-        #controls-area {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px dashed #c0b0dd;
-        }
-        
         /* Hızlı Tahmin Alanı Stili */
         #quick-guess-area {
             margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #c0b0dd;
         }
         #quick-guess-area h3 {
              font-family: 'Helvetica', sans-serif; 
@@ -319,7 +333,7 @@
             font-weight: bold;
             color: #6a4a8c;
             margin: 30px 0;
-            line-height: 1.5; /* YENİ: Yazı uzarsa alta sarksın */
+            line-height: 1.5; 
         }
         
     </style>
@@ -339,17 +353,19 @@
             <div>Puan
                 <span id="game-score">0</span>
             </div>
+            <div id="visual-timer-container">
+                <div id="visual-timer-bar"></div>
+            </div>
         </div>
         
         <div id="question-hint">İpucu yükleniyor...</div>
         
+        <button id="btn-get-letter">Harf Al</button>
+        
         <div id="word-display">
             </div>
         
-        <div id="controls-area">
-            <button id="btn-get-letter">Harf Al</button>
-            <button id="btn-make-guess">Durdur ve Tahmin Et</button>
-        </div>
+        <button id="btn-make-guess">Durdur ve Tahmin Et</button>
         
         <div id="quick-guess-area">
             <h3>Hızlı Tahmin</h3>
@@ -396,7 +412,7 @@
         <p>Ellerimin değdiği yere..</p>
         
         <div class="signature">
-            Seni Seven
+            - Senin Canın
         </div>
 
         <iframe 
@@ -432,6 +448,7 @@
 
         // --- HTML Elementleri ---
         const mainTimerEl = document.getElementById('main-timer');
+        const visualTimerBarEl = document.getElementById('visual-timer-bar'); // YENİ
         const gameScoreEl = document.getElementById('game-score');
         const questionHintEl = document.getElementById('question-hint');
         const wordDisplayEl = document.getElementById('word-display');
@@ -461,6 +478,26 @@
             const sec = (seconds % 60).toString().padStart(2, '0');
             return `${min}:${sec}`;
         }
+        
+        // YENİ: Ana Zamanlayıcı Arayüz Güncelleme
+        function updateMainTimerUI() {
+            // Metni güncelle
+            mainTimerEl.textContent = formatTime(mainTimer);
+            
+            // Görsel şeridi güncelle
+            const totalTime = 180; // 3 dakika
+            const percentage = (mainTimer / totalTime) * 100;
+            visualTimerBarEl.style.width = percentage + '%';
+            
+            // Rengi güncelle
+            if (percentage < 20) {
+                visualTimerBarEl.style.backgroundColor = '#dc3545'; // Kırmızı
+            } else if (percentage < 50) {
+                visualTimerBarEl.style.backgroundColor = '#f7b538'; // Sarı
+            } else {
+                visualTimerBarEl.style.backgroundColor = '#28a745'; // Yeşil
+            }
+        }
 
         // --- Ana Oyunu Başlatma ---
         function initGame() {
@@ -470,7 +507,7 @@
             isGuessingPhase = false;
             
             gameScoreEl.textContent = totalScore;
-            mainTimerEl.textContent = formatTime(mainTimer);
+            updateMainTimerUI(); // YENİ: Hem metni hem şeridi ayarla
             
             loadQuestion(currentQuestionIndex);
             startMainTimer();
@@ -500,7 +537,6 @@
             const question = questions[index];
             questionHintEl.textContent = question.hint;
             
-            // Harf kutularını oluştur
             wordDisplayEl.innerHTML = '';
             revealedLetters = [];
             
@@ -539,7 +575,7 @@
             mainTimerInterval = setInterval(() => {
                 if (isGuessingPhase) return; 
                 mainTimer--;
-                mainTimerEl.textContent = formatTime(mainTimer);
+                updateMainTimerUI(); // YENİ: Arayüzü güncelle
                 if (mainTimer <= 0) {
                     endGame(false); // Ana süre doldu
                 }
@@ -602,21 +638,18 @@
 
         // "Durdur ve Tahmin Et" Butonu
         function handleMakeGuess() {
-            isGuessingPhase = true; // Oyunu "Durdurulmuş" moda al
+            isGuessingPhase = true; 
             pauseMainTimer();
             
-            // Ana kontrolleri ve Hızlı Tahmini gizle/kilitle
             btnGetLetter.disabled = true;
             btnMakeGuess.disabled = true;
             quickGuessAreaEl.style.display = 'none';
             
-            // Durdurulmuş alanı göster
             guessAreaEl.style.display = 'block';
             guessInputEl.value = '';
             guessInputEl.focus();
             guessFeedbackEl.textContent = '';
             
-            // Tahmin haklarını ve süresini sıfırla
             stoppedGuessAttempts = 3; 
             guessTimer = 60; 
             guessAttemptsEl.textContent = `Kalan Hak: ${stoppedGuessAttempts}`;
@@ -633,9 +666,9 @@
 
             if (guess === correctWord) {
                 pauseMainTimer(); 
-                handleGuessResult(true, false); // Doğru tahmin
+                handleGuessResult(true, false); 
             } else {
-                // Yanlış tahmin (Hızlı) - GÜNCELLENDİ: PUAN SİLME YOK
+                // Yanlış tahmin (Hızlı) - PUAN SİLME YOK
                 quickGuessAttempts--;
                 quickGuessAttemptsEl.textContent = `Kalan Hak: ${quickGuessAttempts}`;
                 
@@ -645,11 +678,11 @@
                     quickGuessInputEl.disabled = true;
                     btnQuickGuess.disabled = true;
                 } else {
-                    quickGuessFeedbackEl.textContent = "Yanlış! Tekrar deneyin."; // Mesaj güncellendi
+                    quickGuessFeedbackEl.textContent = "Yanlış! Tekrar deneyin.";
                     quickGuessFeedbackEl.style.color = "#dc3545";
                 }
             }
-             quickGuessInputEl.value = ''; // Giriş kutusunu temizle
+             quickGuessInputEl.value = ''; 
         }
 
 
@@ -664,7 +697,6 @@
                 if (guessTimer <= 0) {
                     guessFeedbackEl.textContent = "Süre Doldu! Hakkınız bitti.";
                     guessFeedbackEl.style.color = "#dc3545";
-                    // Süre dolunca otomatik olarak sonraki soruya geç
                     setTimeout(() => handleGuessResult(false, false), 1500); 
                 }
             }, 1000);
@@ -678,37 +710,32 @@
             const correctWord = questions[currentQuestionIndex].word;
 
             if (guess === correctWord) {
-                handleGuessResult(true, false); // Doğru tahmin
+                handleGuessResult(true, false); 
             } else {
-                // Yanlış tahmin (Durdurulmuş) - GÜNCELLENDİ: PUAN SİLME YOK
+                // Yanlış tahmin (Durdurulmuş) - PUAN SİLME YOK
                 stoppedGuessAttempts--;
                 guessAttemptsEl.textContent = `Kalan Hak: ${stoppedGuessAttempts}`;
                 
                 if (stoppedGuessAttempts <= 0) {
-                    // Tahmin hakkı bitti
                     guessFeedbackEl.textContent = "Yanlış! Hakkınız bitti.";
                     guessFeedbackEl.style.color = "#dc3545";
-                    // Otomatik olarak sonraki soruya geç
                     setTimeout(() => handleGuessResult(false, false), 1500); 
                 } else {
-                    // Hâlâ hakkı var
-                    guessFeedbackEl.textContent = "Yanlış! Tekrar deneyin."; // Mesaj güncellendi
+                    guessFeedbackEl.textContent = "Yanlış! Tekrar deneyin.";
                     guessFeedbackEl.style.color = "#dc3545";
                 }
             }
-            guessInputEl.value = ''; // Giriş kutusunu temizle
+            guessInputEl.value = ''; 
         }
 
         // --- Sonuç ve Geçiş ---
         
         function handleGuessResult(isCorrect, isAutoAdvance) {
-            // Tüm zamanlayıcıları durdur
             pauseMainTimer();
             if (guessTimerInterval) clearInterval(guessTimerInterval);
-            isGuessingPhase = true; // Geçiş sırasında oyunu kilitle
+            isGuessingPhase = true; 
             
             if (isCorrect) {
-                // Puan hesapla
                 let pointsEarned = 0;
                 for (let i = 0; i < revealedLetters.length; i++) {
                     if (revealedLetters[i] === false) {
@@ -718,7 +745,6 @@
                 totalScore += pointsEarned;
                 gameScoreEl.textContent = totalScore;
                 
-                // Tüm kutuları aç
                 const boxes = wordDisplayEl.querySelectorAll('.letter-box');
                 const word = questions[currentQuestionIndex].word;
                 boxes.forEach((box, i) => {
@@ -727,11 +753,10 @@
                 });
             }
             
-            // Ana döngüyü meşgul etmemek için setTimeout kullan
             setTimeout(() => {
                 currentQuestionIndex++;
-                loadQuestion(currentQuestionIndex); // Bu fonksiyon isGuessingPhase'i false yapar
-                if (mainTimer > 0) startMainTimer(); // Ana süreyi devam ettir
+                loadQuestion(currentQuestionIndex); // Bu isGuessingPhase'i false yapar
+                if (mainTimer > 0) startMainTimer(); 
             }, 1500);
         }
 
@@ -739,9 +764,8 @@
         function endGame(isFinished) { 
             pauseMainTimer();
             if (guessTimerInterval) clearInterval(guessTimerInterval);
-            isGuessingPhase = true; // Oyunu kalıcı olarak kilitle
+            isGuessingPhase = true; 
             
-            // Tüm oyun arayüzünü gizle
             questionHintEl.style.display = 'none';
             wordDisplayEl.style.display = 'none';
             document.getElementById('controls-area').style.display = 'none';
@@ -749,11 +773,10 @@
             quickGuessAreaEl.style.display = 'none'; 
             document.getElementById('game-stats').style.display = 'none';
             
-            // GÜNCELLENDİ: Final skorunu ve KALAN SÜREYİ göster
-            finalScoreSummaryEl.textContent = `Oyun Bitti! Toplam Puanınız: ${totalScore} - Kalan Süreniz: ${formatTime(mainTimer)}`;
+            // GÜNCELLENDİ: Final skoru ve KALAN SÜRE
+            finalScoreSummaryEl.innerHTML = `Oyun Bitti! <br> Toplam Puanınız: ${totalScore} <br> Kalan Süreniz: ${formatTime(mainTimer)}`;
             finalScoreSummaryEl.style.display = 'block';
 
-            // 3 saniye sonra sürpriz bölümünü göster
             setTimeout(() => {
                 showFinalStep(); // Step-3'ü (şiir/video) göster
             }, 3000);
