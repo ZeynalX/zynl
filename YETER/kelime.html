@@ -246,7 +246,7 @@
             border-bottom: 2px dashed #c0b0dd;
         }
         
-        /* YENİ: Hızlı Tahmin Alanı Stili */
+        /* Hızlı Tahmin Alanı Stili */
         #quick-guess-area {
             margin-top: 15px;
         }
@@ -319,6 +319,7 @@
             font-weight: bold;
             color: #6a4a8c;
             margin: 30px 0;
+            line-height: 1.5; /* YENİ: Yazı uzarsa alta sarksın */
         }
         
     </style>
@@ -395,7 +396,7 @@
         <p>Ellerimin değdiği yere..</p>
         
         <div class="signature">
-            - Senin Canın
+            Seni Seven
         </div>
 
         <iframe 
@@ -426,8 +427,8 @@
         let guessTimerInterval = null;
         let revealedLetters = []; 
         let isGuessingPhase = false; // "Durdurulmuş" tahmin modu
-        let quickGuessAttempts = 3; // YENİ: Hızlı tahmin hakkı
-        let stoppedGuessAttempts = 3; // YENİ: Durdurulmuş tahmin hakkı
+        let quickGuessAttempts = 3; 
+        let stoppedGuessAttempts = 3; 
 
         // --- HTML Elementleri ---
         const mainTimerEl = document.getElementById('main-timer');
@@ -445,7 +446,7 @@
         const btnSubmitGuess = document.getElementById('btn-submit-guess');
         const guessFeedbackEl = document.getElementById('guess-feedback');
         
-        // YENİ: Hızlı Tahmin Alanı
+        // Hızlı Tahmin Alanı
         const quickGuessAreaEl = document.getElementById('quick-guess-area');
         const quickGuessAttemptsEl = document.getElementById('quick-guess-attempts');
         const quickGuessInputEl = document.getElementById('quick-guess-input');
@@ -478,7 +479,7 @@
             btnGetLetter.onclick = handleGetLetter;
             btnMakeGuess.onclick = handleMakeGuess;
             btnSubmitGuess.onclick = handleSubmitGuess;
-            btnQuickGuess.onclick = handleSubmitQuickGuess; // YENİ
+            btnQuickGuess.onclick = handleSubmitQuickGuess; 
             
             // Enter tuşu ile tahmin onayı (Her iki input için)
             guessInputEl.addEventListener('keyup', (e) => {
@@ -536,7 +537,7 @@
         function startMainTimer() {
             if (mainTimerInterval) clearInterval(mainTimerInterval);
             mainTimerInterval = setInterval(() => {
-                if (isGuessingPhase) return; // Tahmin aşamasındaysa ana süreyi durdur
+                if (isGuessingPhase) return; 
                 mainTimer--;
                 mainTimerEl.textContent = formatTime(mainTimer);
                 if (mainTimer <= 0) {
@@ -551,7 +552,7 @@
 
         // --- Oynanış Fonksiyonları ---
 
-        // KORUNDU: "AKILLI HARF AL" FONKSİYONU
+        // "AKILLI HARF AL" FONKSİYONU
         function handleGetLetter() {
             const question = questions[currentQuestionIndex];
             const wordLength = question.word.length;
@@ -623,7 +624,7 @@
             startGuessTimer();
         }
         
-        // YENİ: "Hızlı Tahmin" Onay Butonu
+        // "Hızlı Tahmin" Onay Butonu
         function handleSubmitQuickGuess() {
             if (mainTimer <= 0 || quickGuessAttempts <= 0) return;
 
@@ -631,14 +632,11 @@
             const correctWord = questions[currentQuestionIndex].word;
 
             if (guess === correctWord) {
-                // Ana süreyi durdurup sonraki soruya geç
                 pauseMainTimer(); 
                 handleGuessResult(true, false); // Doğru tahmin
             } else {
-                // Yanlış tahmin (Hızlı)
-                totalScore -= 10;
+                // Yanlış tahmin (Hızlı) - GÜNCELLENDİ: PUAN SİLME YOK
                 quickGuessAttempts--;
-                gameScoreEl.textContent = totalScore;
                 quickGuessAttemptsEl.textContent = `Kalan Hak: ${quickGuessAttempts}`;
                 
                 if (quickGuessAttempts <= 0) {
@@ -647,7 +645,7 @@
                     quickGuessInputEl.disabled = true;
                     btnQuickGuess.disabled = true;
                 } else {
-                    quickGuessFeedbackEl.textContent = "Yanlış! (-10 Puan)";
+                    quickGuessFeedbackEl.textContent = "Yanlış! Tekrar deneyin."; // Mesaj güncellendi
                     quickGuessFeedbackEl.style.color = "#dc3545";
                 }
             }
@@ -674,7 +672,6 @@
 
         // "Durdurulmuş Tahmin" Onay Butonu
         function handleSubmitGuess() {
-            // Süre veya hak bittiyse daha fazla denemesin
             if (guessTimer <= 0 || stoppedGuessAttempts <= 0) return; 
 
             const guess = guessInputEl.value.toLocaleUpperCase('tr-TR').trim();
@@ -683,10 +680,8 @@
             if (guess === correctWord) {
                 handleGuessResult(true, false); // Doğru tahmin
             } else {
-                // Yanlış tahmin (Durdurulmuş)
-                totalScore -= 10;
+                // Yanlış tahmin (Durdurulmuş) - GÜNCELLENDİ: PUAN SİLME YOK
                 stoppedGuessAttempts--;
-                gameScoreEl.textContent = totalScore;
                 guessAttemptsEl.textContent = `Kalan Hak: ${stoppedGuessAttempts}`;
                 
                 if (stoppedGuessAttempts <= 0) {
@@ -697,7 +692,7 @@
                     setTimeout(() => handleGuessResult(false, false), 1500); 
                 } else {
                     // Hâlâ hakkı var
-                    guessFeedbackEl.textContent = "Yanlış! (-10 Puan)";
+                    guessFeedbackEl.textContent = "Yanlış! Tekrar deneyin."; // Mesaj güncellendi
                     guessFeedbackEl.style.color = "#dc3545";
                 }
             }
@@ -751,11 +746,11 @@
             wordDisplayEl.style.display = 'none';
             document.getElementById('controls-area').style.display = 'none';
             guessAreaEl.style.display = 'none';
-            quickGuessAreaEl.style.display = 'none'; // YENİ
+            quickGuessAreaEl.style.display = 'none'; 
             document.getElementById('game-stats').style.display = 'none';
             
-            // Final skorunu göster
-            finalScoreSummaryEl.textContent = `Oyun Bitti! Toplam Puanınız: ${totalScore}`;
+            // GÜNCELLENDİ: Final skorunu ve KALAN SÜREYİ göster
+            finalScoreSummaryEl.textContent = `Oyun Bitti! Toplam Puanınız: ${totalScore} - Kalan Süreniz: ${formatTime(mainTimer)}`;
             finalScoreSummaryEl.style.display = 'block';
 
             // 3 saniye sonra sürpriz bölümünü göster
