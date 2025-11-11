@@ -8,7 +8,7 @@
         /* FONT KORUNDU */
         @import url('https://fonts.cdnfonts.com/css/super-malibu');
         
-        /* GÜNCELLENDİ: TEMA (LAVANTA/MOR) */
+        /* TEMA (LAVANTA/MOR) */
         
         body {
             font-family: 'Super Malibu', sans-serif;
@@ -72,7 +72,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 10px; /* Azaltıldı */
+            margin-top: 10px;
             transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
             font-size: 1.1em;  
             font-family: 'Super Malibu', sans-serif; 
@@ -89,6 +89,20 @@
             transform: scale(1);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
+        
+        /* YENİ: Durdurma Butonu Stili */
+        #btn-make-guess {
+            background-color: #dc3545; /* Kırmızı */
+            box-shadow: 0 4px 10px rgba(100,0,0,0.2);
+        }
+        #btn-make-guess:hover {
+            background-color: #c82333; /* Koyu Kırmızı */
+        }
+        #btn-make-guess:disabled {
+            background-color: #cccccc;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
 
         /* YETER harfleri ve kalp animasyonu */
         .heart {
@@ -144,7 +158,7 @@
             padding-right: 20px;
         }
 
-        /* --- YENİ: KELİME OYUNU STİLLERİ --- */
+        /* --- KELİME OYUNU STİLLERİ --- */
         
         #game-stats {
             display: flex;
@@ -155,7 +169,7 @@
             border-radius: 8px;
             padding: 10px;
             margin-bottom: 20px;
-            font-family: 'Helvetica', sans-serif; /* Okunaklı font */
+            font-family: 'Helvetica', sans-serif; 
         }
         #game-stats div {
             font-size: 1.2em;
@@ -168,7 +182,7 @@
             display: block;
             font-weight: 900;
         }
-        #main-timer { color: #b33951; } /* Ana süre kırmızı */
+        #main-timer { color: #b33951; } 
 
         #question-hint {
             font-size: 1.1em;
@@ -181,7 +195,7 @@
             border-radius: 8px;
             max-width: 90%;
             line-height: 1.5;
-            min-height: 3em; /* İpucu yüksekliği */
+            min-height: 3em; 
         }
         
         #word-display {
@@ -189,7 +203,7 @@
             justify-content: center;
             gap: 5px;
             margin: 25px 0;
-            flex-wrap: wrap; /* Uzun kelimeler için */
+            flex-wrap: nowrap; /* KORUNDU: Sargıyı kaldır, sığsın */
         }
         
         .letter-box {
@@ -206,12 +220,16 @@
             color: #4a2c3c;
             font-family: sans-serif; 
             transition: all 0.3s ease;
+            flex-shrink: 1; /* KORUNDU: Gerektiğinde küçülsün */
+            flex-basis: 50px; /* KORUNDU: Başlangıç boyutu */
         }
-        /* DÜZELTME: BİNAENALEYH (11 harf) için kutuları küçült */
-        .word-length-11 .letter-box {
+        
+        /* KORUNDU: Uzun kelime sınıfı */
+        .word-display-long .letter-box {
             width: 40px;
             height: 40px;
             font-size: 1.5em;
+            flex-basis: 40px;
         }
         
         .letter-box.revealed {
@@ -243,6 +261,15 @@
             margin-bottom: 10px;
         }
         
+        /* YENİ: Kalan hak sayacı stili */
+        #guess-attempts {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #6a4a8c;
+            margin-bottom: 10px;
+        }
+        
         #guess-input {
             padding: 12px;
             width: 80%;
@@ -253,7 +280,7 @@
             color: #4a2c3c;
             margin-bottom: 10px;
             font-size: 1.2em; 
-            font-family: 'Helvetica', sans-serif; /* Okunaklı font */
+            font-family: 'Helvetica', sans-serif; 
             text-transform: uppercase; 
             text-align: center;
         }
@@ -301,11 +328,12 @@
         
         <div id="controls-area">
             <button id="btn-get-letter">Harf Al</button>
-            <button id="btn-make-guess">Tahmin Et</button>
+            <button id="btn-make-guess">Durdur ve Tahmin Et</button>
         </div>
         
         <div id="guess-area" style="display: none;">
             <div id="guess-timer">Kalan Tahmin Süresi: 01:00</div>
+            <div id="guess-attempts">Kalan Hak: 3</div>
             <input type="text" id="guess-input" placeholder="Tahmininizi Yazın...">
             <br>
             <button id="btn-submit-guess">Onayla</button>
@@ -354,7 +382,7 @@
 
 
     <script>
-        // --- DÜZELTİLMİŞ SORU LİSTESİ ---
+        // --- SORU LİSTESİ ---
         const questions = [
             { word: "ŞAYET", hint: "bir ihtimalin gerçekleşmesini başka bir şeye bağlar." },
             { word: "HAKEZA", hint: "Az önce söylenen şeyin bir 'benzerinin' daha olduğu." },
@@ -368,8 +396,9 @@
         let guessTimer = 60; // 1 Dakika
         let mainTimerInterval = null;
         let guessTimerInterval = null;
-        let revealedLetters = []; // [true, false, false, true, false] (true = harf alındı)
+        let revealedLetters = []; 
         let isGuessingPhase = false;
+        let guessAttempts = 3; // YENİ: Tahmin hakkı
 
         // --- HTML Elementleri ---
         const mainTimerEl = document.getElementById('main-timer');
@@ -380,6 +409,7 @@
         const btnMakeGuess = document.getElementById('btn-make-guess');
         const guessAreaEl = document.getElementById('guess-area');
         const guessTimerEl = document.getElementById('guess-timer');
+        const guessAttemptsEl = document.getElementById('guess-attempts'); // YENİ
         const guessInputEl = document.getElementById('guess-input');
         const btnSubmitGuess = document.getElementById('btn-submit-guess');
         const guessFeedbackEl = document.getElementById('guess-feedback');
@@ -432,16 +462,16 @@
             wordDisplayEl.innerHTML = '';
             revealedLetters = [];
             
-            // DÜZELTME: Uzun kelimeler için CSS sınıfı ekle
+            // KORUNDU: Uzun kelimeler için CSS sınıfı ekle
             if (question.word.length > 8) {
-                wordDisplayEl.className = 'word-length-11';
+                wordDisplayEl.className = 'word-display-long';
             } else {
                 wordDisplayEl.className = '';
             }
 
             for (let i = 0; i < question.word.length; i++) {
                 wordDisplayEl.innerHTML += `<div class="letter-box" data-index="${i}">_</div>`;
-                revealedLetters.push(false); // Başlangıçta hiç harf alınmadı
+                revealedLetters.push(false); 
             }
             
             // Arayüzü sıfırla
@@ -455,6 +485,7 @@
         function startMainTimer() {
             if (mainTimerInterval) clearInterval(mainTimerInterval);
             mainTimerInterval = setInterval(() => {
+                if (isGuessingPhase) return; // Tahmin aşamasındaysa ana süreyi durdur (zaten durmuş olmalı)
                 mainTimer--;
                 mainTimerEl.textContent = formatTime(mainTimer);
                 if (mainTimer <= 0) {
@@ -469,12 +500,13 @@
 
         // --- Oynanış Fonksiyonları ---
 
+        // KORUNDU: "AKILLI HARF AL" FONKSİYONU
         function handleGetLetter() {
             const question = questions[currentQuestionIndex];
+            const wordLength = question.word.length;
+
             const unrevealedIndices = [];
-            
-            // Alınmamış harflerin indeksini bul
-            for (let i = 0; i < question.word.length; i++) {
+            for (let i = 0; i < wordLength; i++) {
                 if (revealedLetters[i] === false) {
                     unrevealedIndices.push(i);
                 }
@@ -482,28 +514,41 @@
 
             if (unrevealedIndices.length === 0) {
                 btnGetLetter.disabled = true;
-                return; // Açılacak harf kalmadı
+                return; 
             }
 
-            // Rastgele bir harf seç
-            const randomIndex = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
-            revealedLetters[randomIndex] = true; // Bu harf "Harf Al" ile açıldı
-            
-            // Kutuyu güncelle
-            const box = wordDisplayEl.querySelector(`.letter-box[data-index="${randomIndex}"]`);
-            box.textContent = question.word[randomIndex];
+            const idealChoices = unrevealedIndices.filter(index => {
+                const isAdjacentLeft = (index > 0) && (revealedLetters[index - 1] === true);
+                const isAdjacentRight = (index < wordLength - 1) && (revealedLetters[index + 1] === true);
+                return !isAdjacentLeft && !isAdjacentRight;
+            });
+
+            const nonFirstIdealChoices = idealChoices.filter(index => index !== 0);
+
+            let chosenIndex;
+
+            if (nonFirstIdealChoices.length > 0) {
+                chosenIndex = nonFirstIdealChoices[Math.floor(Math.random() * nonFirstIdealChoices.length)];
+            } else if (idealChoices.length > 0) {
+                chosenIndex = idealChoices[0]; 
+            } else {
+                chosenIndex = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
+            }
+
+            revealedLetters[chosenIndex] = true; 
+            const box = wordDisplayEl.querySelector(`.letter-box[data-index="${chosenIndex}"]`);
+            box.textContent = question.word[chosenIndex];
             box.classList.add('revealed');
             
-             // Tüm harfler açıldıysa, otomatik sonraki soru
             if (unrevealedIndices.length === 1) { 
                 btnGetLetter.disabled = true;
                 setTimeout(() => {
-                    // Puan verilmez, sadece sonraki soruya geçilir
                     handleGuessResult(false, true); 
                 }, 1000);
             }
         }
 
+        // YENİ: Tahmin Etme (Durdurma) Fonksiyonu
         function handleMakeGuess() {
             isGuessingPhase = true;
             pauseMainTimer();
@@ -516,11 +561,15 @@
             guessInputEl.focus();
             guessFeedbackEl.textContent = '';
             
+            // Tahmin haklarını ve süresini sıfırla
+            guessAttempts = 3; 
+            guessTimer = 60; 
+            guessAttemptsEl.textContent = `Kalan Hak: ${guessAttempts}`;
+            
             startGuessTimer();
         }
 
         function startGuessTimer() {
-            guessTimer = 60; // 1 Dakika
             guessTimerEl.textContent = `Kalan Tahmin Süresi: 0${formatTime(guessTimer)}`;
             
             if (guessTimerInterval) clearInterval(guessTimerInterval);
@@ -528,13 +577,18 @@
                 guessTimer--;
                 guessTimerEl.textContent = `Kalan Tahmin Süresi: 0${formatTime(guessTimer)}`;
                 if (guessTimer <= 0) {
-                    handleGuessResult(false, false); // Tahmin süresi doldu
+                    guessFeedbackEl.textContent = "Süre Doldu! Hakkınız bitti.";
+                    guessFeedbackEl.style.color = "#dc3545";
+                    // Süre dolunca otomatik olarak sonraki soruya geç
+                    setTimeout(() => handleGuessResult(false, false), 1500); 
                 }
             }, 1000);
         }
 
+        // YENİ: Tahmin Onaylama (3 Hak Kuralı)
         function handleSubmitGuess() {
-            if (guessTimer <= 0) return; // Süre dolduysa işlem yapma
+            // Süre veya hak bittiyse daha fazla denemesin
+            if (guessTimer <= 0 || guessAttempts <= 0) return; 
 
             const guess = guessInputEl.value.toLocaleUpperCase('tr-TR').trim();
             const correctWord = questions[currentQuestionIndex].word;
@@ -544,22 +598,33 @@
             } else {
                 // Yanlış tahmin
                 totalScore -= 10;
+                guessAttempts--;
                 gameScoreEl.textContent = totalScore;
-                guessFeedbackEl.textContent = "Yanlış! (-10 Puan)";
-                guessFeedbackEl.className = "feedback-wrong";
+                guessAttemptsEl.textContent = `Kalan Hak: ${guessAttempts}`;
+                
+                if (guessAttempts <= 0) {
+                    // Tahmin hakkı bitti
+                    guessFeedbackEl.textContent = "Yanlış! Hakkınız bitti.";
+                    guessFeedbackEl.style.color = "#dc3545";
+                    // Otomatik olarak sonraki soruya geç
+                    setTimeout(() => handleGuessResult(false, false), 1500); 
+                } else {
+                    // Hâlâ hakkı var
+                    guessFeedbackEl.textContent = "Yanlış! (-10 Puan)";
+                    guessFeedbackEl.style.color = "#dc3545";
+                }
             }
         }
 
         // --- Sonuç ve Geçiş ---
         
-        // isCorrect: Tahmin doğru mu?
-        // isAutoAdvance: Harflerin hepsi alındığı için mi geçiyor?
         function handleGuessResult(isCorrect, isAutoAdvance) {
+            // Tüm zamanlayıcıları durdur
             if (guessTimerInterval) clearInterval(guessTimerInterval);
             isGuessingPhase = false;
             
             if (isCorrect) {
-                // Puan hesapla (SADECE alınmayan harfler için)
+                // Puan hesapla
                 let pointsEarned = 0;
                 for (let i = 0; i < revealedLetters.length; i++) {
                     if (revealedLetters[i] === false) {
@@ -578,25 +643,19 @@
                 });
             }
             
-            if (!isAutoAdvance) {
-                // 1.5 saniye bekle sonra diğer soruya geç
-                setTimeout(() => {
-                    currentQuestionIndex++;
-                    loadQuestion(currentQuestionIndex);
-                    if (mainTimer > 0) startMainTimer(); // Ana süreyi devam ettir
-                }, 1500);
-            } else {
-                 // Harfler bittiyse beklemeden geç
+            // Ana döngüyü meşgul etmemek için setTimeout kullan
+            setTimeout(() => {
                 currentQuestionIndex++;
                 loadQuestion(currentQuestionIndex);
-                if (mainTimer > 0) startMainTimer();
-            }
+                if (mainTimer > 0) startMainTimer(); // Ana süreyi devam ettir
+            }, 1500);
         }
 
         // --- Oyun Bitişi ---
-        function endGame(isFinished) { // isFinished = Sorular bitti mi, yoksa süre mi?
+        function endGame(isFinished) { 
             pauseMainTimer();
             if (guessTimerInterval) clearInterval(guessTimerInterval);
+            isGuessingPhase = true; // Oyunu kilitle
             
             // Tüm oyun arayüzünü gizle
             questionHintEl.style.display = 'none';
