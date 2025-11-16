@@ -239,13 +239,12 @@
             flex-basis: 50px; 
         }
         
-        /* Uzun kelime sınıfı (örn: PAPATYA 7, SARILMAK 8) */
+        /* Uzun kelime sınıfı (örn: PAPATYA 7, SARILMAK 8, TAŞGİBİ 7) */
         .word-display-long .letter-box {
             width: 40px;
             height: 40px;
             font-size: 1.5em;
             flex-basis: 40px;
-            gap: 3px; 
         }
         
         .letter-box.revealed {
@@ -358,8 +357,7 @@
         
         <button id="btn-get-letter">Harf Al</button>
         
-        <div id="word-display">
-            </div>
+        <div id="word-display"></div>
         
         <button id="btn-make-guess">Durdur ve Tahmin Et</button>
         
@@ -455,7 +453,6 @@
         </iframe>
     </div>
 
-
     <script>
         // --- YENİ SORU LİSTESİ (GÜNCELLENDİ) ---
         const questions = [
@@ -479,61 +476,62 @@
         let quickGuessAttempts = 3; 
         let stoppedGuessAttempts = 3; 
 
-        // --- HTML Elementleri ---
-        const mainTimerEl = document.getElementById('main-timer');
-        const visualTimerBarEl = document.getElementById('visual-timer-bar'); 
-        const gameScoreEl = document.getElementById('game-score');
-        const questionHintEl = document.getElementById('question-hint');
-        const wordDisplayEl = document.getElementById('word-display');
-        const btnGetLetter = document.getElementById('btn-get-letter');
-        const btnMakeGuess = document.getElementById('btn-make-guess');
-        
-        // Durdurulmuş Tahmin Alanı
-        const guessAreaEl = document.getElementById('guess-area');
-        const guessTimerEl = document.getElementById('guess-timer');
-        const guessAttemptsEl = document.getElementById('guess-attempts'); 
-        const guessInputEl = document.getElementById('guess-input');
-        const btnSubmitGuess = document.getElementById('btn-submit-guess');
-        const guessFeedbackEl = document.getElementById('guess-feedback');
-        
-        // Hızlı Tahmin Alanı
-        const quickGuessAreaEl = document.getElementById('quick-guess-area');
-        const quickGuessAttemptsEl = document.getElementById('quick-guess-attempts');
-        const quickGuessInputEl = document.getElementById('quick-guess-input');
-        const btnQuickGuess = document.getElementById('btn-quick-guess');
-        const quickGuessFeedbackEl = document.getElementById('quick-guess-feedback');
-
-        const finalScoreSummaryEl = document.getElementById('final-score-summary');
+        // --- HTML Elementleri (DOM yüklendikten sonra) ---
+        let mainTimerEl, visualTimerBarEl, gameScoreEl, questionHintEl, wordDisplayEl, btnGetLetter, btnMakeGuess;
+        let guessAreaEl, guessTimerEl, guessAttemptsEl, guessInputEl, btnSubmitGuess, guessFeedbackEl;
+        let quickGuessAreaEl, quickGuessAttemptsEl, quickGuessInputEl, btnQuickGuess, quickGuessFeedbackEl;
+        let finalScoreSummaryEl;
 
         // --- Zamanlayıcı Formatlama ---
         function formatTime(seconds) {
             const min = Math.floor(seconds / 60).toString().padStart(2, '0');
-            const sec = (seconds % 60).toString().padStartimd(2, '0');
+            const sec = (seconds % 60).toString().padStart(2, '0');
             return `${min}:${sec}`;
         }
         
         // Ana Zamanlayıcı Arayüz Güncelleme
         function updateMainTimerUI() {
-            // Metni güncelle
             mainTimerEl.textContent = formatTime(mainTimer);
             
-            // Görsel şeridi güncelle
-            const totalTime = 180; // 3 dakika
+            const totalTime = 180;
             const percentage = (mainTimer / totalTime) * 100;
             visualTimerBarEl.style.width = percentage + '%';
             
-            // Rengi güncelle
             if (percentage < 20) {
-                visualTimerBarEl.style.backgroundColor = '#dc3545'; // Kırmızı
+                visualTimerBarEl.style.backgroundColor = '#dc3545';
             } else if (percentage < 50) {
-                visualTimerBarEl.style.backgroundColor = '#f7b538'; // Sarı
+                visualTimerBarEl.style.backgroundColor = '#f7b538';
             } else {
-                visualTimerBarEl.style.backgroundColor = '#28a745'; // Yeşil
+                visualTimerBarEl.style.backgroundColor = '#28a745';
             }
         }
 
         // --- Ana Oyunu Başlatma ---
         function initGame() {
+            // Elementleri ata
+            mainTimerEl = document.getElementById('main-timer');
+            visualTimerBarEl = document.getElementById('visual-timer-bar'); 
+            gameScoreEl = document.getElementById('game-score');
+            questionHintEl = document.getElementById('question-hint');
+            wordDisplayEl = document.getElementById('word-display');
+            btnGetLetter = document.getElementById('btn-get-letter');
+            btnMakeGuess = document.getElementById('btn-make-guess');
+            
+            guessAreaEl = document.getElementById('guess-area');
+            guessTimerEl = document.getElementById('guess-timer');
+            guessAttemptsEl = document.getElementById('guess-attempts'); 
+            guessInputEl = document.getElementById('guess-input');
+            btnSubmitGuess = document.getElementById('btn-submit-guess');
+            guessFeedbackEl = document.getElementById('guess-feedback');
+            
+            quickGuessAreaEl = document.getElementById('quick-guess-area');
+            quickGuessAttemptsEl = document.getElementById('quick-guess-attempts');
+            quickGuessInputEl = document.getElementById('quick-guess-input');
+            btnQuickGuess = document.getElementById('btn-quick-guess');
+            quickGuessFeedbackEl = document.getElementById('quick-guess-feedback');
+
+            finalScoreSummaryEl = document.getElementById('final-score-summary');
+
             currentQuestionIndex = 0;
             totalScore = 0;
             mainTimer = 180;
@@ -551,7 +549,7 @@
             btnSubmitGuess.onclick = handleSubmitGuess;
             btnQuickGuess.onclick = handleSubmitQuickGuess; 
             
-            // Enter tuşu ile tahmin onayı (Her iki input için)
+            // Enter tuşu
             guessInputEl.addEventListener('keyup', (e) => {
                 if (e.key === 'Enter' && isGuessingPhase) handleSubmitGuess();
             });
@@ -563,7 +561,7 @@
         // --- Soru Yükleme ---
         function loadQuestion(index) {
             if (index >= questions.length) {
-                endGame(true); // Tüm sorular bitti
+                endGame(true);
                 return;
             }
 
@@ -573,7 +571,6 @@
             wordDisplayEl.innerHTML = '';
             revealedLetters = [];
             
-            // Sınıf adı 7 harften uzunsa (örn: PAPATYA 7, SARILMAK 8, TAŞGİBİ 7)
             if (question.word.length > 6) { 
                 wordDisplayEl.className = 'word-display-long';
             } else {
@@ -581,25 +578,27 @@
             }
 
             for (let i = 0; i < question.word.length; i++) {
-                wordDisplayEl.innerHTML += `<div class="letter-box" data-index="${i}">_</div>`;
+                const box = document.createElement('div');
+                box.className = 'letter-box';
+                box.dataset.index = i;
+                box.textContent = '_';
+                wordDisplayEl.appendChild(box);
                 revealedLetters.push(false); 
             }
             
-            // Arayüzü sıfırla
             isGuessingPhase = false;
             btnGetLetter.disabled = false;
             btnMakeGuess.disabled = false;
             
-            // Hızlı tahmin alanını sıfırla ve göster
             quickGuessAttempts = 3;
             quickGuessAttemptsEl.textContent = `Kalan Hak: ${quickGuessAttempts}`;
             quickGuessAreaEl.style.display = 'block';
             quickGuessFeedbackEl.textContent = '';
+            quickGuessFeedbackEl.className = 'feedback';
             quickGuessInputEl.value = '';
             quickGuessInputEl.disabled = false;
             btnQuickGuess.disabled = false;
             
-            // Durdurulmuş tahmin alanını gizle
             guessAreaEl.style.display = 'none';
         }
 
@@ -611,7 +610,7 @@
                 mainTimer--;
                 updateMainTimerUI(); 
                 if (mainTimer <= 0) {
-                    endGame(false); // Ana süre doldu
+                    endGame(false);
                 }
             }, 1000);
         }
@@ -622,17 +621,11 @@
 
         // --- Oynanış Fonksiyonları ---
 
-        // "AKILLI HARF AL" FONKSİYONU
         function handleGetLetter() {
             const question = questions[currentQuestionIndex];
             const wordLength = question.word.length;
 
-            const unrevealedIndices = [];
-            for (let i = 0; i < wordLength; i++) {
-                if (revealedLetters[i] === false) {
-                    unrevealedIndices.push(i);
-                }
-            }
+            const unrevealedIndices = revealedLetters.map((revealed, i) => revealed ? null : i).filter(i => i !== null);
 
             if (unrevealedIndices.length === 0) {
                 btnGetLetter.disabled = true;
@@ -640,37 +633,28 @@
             }
 
             const idealChoices = unrevealedIndices.filter(index => {
-                const isAdjacentLeft = (index > 0) && (revealedLetters[index - 1] === true);
-                const isAdjacentRight = (index < wordLength - 1) && (revealedLetters[index + 1] === true);
-                return !isAdjacentLeft && !isAdjacentRight;
+                const left = index > 0 && revealedLetters[index - 1];
+                const right = index < wordLength - 1 && revealedLetters[index + 1];
+                return !left && !right;
             });
             
-            const nonFirstIdealChoices = idealChoices.filter(index => index !== 0);
+            const nonFirstIdeal = idealChoices.filter(i => i !== 0);
 
-            let chosenIndex;
+            let chosen = nonFirstIdeal.length > 0 ? nonFirstIdeal[Math.floor(Math.random() * nonFirstIdeal.length)] :
+                        idealChoices.length > 0 ? idealChoices[0] :
+                        unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
 
-            if (nonFirstIdealChoices.length > 0) {
-                chosenIndex = nonFirstIdealChoices[Math.floor(Math.random() * nonFirstIdealChoices.length)];
-            } else if (idealChoices.length > 0) {
-                chosenIndex = idealChoices[0]; 
-            } else {
-                chosenIndex = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
-            }
-
-            revealedLetters[chosenIndex] = true; 
-            const box = wordDisplayEl.querySelector(`.letter-box[data-index="${chosenIndex}"]`);
-            box.textContent = question.word[chosenIndex];
+            revealedLetters[chosen] = true; 
+            const box = wordDisplayEl.querySelector(`.letter-box[data-index="${chosen}"]`);
+            box.textContent = question.word[chosen];
             box.classList.add('revealed');
             
             if (unrevealedIndices.length === 1) { 
                 btnGetLetter.disabled = true;
-                setTimeout(() => {
-                    handleGuessResult(false, true); // Bilemedi varsay
-                }, 1000);
+                setTimeout(() => handleGuessResult(false, true), 1000);
             }
         }
 
-        // "Durdur ve Tahmin Et" Butonu
         function handleMakeGuess() {
             isGuessingPhase = true; 
             pauseMainTimer();
@@ -683,6 +667,7 @@
             guessInputEl.value = '';
             guessInputEl.focus();
             guessFeedbackEl.textContent = '';
+            guessFeedbackEl.className = 'feedback';
             
             stoppedGuessAttempts = 3; 
             guessTimer = 60; 
@@ -691,35 +676,31 @@
             startGuessTimer();
         }
         
-        // "Hızlı Tahmin" Onay Butonu
         function handleSubmitQuickGuess() {
             if (mainTimer <= 0 || quickGuessAttempts <= 0) return;
 
             const guess = quickGuessInputEl.value.toLocaleUpperCase('tr-TR').trim();
-            const correctWord = questions[currentQuestionIndex].word;
+            const correct = questions[currentQuestionIndex].word;
 
-            if (guess === correctWord) {
+            if (guess === correct) {
                 pauseMainTimer(); 
                 handleGuessResult(true, false); 
             } else {
                 quickGuessAttempts--;
                 quickGuessAttemptsEl.textContent = `Kalan Hak: ${quickGuessAttempts}`;
                 
+                quickGuessFeedbackEl.textContent = quickGuessAttempts <= 0 ? "Yanlış! Hızlı tahmin hakkınız bitti." : "Yanlış! Tekrar deneyin.";
+                quickGuessFeedbackEl.classList.remove('feedback-correct');
+                quickGuessFeedbackEl.classList.add('feedback-wrong');
+                
                 if (quickGuessAttempts <= 0) {
-                    quickGuessFeedbackEl.textContent = "Yanlış! Hızlı tahmin hakkınız bitti.";
-                    quickGuessFeedbackEl.classList.add('feedback-wrong');
                     quickGuessInputEl.disabled = true;
                     btnQuickGuess.disabled = true;
-                } else {
-                    quickGuessFeedbackEl.textContent = "Yanlış! Tekrar deneyin.";
-                    quickGuessFeedbackEl.classList.add('feedback-wrong');
                 }
             }
             quickGuessInputEl.value = ''; 
         }
 
-
-        // "Durdurulmuş Tahmin" Zamanlayıcısı
         function startGuessTimer() {
             guessTimerEl.textContent = `Kalan Tahmin Süresi: ${formatTime(guessTimer)}`;
             
@@ -729,52 +710,45 @@
                 guessTimerEl.textContent = `Kalan Tahmin Süresi: ${formatTime(guessTimer)}`;
                 if (guessTimer <= 0) {
                     guessFeedbackEl.textContent = "Süre Doldu! Hakkınız bitti.";
+                    guessFeedbackEl.classList.remove('feedback-correct');
                     guessFeedbackEl.classList.add('feedback-wrong');
                     setTimeout(() => handleGuessResult(false, false), 1500); 
                 }
             }, 1000);
         }
 
-        // "Durdurulmuş Tahmin" Onay Butonu
         function handleSubmitGuess() {
             if (guessTimer <= 0 || stoppedGuessAttempts <= 0) return; 
 
             const guess = guessInputEl.value.toLocaleUpperCase('tr-TR').trim();
-            const correctWord = questions[currentQuestionIndex].word;
+            const correct = questions[currentQuestionIndex].word;
 
-            if (guess === correctWord) {
+            if (guess === correct) {
                 handleGuessResult(true, false); 
             } else {
                 stoppedGuessAttempts--;
                 guessAttemptsEl.textContent = `Kalan Hak: ${stoppedGuessAttempts}`;
                 
+                guessFeedbackEl.textContent = stoppedGuessAttempts <= 0 ? "Yanlış! Hakkınız bitti." : "Yanlış! Tekrar deneyin.";
+                guessFeedbackEl.classList.remove('feedback-correct');
+                guessFeedbackEl.classList.add('feedback-wrong');
+                
                 if (stoppedGuessAttempts <= 0) {
-                    guessFeedbackEl.textContent = "Yanlış! Hakkınız bitti.";
-                    guessFeedbackEl.classList.add('feedback-wrong');
                     setTimeout(() => handleGuessResult(false, false), 1500); 
-                } else {
-                    guessFeedbackEl.textContent = "Yanlış! Tekrar deneyin.";
-                    guessFeedbackEl.classList.add('feedback-wrong');
                 }
             }
             guessInputEl.value = ''; 
         }
 
-        // --- Sonuç ve Geçiş ---
-        
         function handleGuessResult(isCorrect, isAutoAdvance) {
             pauseMainTimer();
             if (guessTimerInterval) clearInterval(guessTimerInterval);
             isGuessingPhase = true; 
             
             if (isCorrect) {
-                let pointsEarned = 0;
-                for (let i = 0; i < revealedLetters.length; i++) {
-                    if (revealedLetters[i] === false) {
-                        pointsEarned += 10;
-                    }
-                }
-                totalScore += pointsEarned;
+                let points = 0;
+                revealedLetters.forEach((rev, i) => { if (!rev) points += 10; });
+                totalScore += points;
                 gameScoreEl.textContent = totalScore;
                 
                 const boxes = wordDisplayEl.querySelectorAll('.letter-box');
@@ -792,7 +766,6 @@
             }, 1500);
         }
 
-        // --- Oyun Bitişi ---
         function endGame(isFinished) { 
             pauseMainTimer();
             if (guessTimerInterval) clearInterval(guessTimerInterval);
@@ -811,18 +784,11 @@
             finalScoreSummaryEl.innerHTML = `Oyun Bitti! <br> Toplam Puanınız: ${totalScore} <br> Kalan Süreniz: ${formatTime(mainTimer)}`;
             finalScoreSummaryEl.style.display = 'block';
 
-            // Bekleme süresi 5 saniye
-            setTimeout(() => {
-                showFinalStep(); // Step-3'ü (şiir/video) göster
-            }, 5000); // 5 saniye bekle
+            setTimeout(showFinalStep, 5000);
         }
 
-        // --- Sürpriz Adım Fonksiyonları ---
-
         function showStep(stepId) {
-            document.querySelectorAll('.step').forEach(step => {
-                step.classList.remove('active');
-            });
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
             document.getElementById(stepId).classList.add('active');
         }
 
@@ -831,7 +797,6 @@
             setInterval(createHeart, 200);
         }
 
-        // Kalp/Harf ("GAMZE") oluşturma fonksiyonu
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -839,18 +804,16 @@
             heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
             heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
             
-            const heartIcons = ['❤️', 'G', '💗', 'A', '💓','M', '💖', 'Z', '💕', 'E'];
-            heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+            const icons = ['❤️', 'G', '💗', 'A', '💓','M', '💖', 'Z', '💕', 'E'];
+            heart.innerText = icons[Math.floor(Math.random() * icons.length)];
             
             document.body.appendChild(heart);
             
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
+            setTimeout(() => heart.remove(), 5000);
         }
         
-        // --- OYUNU BAŞLAT ---
-        initGame();
+        // DOM yüklendiğinde başlat
+        document.addEventListener('DOMContentLoaded', initGame);
         
     </script>
 
