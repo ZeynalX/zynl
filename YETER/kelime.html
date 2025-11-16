@@ -245,7 +245,7 @@
             flex-basis: 50px; 
         }
         
-        /* Uzun kelime sınıfı (VELHASIL 8, FILHAKIKA 9) */
+        /* Uzun kelime sınıfı (BEHEMEHAL 9, VELİNİMET 9, BİNAENALEYH 10, FİLHAKİKA 9) */
         .word-display-long .letter-box {
             width: 40px;
             height: 40px;
@@ -419,11 +419,14 @@
         </div>
 
         <iframe 
-            id="video-player-iframe" 
-            src="https://www.youtube.com/embed/3bfkyXtuIXk" 
+            id="video-player-iframe"
+            width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/_dEjmFWIDS4?si=ABvu8UgN7ATOicn3&amp;start=2208" 
             title="YouTube video player" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
             allowfullscreen>
         </iframe>
     </div>
@@ -432,9 +435,15 @@
     <script>
         // --- GÜNCELLENMİŞ SORU LİSTESİ ---
         const questions = [
-            { word: "CEVAZ", hint: "Kökeni Arapça olan ve destur anlamına da gelir." },
-            { word: "VELHASIL", hint: "uzatmadan , detaylandırmadan" },
-            { word: "FİLHAKİKA", hint: "İşin özü, yalancıktan olmayan." }
+            { word: "HÜLASA", hint: "Sadede gel dendiğinde verilen cevaptır." },
+            { word: "İZAHÂT", hint: "Yetinmeyen birine yapılan ekstra açıklamalardır." },
+            { word: "İŞTİRAK", hint: "Bir oyuna veya sohbete dâhil olmanın bir diğer adıdır." },
+            { word: "MUAYYEN", hint: "Bir randevunun belirsiz olmadığını, net olduğunu ifade eder." },
+            { word: "MÜESSESE", hint: "Ev değildir ama resmî bir çatıdır; genellikle ciddiyet gerektiren bir kurumdur." },
+            { word: "BEHEMEHAL", hint: "Belki veya sonra kabul etmez; hemen şimdinin en acil halidir." },
+            { word: "VELİNİMET", hint: "Bir esnaf için, para harcayan müşteriden farksızdır." },
+            { word: "BİNAENALEYH", hint: "(Sizin de onayladığınız gibi) Asıl işi bir önceki cümleyi sonuca bağlamaktır." },
+            { word: "FİLHAKİKA", hint: "(Sizin de sevdiğiniz gibi) İşin özü, yalancıktan olmayandır." }
         ];
 
         // --- Oyun Değişkenleri ---
@@ -807,7 +816,7 @@
             setInterval(createHeart, 200);
         }
 
-        // Kalp/Harf oluşturma fonksiyonu
+        // Kalp/Harf oluşturma fonksiyonu (YETER)
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
