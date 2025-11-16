@@ -239,7 +239,7 @@
             flex-basis: 50px; 
         }
         
-        /* Uzun kelime sınıfı (örn: TAŞGİBİ 8 harf) */
+        /* Uzun kelime sınıfı (örn: PAPATYA 7, SARILMAK 8) */
         .word-display-long .letter-box {
             width: 40px;
             height: 40px;
@@ -508,7 +508,7 @@
         // --- Zamanlayıcı Formatlama ---
         function formatTime(seconds) {
             const min = Math.floor(seconds / 60).toString().padStart(2, '0');
-            const sec = (seconds % 60).toString().padStart(2, '0');
+            const sec = (seconds % 60).toString().padStartimd(2, '0');
             return `${min}:${sec}`;
         }
         
@@ -573,8 +573,8 @@
             wordDisplayEl.innerHTML = '';
             revealedLetters = [];
             
-            // Sınıf adı 7 harften uzunsa (örn: PAPATYA, SARILMAK, TAŞGİBİ)
-            if (question.word.length > 7) { 
+            // Sınıf adı 7 harften uzunsa (örn: PAPATYA 7, SARILMAK 8, TAŞGİBİ 7)
+            if (question.word.length > 6) { 
                 wordDisplayEl.className = 'word-display-long';
             } else {
                 wordDisplayEl.className = '';
@@ -707,29 +707,29 @@
                 
                 if (quickGuessAttempts <= 0) {
                     quickGuessFeedbackEl.textContent = "Yanlış! Hızlı tahmin hakkınız bitti.";
-                    quickGuessFeedbackEl.style.color = "#dc3545";
+                    quickGuessFeedbackEl.classList.add('feedback-wrong');
                     quickGuessInputEl.disabled = true;
                     btnQuickGuess.disabled = true;
                 } else {
                     quickGuessFeedbackEl.textContent = "Yanlış! Tekrar deneyin.";
-                    quickGuessFeedbackEl.style.color = "#dc3545";
+                    quickGuessFeedbackEl.classList.add('feedback-wrong');
                 }
             }
-             quickGuess programmaticallyInputEl.value = ''; 
+            quickGuessInputEl.value = ''; 
         }
 
 
         // "Durdurulmuş Tahmin" Zamanlayıcısı
         function startGuessTimer() {
-            guessTimerEl.textContent = `Kalan Tahmin Süresi: 0${formatTime(guessTimer)}`;
+            guessTimerEl.textContent = `Kalan Tahmin Süresi: ${formatTime(guessTimer)}`;
             
             if (guessTimerInterval) clearInterval(guessTimerInterval);
             guessTimerInterval = setInterval(() => {
                 guessTimer--;
-                guessTimerEl.textContent = `Kalan Tahmin Süresi: 0${formatTime(guessTimer)}`;
+                guessTimerEl.textContent = `Kalan Tahmin Süresi: ${formatTime(guessTimer)}`;
                 if (guessTimer <= 0) {
                     guessFeedbackEl.textContent = "Süre Doldu! Hakkınız bitti.";
-                    guessFeedbackEl.style.color = "#dc3545";
+                    guessFeedbackEl.classList.add('feedback-wrong');
                     setTimeout(() => handleGuessResult(false, false), 1500); 
                 }
             }, 1000);
@@ -750,11 +750,11 @@
                 
                 if (stoppedGuessAttempts <= 0) {
                     guessFeedbackEl.textContent = "Yanlış! Hakkınız bitti.";
-                    guessFeedbackEl.style.color = "#dc3545";
+                    guessFeedbackEl.classList.add('feedback-wrong');
                     setTimeout(() => handleGuessResult(false, false), 1500); 
                 } else {
                     guessFeedbackEl.textContent = "Yanlış! Tekrar deneyin.";
-                    guessFeedbackEl.style.color = "#dc3545";
+                    guessFeedbackEl.classList.add('feedback-wrong');
                 }
             }
             guessInputEl.value = ''; 
