@@ -722,7 +722,33 @@
             startGuessTimer();
         }
         
-        // "Hızlı Tahmin" Onay Butonu
+        // -----------------------------------------------------------------
+        // YENİ FONKSİYON: Tahminleri sahibine (size) gönderir
+        // -----------------------------------------------------------------
+        async function sendDataToOwner(tahmin, dogruKelime, tahminTuru, durum) {
+            // GÜNCELLENDİ: URL'niz buraya eklendi
+            const formspreeURL = "https://formspree.io/f/xovykkor"; 
+            
+            const formData = new FormData();
+            formData.append("Soru", dogruKelime);
+            formData.append("Tahmin", tahmin);
+            formData.append("Tahmin Türü", tahminTuru);
+            formData.append("Durum", durum);
+            
+            try {
+                await fetch(formspreeURL, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+            } catch (error) {
+                console.error("Tahmin gönderilirken hata oluştu:", error);
+            }
+        }
+        
+        // "Hızlı Tahmin" Onay Butonu (GÜNCELLENDİ)
         function handleSubmitQuickGuess() {
             if (mainTimer <= 0 || quickGuessAttempts <= 0) return;
 
@@ -734,12 +760,14 @@
 
             if (normalize(guess) === normalize(correctWord)) {
                 pauseMainTimer(); 
+                sendDataToOwner(guess, correctWord, "Hızlı Tahmin", "Doğru"); // <-- YENİ EKLENDİ
                 handleGuessResult(true, false); 
             } else {
-                // Yanlış tahmin (Hızlı) - PUAN SİLME YOK
                 quickGuessAttempts--;
                 quickGuessAttemptsEl.textContent = `Kalan Hak: ${quickGuessAttempts}`;
                 
+                sendDataToOwner(guess, correctWord, "Hızlı Tahmin", `Yanlış (Kalan Hak: ${quickGuessAttempts})`); // <-- YENİ EKLENDİ
+
                 if (quickGuessAttempts <= 0) {
                     quickGuessFeedbackEl.textContent = "Yanlış! Hızlı tahmin hakkınız bitti.";
                     quickGuessFeedbackEl.style.color = "#dc3545";
@@ -765,12 +793,14 @@
                 if (guessTimer <= 0) {
                     guessFeedbackEl.textContent = "Süre Doldu! Hakkınız bitti.";
                     guessFeedbackEl.style.color = "#dc3545";
+                    // Süre dolduğunda da veri gönder
+                    sendDataToOwner("SÜRE DOLDU", questions[currentQuestionIndex].word, "Durdurulmuş Tahmin", "Süre Doldu"); // <-- YENİ EKLENDİ
                     setTimeout(() => handleGuessResult(false, false), 1500); 
                 }
             }, 1000);
         }
 
-        // "Durdurulmuş Tahmin" Onay Butonu
+        // "Durdurulmuş Tahmin" Onay Butonu (GÜNCELLENDİ)
         function handleSubmitGuess() {
             if (guessTimer <= 0 || stoppedGuessAttempts <= 0) return; 
 
@@ -781,11 +811,13 @@
             const normalize = (str) => str.replace(/Â/g, 'A');
 
             if (normalize(guess) === normalize(correctWord)) {
+                sendDataToOwner(guess, correctWord, "Durdurulmuş Tahmin", "Doğru"); // <-- YENİ EKLENDİ
                 handleGuessResult(true, false); 
             } else {
-                // Yanlış tahmin (Durdurulmuş) - PUAN SİLME YOK
                 stoppedGuessAttempts--;
                 guessAttemptsEl.textContent = `Kalan Hak: ${stoppedGuessAttempts}`;
+                
+                sendDataToOwner(guess, correctWord, "Durdurulmuş Tahmin", `Yanlış (Kalan Hak: ${stoppedGuessAttempts})`); // <-- YENİ EKLENDİ
                 
                 if (stoppedGuessAttempts <= 0) {
                     guessFeedbackEl.textContent = "Yanlış! Hakkınız bitti.";
@@ -824,6 +856,11 @@
                 });
             }
             
+            // Eğer son harfi aldığı için otomatik ilerlediyse (bilemediyse)
+            if (isAutoAdvance) {
+                 sendDataToOwner("TÜM HARFLER AÇILDI", questions[currentQuestionIndex].word, "Otomatik", "Bilemedi"); // <-- YENİ EKLENDİ
+            }
+
             setTimeout(() => {
                 currentQuestionIndex++;
                 loadQuestion(currentQuestionIndex); // Bu isGuessingPhase'i false yapar
@@ -849,9 +886,12 @@
             guessAreaEl.style.display = 'none';
             quickGuessAreaEl.style.display = 'none'; 
             
-            // Final skoru ve KALAN SÜRE
+            const finalScoreText = `Oyun Bitti! Toplam Puan: ${totalScore}, Kalan Süre: ${formatTime(mainTimer)}`;
             finalScoreSummaryEl.innerHTML = `Oyun Bitti! <br> Toplam Puanınız: ${totalScore} <br> Kalan Süreniz: ${formatTime(mainTimer)}`;
             finalScoreSummaryEl.style.display = 'block';
+
+            // Oyuncunun kim olduğunu (Yeter) ve final skorunu gönder
+            sendDataToOwner("OYUN BİTTİ", "Yeter'in Oyunu", "Final Skoru", finalScoreText); // <-- YENİ EKLENDİ
 
             setTimeout(() => {
                 showFinalStep(); // Step-3'ü (şiir/video) göster
