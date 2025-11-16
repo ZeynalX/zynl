@@ -251,8 +251,6 @@
             height: 40px;
             font-size: 1.5em;
             flex-basis: 40px;
-            /* Gerekirse harf aralığını (gap) azaltabilirsiniz */
-            /* gap: 3px; */
         }
         
         .letter-box.revealed {
@@ -487,7 +485,7 @@
 
 
     <script>
-        // --- GÜNCELLENMİŞ SORU LİSTESİ (HÜLASA, vb.) ---
+        // --- GÜNCELLENMİŞ SORU LİSTESİ (Hata düzeltildi) ---
         const questions = [
             { word: "HÜLASA", hint: "Sadede gel dendiğinde verilen cevaptır." },
             { word: "İZAHÂT", hint: "Yetinmeyen birine yapılan ekstra açıklamalardır." },
@@ -497,7 +495,7 @@
             { word: "BEHEMEHAL", hint: "Belki veya sonra kabul etmez; hemen şimdinin en acil halidir." },
             { word: "VELİNİMET", hint: "Bir esnaf için, para harcayan müşteriden farksızdır." },
             { word: "BİNAENALEYH", hint: "(Sizin de onayladığınız gibi) Asıl işi bir önceki cümleyi sonuca bağlamaktır." },
-            { word:V: "FİLHAKİKA", hint: "(Sizin de sevdiğiniz gibi) İşin özü, yalancıktan olmayandır." }
+            { word: "FİLHAKİKA", hint: "(Sizin de sevdiğiniz gibi) İşin özü, yalancıktan olmayandır." }
         ];
 
         // --- Oyun Değişkenleri ---
@@ -729,9 +727,12 @@
             if (mainTimer <= 0 || quickGuessAttempts <= 0) return;
 
             const guess = quickGuessInputEl.value.toLocaleUpperCase('tr-TR').trim();
-            const correctWord = questions[currentQuestionIndex].word;
+            const correctWord = questions[currentQuestionIndex].word; // Already uppercase
 
-            if (guess === correctWord) {
+            // Normalizasyon: Â harfini A ile değiştir
+            const normalize = (str) => str.replace(/Â/g, 'A');
+
+            if (normalize(guess) === normalize(correctWord)) {
                 pauseMainTimer(); 
                 handleGuessResult(true, false); 
             } else {
@@ -774,9 +775,12 @@
             if (guessTimer <= 0 || stoppedGuessAttempts <= 0) return; 
 
             const guess = guessInputEl.value.toLocaleUpperCase('tr-TR').trim();
-            const correctWord = questions[currentQuestionIndex].word;
+            const correctWord = questions[currentQuestionIndex].word; // Already uppercase
 
-            if (guess === correctWord) {
+            // Normalizasyon: Â harfini A ile değiştir
+            const normalize = (str) => str.replace(/Â/g, 'A');
+
+            if (normalize(guess) === normalize(correctWord)) {
                 handleGuessResult(true, false); 
             } else {
                 // Yanlış tahmin (Durdurulmuş) - PUAN SİLME YOK
