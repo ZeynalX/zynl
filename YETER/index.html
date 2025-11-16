@@ -5,22 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sana Bir Sürprizim Var...</title>
     <style>
-        /* YENİ FONTU İNTERNETTEN ÇEKİYORUZ */
+        /* FONT KORUNDU */
         @import url('https://fonts.cdnfonts.com/css/super-malibu');
         
-        /* GÜNCELLENDİ: TEMA DEĞİŞİKLİĞİ (LAVANTA/MOR) */
+        /* TEMA (LAVANTA/MOR) */
         
         body {
-            /* FONT KORUNDU: Super Malibu */
             font-family: 'Super Malibu', sans-serif;
-            background-color: #e6e0f7;  /* GÜNCELLENDİ: Açık lavanta */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="%23d0c0f0" d="M50 0 C75 25 75 75 50 100 C25 75 25 25 50 0z" /><path fill="%23d0c0f0" d="M0 50 C25 25 75 25 100 50 C75 75 25 75 0 50z" /></svg>'); /* GÜNCELLENDİ: Mor desen */
+            background-color: #e6e0f7;  
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="%23d0c0f0" d="M50 0 C75 25 75 75 50 100 C25 75 25 25 50 0z" /><path fill="%23d0c0f0" d="M0 50 C25 25 75 25 100 50 C75 75 25 75 0 50z" /></svg>'); 
             background-size: 80px 80px;
             color: #4a2c3c;  
             text-align: center;
             padding: 20px;
-            overflow-x: hidden; /* Yatay kaydırmayı engelle */
-            line-height: 1.6; /* Yeni font için satır aralığı */
+            overflow-x: hidden; 
+            line-height: 1.6; 
         }
         
         /* Mektup kutusu */
@@ -28,15 +27,14 @@
             max-width: 650px;  
             margin: 40px auto;
             padding: 30px 40px;  
-            background-color: #fffaf0; /* Krem rengi korundu */
+            background-color: #fffaf0; 
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);  
             position: relative;
-            border: 2px solid #c0b0dd;  /* GÜNCELLENDİ: Mor sınır */
-            box-sizing: border-box; /* Padding'i genişliğe dahil et */
+            border: 2px solid #c0b0dd;  
+            box-sizing: border-box; 
         }
         
-        /* Mektup kağıdı dokusu */
         .container::before {
             content: '';
             position: absolute;
@@ -51,43 +49,61 @@
         .active { display: block; }
 
         h1 {
-            /* FONT KORUNDU */
             font-family: 'Super Malibu', sans-serif;
             font-weight: normal; 
-            color: #6a4a8c;  /* GÜNCELLENDİ: Koyu mor */
+            color: #6a4a8c;  
             font-size: 2.8em; 
             margin-bottom: 20px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
         
         .container p {
-            /* FONT KORUNDU */
             font-family: 'Super Malibu', sans-serif;
             font-size: 1.3em; 
             margin-bottom: 15px;
-            color: #5a3c4c; /* Korundu */
+            color: #5a3c4c; 
         }
         
         button {
             padding: 14px 30px;
-            background-color: #9b7fbc;  /* GÜNCELLENDİ: Mor */
+            background-color: #9b7fbc;  
             color: #ffffff;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 25px;
+            margin-top: 10px;
             transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
             font-size: 1.1em;  
             font-family: 'Super Malibu', sans-serif; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         button:hover {
-            background-color: #8468a3; /* GÜNCELLENDİ: Koyu mor */
+            background-color: #8468a3; 
             transform: scale(1.03);
             box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: scale(1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
         
+        /* Durdurma Butonu Stili */
+        #btn-make-guess {
+            background-color: #dc3545; /* Kırmızı */
+            box-shadow: 0 4px 10px rgba(100,0,0,0.2);
+            margin-top: 20px; /* Altta olduğu için boşluk ver */
+        }
+        #btn-make-guess:hover {
+            background-color: #c82333; /* Koyu Kırmızı */
+        }
+        #btn-make-guess:disabled {
+            background-color: #cccccc;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
         /* YETER harfleri ve kalp animasyonu */
         .heart {
             position: fixed;
@@ -97,9 +113,9 @@
             animation: fall 5s linear forwards;
             opacity: 0.9;
             font-weight: bold;
-            color: #b388dd; /* GÜNCELLENDİ: Lavanta */
+            color: #b388dd; 
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-            z-index: 1000; /* Diğer her şeyin üstünde */
+            z-index: 1000; 
         }
         @keyframes fall {
             to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
@@ -123,7 +139,7 @@
             font-size: 2.5em;
             opacity: 0.8;
             pointer-events: none;
-            color: #b388dd; /* GÜNCELLENDİ: Lavanta */
+            color: #b388dd; 
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         .decoration-top-left { top: 15px; left: 15px; transform: rotate(-15deg); }
@@ -137,15 +153,59 @@
             font-style: normal; 
             font-size: 1.8em; 
             margin-top: 30px;
-            color: #6a4a8c; /* GÜNCELLENDİ: Koyu mor */
+            color: #6a4a8c; 
             text-align: right;
             padding-right: 20px;
         }
 
-        /* --- KELİME OYUNU (WORDLE) STİLLERİ (5 HARF İÇİN GÜNCELLENDİ) --- */
+        /* --- KELİME OYUNU STİLLERİ --- */
         
-        /* İPUCU STİLİ */
-        .wordle-hint {
+        #game-stats {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #fdf6f8;
+            border: 1px dashed #d4a7b7;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px; 
+            font-family: 'Helvetica', sans-serif; 
+            flex-wrap: wrap; 
+        }
+        #game-stats div {
+            font-size: 1.2em;
+            color: #6a4a8c;
+            font-weight: bold;
+            padding: 5px 10px;
+        }
+        #game-stats span {
+            font-size: 1.5em;
+            color: #333;
+            display: block;
+            font-weight: 900;
+        }
+        #main-timer { color: #b33951; } 
+
+        /* Görsel Zaman Şeridi */
+        #visual-timer-container {
+            width: 100%;
+            height: 12px;
+            background-color: #fcf6f8;
+            border: 1px solid #c0b0dd;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 5px 10px 15px 10px; 
+            flex-basis: 100%; 
+        }
+        #visual-timer-bar {
+            height: 100%;
+            width: 100%; 
+            background-color: #28a745; /* Yeşil */
+            border-radius: 6px;
+            transition: width 1s linear, background-color 0.5s linear;
+        }
+
+        #question-hint {
             font-size: 1.1em;
             color: #7a5c6c; 
             font-style: italic;
@@ -156,27 +216,24 @@
             border-radius: 8px;
             max-width: 90%;
             line-height: 1.5;
+            min-height: 3em; 
         }
         
-        #wordle-grid {
-            display: grid;
-            grid-template-rows: repeat(6, 1fr); /* 6 tahmin hakkı */
+        #word-display {
+            display: flex;
+            justify-content: center;
             gap: 5px;
-            width: 100%;
-            max-width: 300px; /* GÜNCELLENDİ: 5 kutu için daraltıldı */
-            margin: 20px auto; 
+            margin: 25px 0;
+            flex-wrap: nowrap; 
         }
-        .wordle-row {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr); /* GÜNCELLENDİ: 5 harf */
-            gap: 5px;
-        }
-        .wordle-box {
-            aspect-ratio: 1 / 1; 
-            border: 2px solid #d4a7b7;
+        
+        .letter-box {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #c0b0dd;
             border-radius: 5px;
             background-color: #fcf6f8;
-            font-size: clamp(1.5em, 5vw, 2em); 
+            font-size: 2em; 
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -184,108 +241,102 @@
             color: #4a2c3c;
             font-family: sans-serif; 
             transition: all 0.3s ease;
-            transform-style: preserve-3d; 
+            flex-shrink: 1; 
+            flex-basis: 50px; 
         }
         
-        /* Kutu animasyonları */
-        .wordle-box.filled {
-            border-color: #a7a9ac; 
-            animation: pop 0.1s;
+        /* Uzun kelime sınıfı (BEHEMEHAL 9, VELİNİMET 9, BİNAENALEYH 10, FİLHAKİKA 9) */
+        .word-display-long .letter-box {
+            width: 40px;
+            height: 40px;
+            font-size: 1.5em;
+            flex-basis: 40px;
         }
         
-        .wordle-box.flip {
-            animation: flip 0.5s ease forwards;
-        }
-        
-        /* Tahmin kutusu durumları */
-        .wordle-box.correct {
-            background-color: #79b791; /* Yeşil */
-            color: white;
-            border-color: #79b791;
-        }
-        .wordle-box.present {
-            background-color: #f7b538; /* Sarı */
-            color: white;
-            border-color: #f7b538;
-        }
-        .wordle-box.absent {
-            background-color: #a7a9ac; /* Gri */
-            color: white;
-            border-color: #a7a9ac;
-        }
-        
-        /* Kutu animasyon keyframes */
-        @keyframes pop { 
-            0% { transform: scale(1); } 
-            50% { transform: scale(1.1); } 
-            100% { transform: scale(1); } 
+        .letter-box.revealed {
+            background-color: #fffaf0;
+            border-color: #9b7fbc;
+            transform: scale(1.05);
         }
 
-        /* DÜZELTİLMİŞ FLIP ANİMASYONU */
-        @keyframes flip { 
-            0% { transform: rotateX(0deg); } 
-            50% { transform: rotateX(90deg); } 
-            100% { transform: rotateX(0deg); } 
+        /* Hızlı Tahmin Alanı Stili */
+        #quick-guess-area {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #c0b0dd;
         }
-
-        /* --- SANAL KLAVYE STİLLERİ --- */
-        #wordle-keyboard { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
-            margin: 20px auto 0 auto; 
-            max-width: 600px; 
-            user-select: none; 
-            width: 100%;
+        #quick-guess-area h3 {
+             font-family: 'Helvetica', sans-serif; 
+             color: #6a4a8c;
+             margin-top: 0;
+             margin-bottom: 10px;
         }
-        .keyboard-row { 
-            display: flex; 
-            justify-content: center; 
-            gap: 6px; 
-            touch-action: manipulation; 
+        #quick-guess-attempts {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #6a4a8c;
+            margin-bottom: 10px;
         }
-        .key {
+        
+        /* "Durdurulmuş" Tahmin Alanı Stili */
+        #guess-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fdf6f8;
+            border: 1px solid #d4a7b7;
+            border-radius: 8px;
+        }
+        
+        #guess-timer {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #b33951;
+            margin-bottom: 10px;
+        }
+        
+        #guess-attempts {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #6a4a8c;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"] { /* Her iki inputu da hedefle */
+            padding: 12px;
+            width: 80%;
+            max-width: 300px; 
+            border-radius: 8px;
+            border: 1px solid #d4a7b7;
+            background-color: #fcf6f8;
+            color: #4a2c3c;
+            margin-bottom: 10px;
+            font-size: 1.2em; 
             font-family: 'Helvetica', sans-serif; 
-            font-weight: bold; 
-            padding: 0;
-            height: 55px; 
-            border: none;
-            border-radius: 4px; 
-            cursor: pointer; 
-            user-select: none;
-            background-color: #d3d6da; 
-            color: black; 
-            flex: 1;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            text-transform: uppercase;
-            font-size: 1rem; 
-            transition: background-color 0.3s, color 0.3s;
-            -webkit-tap-highlight-color: transparent; 
-        }
-        .key:active {
-             background-color: #b0b3b8; 
-        }
-        .key.large { 
-            flex: 1.5; 
-            font-size: 0.9rem; 
+            text-transform: uppercase; 
+            text-align: center;
         }
         
-        /* Klavye tuşu renkleri */
-        .key.correct { 
-            background-color: #79b791; 
-            color: white; 
+        .feedback {
+            font-family: 'Helvetica', sans-serif;
+            font-weight: bold;
+            min-height: 1.2em;
+            margin-top: 10px;
         }
-        .key.present { 
-            background-color: #f7b538; 
-            color: white; 
-        }
-        .key.absent { 
-            background-color: #a7a9ac; 
-            color: white; 
-        }
+        .feedback-correct { color: #28a745; }
+        .feedback-wrong { color: #dc3545; }
 
+        #final-score-summary {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #6a4a8c;
+            margin: 30px 0;
+            line-height: 1.5; 
+        }
+        
     </style>
 </head>
 <body>
@@ -295,61 +346,50 @@
         <div class="decoration-top-right">🌸</div>
         
         <h1>Kelime Oyunu</h1>
-        <p>Sürprizi görmek için 5 harfli gizli kelimeyi 6 denemede bul!</p>
         
-        <div class="wordle-hint">
-            <strong>İpucu:</strong> İki konum arasındaki en doğru seçeneklere hakim olan.
+        <div id="game-stats">
+            <div>Ana Süre
+                <span id="main-timer">03:00</span>
+            </div>
+            <div>Puan
+                <span id="game-score">0</span>
+            </div>
+            <div id="visual-timer-container">
+                <div id="visual-timer-bar"></div>
+            </div>
+        </div>
+        
+        <div id="question-hint">İpucu yükleniyor...</div>
+        
+        <button id="btn-get-letter">Harf Al</button>
+        
+        <div id="word-display">
+            </div>
+        
+        <button id="btn-make-guess">Durdur ve Tahmin Et</button>
+        
+        <div id="quick-guess-area">
+            <h3>Hızlı Tahmin</h3>
+            <div id="quick-guess-attempts">Kalan Hak: 3</div>
+            <input type="text" id="quick-guess-input" placeholder="Hızlı Tahmin...">
+            <br>
+            <button id="btn-quick-guess">Onayla (Hızlı)</button>
+            <div id="quick-guess-feedback" class="feedback"></div>
+        </div>
+        
+        <div id="guess-area" style="display: none;">
+            <div id="guess-timer">Kalan Tahmin Süresi: 01:00</div>
+            <div id="guess-attempts">Kalan Hak: 3</div>
+            <input type="text" id="guess-input" placeholder="Tahmininizi Yazın...">
+            <br>
+            <button id="btn-submit-guess">Onayla</button>
+            <div id="guess-feedback" class="feedback"></div>
+        </div>
+        
+        <div id="final-score-summary" style="display: none;">
+            Oyun Bitti! Toplam Puanınız: 0
         </div>
 
-        <div id="wordle-grid">
-            <div class="wordle-row" id="row-0">
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-            </div>
-            <div class="wordle-row" id="row-1">
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-            </div>
-            <div class="wordle-row" id="row-2">
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-            </div>
-            <div class="wordle-row" id="row-3">
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-            </div>
-            <div class="wordle-row" id="row-4">
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-            </div>
-            <div class="wordle-row" id="row-5">
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-                <div class="wordle-box"></div>
-            </div>
-        </div>
-        
-        <p id="error-message" style="color: #ff5252; display: none; min-height: 1.2em;"></p>
-        
-        <div id="wordle-keyboard"></div>
-        
     </div>
 
     <div id="step-3" class="container step">
@@ -358,232 +398,409 @@
         <div class="decoration-bottom-left">🌷💕</div>
         <div class="decoration-bottom-right">💓🌼</div>
 
-        <p>Seviyorum seni ekmeği tuza banıp</p>
-        <p>Banıp yer gibi</p>
-        <p>Geceleri ateşler içinde uyanarak</p>
-        <p>Ağzımı dayayıp musluğa</p>
-        <p>Su içer gibi</p>
-        <p>Ne zaman seni düşünsem</p>
-        <p>Bir ceylan su içmeye iner çayırları</p>
-        <p>Büyürken büyürken görürüm gülüm</p>
-        <p>Her sabah her akşam seninle</p>
-        <p>Yeşil bir zeytin tanesi</p>
-        <p>Bir parça mavi deniz alır beni</p>
-        <p>Seni düşündükçe gül dikiyorum</p>
-        <p>Ellerimin değdiği yere..</p>
+        <p>Kimseyi görmedim ben</p>
+        <p>Senden daha güzel</p>
+        <p>Kimseyi tanımadım ben</p>
+        <p>Senden daha özel</p>
+        <p>Kimselere de bakmadım</p>
+        <p>Aklımdan geçen</p>
+        <p>Kimseyi tanımadım ben</p>
+        <p>Senden daha güzel</p>
+        <p>Senden daha güzel</p>
+        <p>Senden daha güzel</p>
+        <p>Senden daha güzel</p>
+        <p>Sana nerden rastladım?</p>
+        <p>Oldum derbeder</p>
+        <p>Kendimi sana sakladım</p>
+        <p>Senden daha güzel.</p>
         
         <div class="signature">
-            Gözlerinin İçinde Kaybolan...
+             Yeterkolik
         </div>
 
         <iframe 
-            id="video-player-iframe" 
-            src="https://www.youtube.com/embed/m19V4G89ln4" 
+            id="video-player-iframe"
+            width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/_dEjmFWIDS4?si=ABvu8UgN7ATOicn3&amp;start=2208" 
             title="YouTube video player" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
             allowfullscreen>
         </iframe>
     </div>
 
 
     <script>
-        // --- KELİME OYUNU DEĞİŞKENLERİ ---
-        const TARGET_WORD = "RENAS"; // GÜNCELLENDİ
-        const MAX_GUESSES = 6;
-        const WORD_LENGTH = 5; // GÜNCELLENDİ
+        // --- GÜNCELLENMİŞ SORU LİSTESİ ---
+        const questions = [
+            { word: "HÜLASA", hint: "Sadede gel dendiğinde verilen cevaptır." },
+            { word: "İZAHÂT", hint: "Yetinmeyen birine yapılan ekstra açıklamalardır." },
+            { word: "İŞTİRAK", hint: "Bir oyuna veya sohbete dâhil olmanın bir diğer adıdır." },
+            { word: "MUAYYEN", hint: "Bir randevunun belirsiz olmadığını, net olduğunu ifade eder." },
+            { word: "MÜESSESE", hint: "Ev değildir ama resmî bir çatıdır; genellikle ciddiyet gerektiren bir kurumdur." },
+            { word: "BEHEMEHAL", hint: "Belki veya sonra kabul etmez; hemen şimdinin en acil halidir." },
+            { word: "VELİNİMET", hint: "Bir esnaf için, para harcayan müşteriden farksızdır." },
+            { word: "BİNAENALEYH", hint: "(Sizin de onayladığınız gibi) Asıl işi bir önceki cümleyi sonuca bağlamaktır." },
+            { word: "FİLHAKİKA", hint: "(Sizin de sevdiğiniz gibi) İşin özü, yalancıktan olmayandır." }
+        ];
+
+        // --- Oyun Değişkenleri ---
+        let currentQuestionIndex = 0;
+        let totalScore = 0;
+        let mainTimer = 180; // 3 Dakika
+        let guessTimer = 60; // 1 Dakika
+        let mainTimerInterval = null;
+        let guessTimerInterval = null;
+        let revealedLetters = []; 
+        let isGuessingPhase = false; // "Durdurulmuş" tahmin modu
+        let quickGuessAttempts = 3; 
+        let stoppedGuessAttempts = 3; 
+
+        // --- HTML Elementleri ---
+        const mainTimerEl = document.getElementById('main-timer');
+        const visualTimerBarEl = document.getElementById('visual-timer-bar'); 
+        const gameScoreEl = document.getElementById('game-score');
+        const questionHintEl = document.getElementById('question-hint');
+        const wordDisplayEl = document.getElementById('word-display');
+        const btnGetLetter = document.getElementById('btn-get-letter');
+        const btnMakeGuess = document.getElementById('btn-make-guess');
         
-        let currentRow = 0;
-        let isGameOver = false;
-        let guessedWords = []; 
-        let currentGuess = ""; 
+        // Durdurulmuş Tahmin Alanı
+        const guessAreaEl = document.getElementById('guess-area');
+        const guessTimerEl = document.getElementById('guess-timer');
+        const guessAttemptsEl = document.getElementById('guess-attempts'); 
+        const guessInputEl = document.getElementById('guess-input');
+        const btnSubmitGuess = document.getElementById('btn-submit-guess');
+        const guessFeedbackEl = document.getElementById('guess-feedback');
         
-        const errorMessage = document.getElementById('error-message');
+        // Hızlı Tahmin Alanı
+        const quickGuessAreaEl = document.getElementById('quick-guess-area');
+        const quickGuessAttemptsEl = document.getElementById('quick-guess-attempts');
+        const quickGuessInputEl = document.getElementById('quick-guess-input');
+        const btnQuickGuess = document.getElementById('btn-quick-guess');
+        const quickGuessFeedbackEl = document.getElementById('quick-guess-feedback');
 
-        // --- KLAVYE GİRİŞ YÖNETİMİ ---
+        const finalScoreSummaryEl = document.getElementById('final-score-summary');
 
-        // Fiziksel klavye desteği
-        document.addEventListener('keydown', (e) => {
-            if (isGameOver || !document.getElementById('step-1').classList.contains('active')) return;
-            
-            let key = e.key.toLocaleUpperCase('tr-TR');
-            if (key === 'ENTER') handleKeyInput('ENTER');
-            else if (key === 'BACKSPACE') handleKeyInput('DEL');
-            else if (/^[A-ZÇĞİÖŞÜ]$/.test(key)) handleKeyInput(key);
-        });
-
-        // Sanal klavyeyi oluşturan fonksiyon
-        function buildKeyboard() {
-            const kb = document.getElementById('wordle-keyboard');
-            kb.innerHTML = '';
-            const rows = [ "ERTYUIOPĞÜ", "ASDFGHJKLŞİ", "ZCVBNMÖÇ" ];
-            
-            rows.forEach((rowStr, i) => {
-                const rowEl = document.createElement('div');
-                rowEl.className = 'keyboard-row';
-                
-                if (i === 2) { 
-                    const enter = document.createElement('button'); 
-                    enter.className = 'key large'; 
-                    enter.textContent = 'GİR'; 
-                    enter.onclick = () => handleKeyInput('ENTER'); 
-                    rowEl.appendChild(enter);
-                }
-                
-                for(let char of rowStr) {
-                    const key = document.createElement('button');
-                    key.className = 'key'; 
-                    key.textContent = char; 
-                    key.dataset.key = char; 
-                    key.onclick = () => handleKeyInput(char);
-                    rowEl.appendChild(key);
-                }
-                
-                if (i === 2) {
-                    const del = document.createElement('button'); 
-                    del.className = 'key large'; 
-                    del.innerHTML = 'SİL'; 
-                    del.onclick = () => handleKeyInput('DEL'); 
-                    rowEl.appendChild(del);
-                }
-                kb.appendChild(rowEl);
-            });
-        }
-
-        // Tuş girişlerini yöneten ana fonksiyon
-        function handleKeyInput(key) {
-            if (isGameOver) return;
-
-            if (key === 'DEL') {
-                currentGuess = currentGuess.slice(0, -1);
-            } else if (key === 'ENTER') {
-                if (currentGuess.length !== WORD_LENGTH) {
-                    // WORD_LENGTH (5) dinamik olarak kontrol ediliyor
-                    showError(`Lütfen ${WORD_LENGTH} harfli bir kelime girin.`);
-                    return;
-                }
-                if (guessedWords.includes(currentGuess)) {
-                    showError("Bu kelimeyi zaten denedin!");
-                    return;
-                }
-                submitGuess();
-                
-            } else if (currentGuess.length < WORD_LENGTH) {
-                currentGuess += key;
-            }
-            updateCurrentRowUI();
-        }
-
-        // Tahmini kutucuklara yazan (submit öncesi)
-        function updateCurrentRowUI() {
-            const rowElement = document.getElementById(`row-${currentRow}`);
-            const boxes = rowElement.querySelectorAll('.wordle-box');
-            for (let i = 0; i < WORD_LENGTH; i++) {
-                const box = boxes[i];
-                box.textContent = currentGuess[i] || '';
-                box.classList.toggle('filled', !!currentGuess[i]); 
-            }
-        }
-
-        // Tahmini kontrol eden ve ızgarayı renklendiren
-        function submitGuess() {
-            const guess = currentGuess;
-            guessedWords.push(guess);
-            
-            const rowElement = document.getElementById(`row-${currentRow}`);
-            const boxes = rowElement.querySelectorAll('.wordle-box');
-            
-            let targetLetterCounts = {};
-            for (const letter of TARGET_WORD) {
-                targetLetterCounts[letter] = (targetLetterCounts[letter] || 0) + 1;
-            }
-
-            let result = Array(WORD_LENGTH).fill('absent');
-
-            // 1. Pas (Yeşiller - Doğru yer)
-            for (let i = 0; i < WORD_LENGTH; i++) {
-                if (guess[i] === TARGET_WORD[i]) {
-                    result[i] = 'correct';
-                    targetLetterCounts[guess[i]]--;
-                }
-            }
-            
-            // 2. Pas (Sarılar - Yanlış yer)
-            for (let i = 0; i < WORD_LENGTH; i++) {
-                if (result[i] !== 'correct' && TARGET_WORD.includes(guess[i]) && targetLetterCounts[guess[i]] > 0) {
-                    result[i] = 'present';
-                    targetLetterCounts[guess[i]]--;
-                }
-            }
-
-            // Animasyonla renklendir
-            result.forEach((status, i) => {
-                setTimeout(() => {
-                    const box = boxes[i];
-                    box.classList.add('flip'); 
-                    
-                    setTimeout(() => {
-                        box.classList.add(status);
-                    }, 250); 
-                    
-                    const keyBtn = document.querySelector(`.key[data-key="${guess[i]}"]`);
-                    if (keyBtn) {
-                        if (status === 'correct') {
-                            keyBtn.classList.remove('present', 'absent');
-                            keyBtn.classList.add('correct');
-                        } else if (status === 'present' && !keyBtn.classList.contains('correct')) {
-                            keyBtn.classList.remove('absent');
-                            keyBtn.classList.add('present');
-                        } else if (status === 'absent' && !keyBtn.classList.contains('correct') && !keyBtn.classList.contains('present')) {
-                            keyBtn.classList.add('absent');
-                        }
-                    }
-                    
-                    if (i === WORD_LENGTH - 1) {
-                        checkWinLoss(guess);
-                    }
-                }, i * 350); 
-            });
+        // --- Zamanlayıcı Formatlama ---
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const sec = (seconds % 60).toString().padStart(2, '0');
+            return `${min}:${sec}`;
         }
         
-        // Kazanma/Kaybetme kontrolü
-        function checkWinLoss(guess) {
-            if (guess === TARGET_WORD) {
-                // Kazandı!
-                showError("Tebrikler! Buldun!", "green");
-                isGameOver = true;
-                setTimeout(showFinalStep, 2500); // Animasyonun bitmesini ve şiir/şarkı adımını göstermesini bekle
+        // Ana Zamanlayıcı Arayüz Güncelleme
+        function updateMainTimerUI() {
+            // Metni güncelle
+            mainTimerEl.textContent = formatTime(mainTimer);
+            
+            // Görsel şeridi güncelle
+            const totalTime = 180; // 3 dakika
+            const percentage = (mainTimer / totalTime) * 100;
+            visualTimerBarEl.style.width = percentage + '%';
+            
+            // Rengi güncelle
+            if (percentage < 20) {
+                visualTimerBarEl.style.backgroundColor = '#dc3545'; // Kırmızı
+            } else if (percentage < 50) {
+                visualTimerBarEl.style.backgroundColor = '#f7b538'; // Sarı
             } else {
-                // Sonraki satıra geç
-                currentRow++;
-                if (currentRow >= MAX_GUESSES) {
-                    // Kaybetti!
-                    showError(`Bilemedin! Doğru cevap: ${TARGET_WORD}`, '#ff5252', 999999);
-                    isGameOver = true;
-                } else if (guess === "YETER") {
-                     // "YETER" ÖZEL MESAJI BURADA
-                     showError("😜 Bu kadar kolay sormam", '#ff5252', 5000); // 5 saniye göster
+                visualTimerBarEl.style.backgroundColor = '#28a745'; // Yeşil
+            }
+        }
+
+        // --- Ana Oyunu Başlatma ---
+        function initGame() {
+            currentQuestionIndex = 0;
+            totalScore = 0;
+            mainTimer = 180;
+            isGuessingPhase = false;
+            
+            gameScoreEl.textContent = totalScore;
+            updateMainTimerUI(); 
+            
+            loadQuestion(currentQuestionIndex);
+            startMainTimer();
+
+            // Buton Olayları
+            btnGetLetter.onclick = handleGetLetter;
+            btnMakeGuess.onclick = handleMakeGuess;
+            btnSubmitGuess.onclick = handleSubmitGuess;
+            btnQuickGuess.onclick = handleSubmitQuickGuess; 
+            
+            // Enter tuşu ile tahmin onayı (Her iki input için)
+            guessInputEl.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter' && isGuessingPhase) handleSubmitGuess();
+            });
+            quickGuessInputEl.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter' && !isGuessingPhase) handleSubmitQuickGuess();
+            });
+        }
+
+        // --- Soru Yükleme ---
+        function loadQuestion(index) {
+            if (index >= questions.length) {
+                endGame(true); // Tüm sorular bitti
+                return;
+            }
+
+            const question = questions[index];
+            questionHintEl.textContent = question.hint;
+            
+            wordDisplayEl.innerHTML = '';
+            revealedLetters = [];
+            
+            // Sınıf adı 8 harften uzunsa
+            if (question.word.length > 7) { 
+                wordDisplayEl.className = 'word-display-long';
+            } else {
+                wordDisplayEl.className = '';
+            }
+
+            for (let i = 0; i < question.word.length; i++) {
+                wordDisplayEl.innerHTML += `<div class="letter-box" data-index="${i}">_</div>`;
+                revealedLetters.push(false); 
+            }
+            
+            // Arayüzü sıfırla
+            isGuessingPhase = false;
+            btnGetLetter.disabled = false;
+            btnMakeGuess.disabled = false;
+            
+            // Hızlı tahmin alanını sıfırla ve göster
+            quickGuessAttempts = 3;
+            quickGuessAttemptsEl.textContent = `Kalan Hak: ${quickGuessAttempts}`;
+            quickGuessAreaEl.style.display = 'block';
+            quickGuessFeedbackEl.textContent = '';
+            quickGuessInputEl.value = '';
+            quickGuessInputEl.disabled = false;
+            btnQuickGuess.disabled = false;
+            
+            // Durdurulmuş tahmin alanını gizle
+            guessAreaEl.style.display = 'none';
+        }
+
+        // --- Ana Süreç ---
+        function startMainTimer() {
+            if (mainTimerInterval) clearInterval(mainTimerInterval);
+            mainTimerInterval = setInterval(() => {
+                if (isGuessingPhase) return; 
+                mainTimer--;
+                updateMainTimerUI(); 
+                if (mainTimer <= 0) {
+                    endGame(false); // Ana süre doldu
+                }
+            }, 1000);
+        }
+
+        function pauseMainTimer() {
+            if (mainTimerInterval) clearInterval(mainTimerInterval);
+        }
+
+        // --- Oynanış Fonksiyonları ---
+
+        // "AKILLI HARF AL" FONKSİYONU
+        function handleGetLetter() {
+            const question = questions[currentQuestionIndex];
+            const wordLength = question.word.length;
+
+            const unrevealedIndices = [];
+            for (let i = 0; i < wordLength; i++) {
+                if (revealedLetters[i] === false) {
+                    unrevealedIndices.push(i);
                 }
             }
-            currentGuess = ""; // Mevcut tahmini sıfırla
-        }
-        
-        // Hata mesajı fonksiyonu
-        function showError(message, color = '#ff5252', duration = 3000) {
-            errorMessage.textContent = message;
-            errorMessage.style.color = color;
-            errorMessage.style.display = 'block';
 
-            if (color === '#ff5252' || color === undefined) {
-                 setTimeout(() => {
-                     if (errorMessage.textContent === message) { 
-                         errorMessage.style.display = 'none';
-                     }
-                 }, duration); 
+            if (unrevealedIndices.length === 0) {
+                btnGetLetter.disabled = true;
+                return; 
+            }
+
+            const idealChoices = unrevealedIndices.filter(index => {
+                const isAdjacentLeft = (index > 0) && (revealedLetters[index - 1] === true);
+                const isAdjacentRight = (index < wordLength - 1) && (revealedLetters[index + 1] === true);
+                return !isAdjacentLeft && !isAdjacentRight;
+            });
+
+            const nonFirstIdealChoices = idealChoices.filter(index => index !== 0);
+
+            let chosenIndex;
+
+            if (nonFirstIdealChoices.length > 0) {
+                chosenIndex = nonFirstIdealChoices[Math.floor(Math.random() * nonFirstIdealChoices.length)];
+            } else if (idealChoices.length > 0) {
+                chosenIndex = idealChoices[0]; 
+            } else {
+                chosenIndex = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
+            }
+
+            revealedLetters[chosenIndex] = true; 
+            const box = wordDisplayEl.querySelector(`.letter-box[data-index="${chosenIndex}"]`);
+            box.textContent = question.word[chosenIndex];
+            box.classList.add('revealed');
+            
+            if (unrevealedIndices.length === 1) { 
+                btnGetLetter.disabled = true;
+                setTimeout(() => {
+                    handleGuessResult(false, true); 
+                }, 1000);
             }
         }
 
-        // --- ESKİ KODLAR (Gerekli olanlar) ---
+        // "Durdur ve Tahmin Et" Butonu
+        function handleMakeGuess() {
+            isGuessingPhase = true; 
+            pauseMainTimer();
+            
+            btnGetLetter.disabled = true;
+            btnMakeGuess.disabled = true;
+            quickGuessAreaEl.style.display = 'none';
+            
+            guessAreaEl.style.display = 'block';
+            guessInputEl.value = '';
+            guessInputEl.focus();
+            guessFeedbackEl.textContent = '';
+            
+            stoppedGuessAttempts = 3; 
+            guessTimer = 60; 
+            guessAttemptsEl.textContent = `Kalan Hak: ${stoppedGuessAttempts}`;
+            
+            startGuessTimer();
+        }
+        
+        // "Hızlı Tahmin" Onay Butonu
+        function handleSubmitQuickGuess() {
+            if (mainTimer <= 0 || quickGuessAttempts <= 0) return;
+
+            const guess = quickGuessInputEl.value.toLocaleUpperCase('tr-TR').trim();
+            const correctWord = questions[currentQuestionIndex].word;
+
+            if (guess === correctWord) {
+                pauseMainTimer(); 
+                handleGuessResult(true, false); 
+            } else {
+                // Yanlış tahmin (Hızlı) - PUAN SİLME YOK
+                quickGuessAttempts--;
+                quickGuessAttemptsEl.textContent = `Kalan Hak: ${quickGuessAttempts}`;
+                
+                if (quickGuessAttempts <= 0) {
+                    quickGuessFeedbackEl.textContent = "Yanlış! Hızlı tahmin hakkınız bitti.";
+                    quickGuessFeedbackEl.style.color = "#dc3545";
+                    quickGuessInputEl.disabled = true;
+                    btnQuickGuess.disabled = true;
+                } else {
+                    quickGuessFeedbackEl.textContent = "Yanlış! Tekrar deneyin.";
+                    quickGuessFeedbackEl.style.color = "#dc3545";
+                }
+            }
+             quickGuessInputEl.value = ''; 
+        }
+
+
+        // "Durdurulmuş Tahmin" Zamanlayıcısı
+        function startGuessTimer() {
+            guessTimerEl.textContent = `Kalan Tahmin Süresi: 0${formatTime(guessTimer)}`;
+            
+            if (guessTimerInterval) clearInterval(guessTimerInterval);
+            guessTimerInterval = setInterval(() => {
+                guessTimer--;
+                guessTimerEl.textContent = `Kalan Tahmin Süresi: 0${formatTime(guessTimer)}`;
+                if (guessTimer <= 0) {
+                    guessFeedbackEl.textContent = "Süre Doldu! Hakkınız bitti.";
+                    guessFeedbackEl.style.color = "#dc3545";
+                    setTimeout(() => handleGuessResult(false, false), 1500); 
+                }
+            }, 1000);
+        }
+
+        // "Durdurulmuş Tahmin" Onay Butonu
+        function handleSubmitGuess() {
+            if (guessTimer <= 0 || stoppedGuessAttempts <= 0) return; 
+
+            const guess = guessInputEl.value.toLocaleUpperCase('tr-TR').trim();
+            const correctWord = questions[currentQuestionIndex].word;
+
+            if (guess === correctWord) {
+                handleGuessResult(true, false); 
+            } else {
+                // Yanlış tahmin (Durdurulmuş) - PUAN SİLME YOK
+                stoppedGuessAttempts--;
+                guessAttemptsEl.textContent = `Kalan Hak: ${stoppedGuessAttempts}`;
+                
+                if (stoppedGuessAttempts <= 0) {
+                    guessFeedbackEl.textContent = "Yanlış! Hakkınız bitti.";
+                    guessFeedbackEl.style.color = "#dc3545";
+                    setTimeout(() => handleGuessResult(false, false), 1500); 
+                } else {
+                    guessFeedbackEl.textContent = "Yanlış! Tekrar deneyin.";
+                    guessFeedbackEl.style.color = "#dc3545";
+                }
+            }
+            guessInputEl.value = ''; 
+        }
+
+        // --- Sonuç ve Geçiş ---
+        
+        function handleGuessResult(isCorrect, isAutoAdvance) {
+            pauseMainTimer();
+            if (guessTimerInterval) clearInterval(guessTimerInterval);
+            isGuessingPhase = true; 
+            
+            if (isCorrect) {
+                let pointsEarned = 0;
+                for (let i = 0; i < revealedLetters.length; i++) {
+                    if (revealedLetters[i] === false) {
+                        pointsEarned += 10;
+                    }
+                }
+                totalScore += pointsEarned;
+                gameScoreEl.textContent = totalScore;
+                
+                const boxes = wordDisplayEl.querySelectorAll('.letter-box');
+                const word = questions[currentQuestionIndex].word;
+                boxes.forEach((box, i) => {
+                    box.textContent = word[i];
+                    box.classList.add('revealed');
+                });
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex); // Bu isGuessingPhase'i false yapar
+                if (mainTimer > 0) startMainTimer(); 
+            }, 1500);
+        }
+
+        // --- Oyun Bitişi ---
+        function endGame(isFinished) { 
+            pauseMainTimer();
+            if (guessTimerInterval) clearInterval(guessTimerInterval);
+            isGuessingPhase = true; // Oyunu kalıcı olarak kilitle
+            
+            // DÜZELTİLDİ: Butonları ve girişleri inaktif yap
+            btnGetLetter.disabled = true;
+            btnMakeGuess.disabled = true;
+            btnQuickGuess.disabled = true;
+            btnSubmitGuess.disabled = true; // Durdurulmuş alandaki
+            quickGuessInputEl.disabled = true;
+            guessInputEl.disabled = true;
+
+            // Tahmin alanlarını gizle
+            guessAreaEl.style.display = 'none';
+            quickGuessAreaEl.style.display = 'none'; 
+            
+            // Final skoru ve KALAN SÜRE
+            finalScoreSummaryEl.innerHTML = `Oyun Bitti! <br> Toplam Puanınız: ${totalScore} <br> Kalan Süreniz: ${formatTime(mainTimer)}`;
+            finalScoreSummaryEl.style.display = 'block';
+
+            setTimeout(() => {
+                showFinalStep(); // Step-3'ü (şiir/video) göster
+            }, 3000); // 3 saniye bekle
+        }
+
+        // --- ESKİ KODLAR (Step-3 için gerekli) ---
 
         // Aktif adımı gösteren fonksiyon
         function showStep(stepId) {
@@ -599,7 +816,7 @@
             setInterval(createHeart, 200);
         }
 
-        // Kalp/Harf oluşturma fonksiyonu
+        // Kalp/Harf oluşturma fonksiyonu (YETER)
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -618,7 +835,7 @@
         }
         
         // --- OYUNU BAŞLAT ---
-        buildKeyboard();
+        initGame();
         
     </script>
 
