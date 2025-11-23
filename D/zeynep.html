@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğretmenler Günün Kutlu Olsun Zeynep...</title>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/super-malibu');
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap'); /* Tebeşir yazısı fontu */
+        
+        /* TEMA: MATEMATİK DEFTERİ & SEMPATİK */
+        
+        body {
+            font-family: 'Super Malibu', sans-serif;
+            /* Kareli Defter Deseni */
+            background-color: #fdfdfd;
+            background-image: 
+                linear-gradient(#e1e1e1 1px, transparent 1px),
+                linear-gradient(90deg, #e1e1e1 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #4a2c3c;
+            text-align: center;
+            padding: 20px;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Mektup kutusu */
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 30px 40px;
+            background-color: rgba(255, 255, 255, 0.95); /* Hafif şeffaf beyaz */
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            border: 2px solid #bcaaa4; /* Hafif kahve/pastel ton */
+            box-sizing: border-box;
+        }
+        
+        .step { display: none; }
+        .active { display: block; }
+
+        h1 {
+            font-family: 'Super Malibu', sans-serif;
+            font-weight: normal;
+            color: #6a4a8c;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0px #e6e6e6;
+        }
+        
+        /* Şiir Alanı - Tebeşir Fontu Gibi */
+        .poem-line {
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #5a3c4c;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 14px 30px;
+            background-color: #9b7fbc;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s;
+            font-size: 1.1em;
+            font-family: 'Super Malibu', sans-serif;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            background-color: #8468a3;
+            transform: scale(1.03);
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        #btn-make-guess {
+            background-color: #dc3545;
+        }
+        #btn-make-guess:hover { background-color: #c82333; }
+
+        /* YUKARI SÜZÜLEN SEMBOLLER (Aşağıdan Yukarı) */
+        .floating-symbol {
+            position: fixed;
+            bottom: -10vh; /* Ekranın altından başla */
+            left: 50%;
+            font-size: 2.5rem;
+            animation: floatUp 7s linear forwards;
+            opacity: 0.8;
+            font-weight: bold;
+            color: #b388dd;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            z-index: 1000;
+            font-family: 'Courier New', monospace; /* Matematik sembolleri için */
+        }
+        
+        @keyframes floatUp {
+            to { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
+        }
+        
+        /* VİDEO STİLİ */
+        #video-player-iframe {
+            width: 100%;
+            max-width: 560px;
+            height: 315px;
+            margin-top: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 5px solid #f0f0f0;
+        }
+
+        /* Süslemeler (Cetvel, Kalem gibi sembolik renkler) */
+        .decoration {
+            position: absolute;
+            font-size: 2.5em;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .d-tl { top: 10px; left: 10px; transform: rotate(-15deg); }
+        .d-tr { top: 10px; right: 10px; transform: rotate(15deg); }
+        .d-bl { bottom: 10px; left: 10px; transform: rotate(15deg); }
+        .d-br { bottom: 10px; right: 10px; transform: rotate(-15deg); }
+
+        /* Kelime Oyunu Alanı */
+        #word-display {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 25px 0;
+        }
+        
+        .letter-box {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #c0b0dd;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 1.8em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a2c3c;
+            font-family: sans-serif;
+        }
+        .letter-box.revealed {
+            background-color: #f3e5f5;
+            border-color: #8e24aa;
+            transform: scale(1.1);
+        }
+
+        #question-hint {
+            font-size: 1.2em;
+            color: #5a3c4c;
+            font-style: italic;
+            margin: 15px auto;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px dashed #c0b0dd;
+            border-radius: 8px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .signature {
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.5em;
+            margin-top: 30px;
+            text-align: right;
+            color: #6a4a8c;
+        }
+
+        /* Gizli alanlar */
+        #guess-area, #final-score-summary { display: none; }
+        
+    </style>
+</head>
+<body>
+
+    <div id="step-1" class="container step active">
+        <div class="decoration d-tl">📐</div>
+        <div class="decoration d-tr">➗</div>
+        
+        <h1>Hoşgeldin Matematikçi...</h1>
+        
+        <div id="game-info" style="margin-bottom: 15px; color:#666;">
+            Puan: <span id="score">0</span> | Süre: <span id="time">03:00</span>
+        </div>
+
+        <div id="question-hint">Soru yükleniyor...</div>
+        
+        <div id="word-display"></div>
+        
+        <button id="btn-get-letter">Harf Al (-10 Puan)</button>
+        <button id="btn-make-guess">Tahmin Et</button>
+        
+        <div id="guess-area" style="margin-top: 20px;">
+            <input type="text" id="guess-input" placeholder="CEVABI YAZ...">
+            <br>
+            <button id="btn-submit-guess" style="background-color:#28a745;">Onayla</button>
+            <div id="feedback" style="margin-top:10px; font-weight:bold;"></div>
+        </div>
+    </div>
+
+    <div id="step-3" class="container step">
+        <div class="decoration d-tl">✨</div>
+        <div class="decoration d-tr">∫</div>
+        <div class="decoration d-bl">√</div>
+        <div class="decoration d-br">💕</div>
+
+        <h1>Denklemin En Güzel Hali</h1>
+        
+        <p class="poem-line">Bugün kesişti yollarımız, ne güzel bir tesadüf,</p>
+        <p class="poem-line">Sayıların arasında parlayan bir mucize gibi.</p>
+        <p class="poem-line">Kıvırcık saçlarında gizli hayatın o tatlı ritmi,</p>
+        <p class="poem-line">Bir bakışın çözüverir en zorlu problemi.</p>
+        <br>
+        <p class="poem-line">Tahtada x'i ararken ben seni buldum,</p>
+        <p class="poem-line">Sempatik hallerine oracıkta vuruldum.</p>
+        <p class="poem-line">İyi ki doğmuşsun, iyi ki öğretmensin,</p>
+        <p class="poem-line">Benim için matematikteki en güzel bilinmeyensin.</p>
+        <br>
+        <p class="poem-line" style="color:#6a4a8c;">Öğretmenler Günün Kutlu Olsun Zeynep...</p>
+        
+        <div class="signature">
+            - Bugün Tanıştığın O Kişi...
+        </div>
+
+        <iframe 
+            id="video-player-iframe"
+            src="https://www.youtube.com/embed/26rvrza_Gmg" 
+            title="Şebnem Ferah - Mayın Tarlası" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+        </iframe>
+    </div>
+
+    <script>
+        // --- SORULAR ---
+        const questions = [
+            { word: "ZEYNEP", hint: "Sayıların kraliçesi..." },
+            { word: "KIVIRCIK", hint: "Bukleli saçların en tatlı tanımı..." },
+            { word: "ÖĞRETMEN", hint: "Kendisi kutsal bir mesleğe sahip, bir..." }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        let timer = 180;
+        let revealed = [];
+        let interval;
+
+        const els = {
+            hint: document.getElementById('question-hint'),
+            display: document.getElementById('word-display'),
+            score: document.getElementById('score'),
+            time: document.getElementById('time'),
+            guessArea: document.getElementById('guess-area'),
+            guessInput: document.getElementById('guess-input'),
+            feedback: document.getElementById('feedback'),
+            btnLetter: document.getElementById('btn-get-letter'),
+            btnGuess: document.getElementById('btn-make-guess'),
+            btnSubmit: document.getElementById('btn-submit-guess')
+        };
+
+        function initGame() {
+            loadQ();
+            interval = setInterval(() => {
+                timer--;
+                let m = Math.floor(timer/60).toString().padStart(2,'0');
+                let s = (timer%60).toString().padStart(2,'0');
+                els.time.innerText = `${m}:${s}`;
+                if(timer<=0) finishGame();
+            }, 1000);
+        }
+
+        function loadQ() {
+            if(currentQ >= questions.length) {
+                finishGame();
+                return;
+            }
+            const q = questions[currentQ];
+            els.hint.innerText = "SORU " + (currentQ+1) + ": " + q.hint;
+            els.display.innerHTML = '';
+            revealed = new Array(q.word.length).fill(false);
+            
+            for(let i=0; i<q.word.length; i++){
+                els.display.innerHTML += `<div class="letter-box" id="l-${i}">_</div>`;
+            }
+            
+            els.guessArea.style.display = 'none';
+            els.feedback.innerText = '';
+            els.guessInput.value = '';
+        }
+
+        els.btnLetter.onclick = () => {
+            const q = questions[currentQ];
+            let unrev = [];
+            revealed.forEach((r,i) => { if(!r) unrev.push(i); });
+            
+            if(unrev.length === 0) return;
+            
+            // Rastgele harf aç
+            let idx = unrev[Math.floor(Math.random()*unrev.length)];
+            revealed[idx] = true;
+            document.getElementById(`l-${idx}`).innerText = q.word[idx];
+            document.getElementById(`l-${idx}`).classList.add('revealed');
+            
+            // Tüm harfler açıldıysa
+            if(revealed.every(r=>r)) {
+                setTimeout(() => {
+                    currentQ++;
+                    loadQ();
+                }, 1000);
+            }
+        };
+
+        els.btnGuess.onclick = () => {
+            els.guessArea.style.display = 'block';
+            els.guessInput.focus();
+        };
+
+        els.btnSubmit.onclick = () => {
+            const val = els.guessInput.value.toLocaleUpperCase('tr-TR').trim();
+            const ans = questions[currentQ].word;
+            
+            if(val === ans) {
+                els.feedback.innerText = "DOĞRU! Harikasın Hocam!";
+                els.feedback.style.color = "green";
+                score += 100;
+                els.score.innerText = score;
+                
+                // Harfleri aç
+                for(let i=0; i<ans.length; i++) {
+                    document.getElementById(`l-${i}`).innerText = ans[i];
+                    document.getElementById(`l-${i}`).classList.add('revealed');
+                }
+
+                setTimeout(() => {
+                    currentQ++;
+                    loadQ();
+                }, 1500);
+            } else {
+                els.feedback.innerText = "Yanlış cevap, tekrar dene...";
+                els.feedback.style.color = "red";
+            }
+        };
+
+        function finishGame() {
+            clearInterval(interval);
+            document.getElementById('step-1').classList.remove('active');
+            document.getElementById('step-3').classList.add('active');
+            startFloatingAnimation();
+        }
+
+        // --- ANİMASYON (AŞAĞIDAN YUKARIYA) ---
+        function startFloatingAnimation() {
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.classList.add('floating-symbol');
+                
+                // Başlangıç: Sol pozisyon rastgele
+                el.style.left = Math.random() * 95 + 'vw'; 
+                
+                // Hız: Rastgele
+                el.style.animationDuration = (Math.random() * 3 + 4) + 's'; 
+                
+                // Semboller: Matematik ve İsim
+                const symbols = ['π', '∞', '∫', '√', '+', '÷', 'Z', 'E', 'Y', 'N', 'E', 'P', 'x', 'y', '%'];
+                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                // Renk tonları (Lila, Mor, Pembe)
+                const colors = ['#b388dd', '#9b7fbc', '#d4a7b7', '#6a4a8c'];
+                el.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+                document.body.appendChild(el);
+                
+                setTimeout(() => { el.remove(); }, 7000); // Animasyon bitince sil
+            }, 300);
+        }
+
+        // Başlat
+        initGame();
+
+    </script>
+</body>
+</html>
