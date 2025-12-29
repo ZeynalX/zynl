@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zeynal Öğretmen - Oyun Platformu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --primary: #2980b9; /* Kelime Avı */
+            --bundle: #d35400;  /* Bundle */
+            --correct: #27ae60; /* Yeşil */
+            --present: #f1c40f; /* Sarı */
+            --absent: #7f8c8d;  /* Gri */
+            --text: #2c3e50;
+            --key-bg: #d3d6da;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            margin: 0; padding: 10px;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px; width: 100%;
+            background: white; border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden; margin-top: 10px;
+        }
+
+        /* --- SKOR TABELASI --- */
+        .score-board {
+            position: fixed; top: 10px; right: 10px;
+            background: #2c3e50; color: #f1c40f;
+            padding: 8px 15px; border-radius: 20px;
+            font-weight: 900; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000; font-size: 1.1rem;
+        }
+
+        /* --- SEKMELER --- */
+        .tabs { display: flex; background: #ecf0f1; border-bottom: 2px solid #bdc3c7; }
+        .tab-btn {
+            flex: 1; padding: 15px; border: none; background: transparent;
+            font-size: 1.1rem; font-weight: 800; color: #95a5a6;
+            cursor: pointer; transition: 0.3s;
+        }
+        .tab-btn.active.tab-classic { background: white; color: var(--primary); border-top: 4px solid var(--primary); }
+        .tab-btn.active.tab-bundle { background: white; color: var(--bundle); border-top: 4px solid var(--bundle); }
+
+        .tab-content { display: none; padding: 20px; text-align: center; }
+        .tab-content.active { display: block; animation: fade 0.3s; }
+        @keyframes fade { from {opacity:0} to {opacity:1} }
+
+        /* --- OYUN ELEMANLARI --- */
+        h2 { margin: 0 0 10px 0; font-weight: 900; }
+        .info-bar { font-size: 0.9rem; color: #7f8c8d; font-weight: 700; margin-bottom: 20px; }
+        
+        .hint-box {
+            background: #eaf2f8; color: #2c3e50; padding: 15px;
+            border-radius: 8px; margin-bottom: 20px; font-weight: 700; border-left: 5px solid var(--primary);
+        }
+
+        /* KELİME AVI KUTULARI */
+        .ka-board { display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; margin-bottom: 20px; }
+        .ka-box {
+            width: 45px; height: 55px; background: #dfe6e9; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 800; color: transparent;
+        }
+        .ka-box.revealed { background: var(--primary); color: white; }
+
+        /* WORDLE GRID */
+        .w-grid { 
+            display: grid; gap: 5px; justify-content: center; margin-bottom: 20px; 
+        }
+        .w-box {
+            width: 50px; height: 50px; border: 2px solid #dcdde1;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; font-weight: 900; text-transform: uppercase;
+            color: var(--text); background: white;
+        }
+        .w-correct { background: var(--correct); color: white; border-color: var(--correct); }
+        .w-present { background: var(--present); color: white; border-color: var(--present); }
+        .w-absent { background: var(--absent); color: white; border-color: var(--absent); }
+
+        /* INPUT VE BUTONLAR */
+        input[type="text"] {
+            padding: 12px; width: 70%; border: 2px solid #bdc3c7;
+            border-radius: 50px; text-align: center; font-size: 1.2rem;
+            font-weight: 700; outline: none; text-transform: uppercase;
+        }
+        input:focus { border-color: var(--text); }
+
+        .btn {
+            padding: 12px 30px; border-radius: 50px; border: none; margin-top: 10px;
+            color: white; font-weight: 800; cursor: pointer; font-size: 1rem;
+        }
+        .btn-c { background: var(--primary); }
+        .btn-hint { background: #f1c40f; color: #5d4037; padding: 8px 20px; font-size: 0.9rem; margin-bottom: 10px; }
+
+        .feedback { margin-top: 15px; min-height: 25px; font-weight: 800; font-size: 1.2rem; }
+
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 999; display: flex; 
+            flex-direction: column; justify-content: center; align-items: center;
+        }
+        .spinner {
+            width: 40px; height: 40px; border: 5px solid #ecf0f1; 
+            border-top: 5px solid var(--primary); border-radius: 50%; 
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* KLAVYE STİLİ */
+        #keyboard { margin-top: 20px; }
+        .kb-row { display: flex; justify-content: center; margin-bottom: 8px; touch-action: manipulation; }
+        .kb-key {
+            font-weight: 700; border: none; padding: 0; margin: 0 3px; height: 58px;
+            border-radius: 4px; cursor: pointer; user-select: none;
+            background: var(--key-bg); color: var(--text); flex: 1;
+            display: flex; justify-content: center; align-items: center; text-transform: uppercase;
+        }
+        .kb-wide { flex: 1.5; }
+        .kb-key.w-correct { background: var(--correct); color: white; }
+        .kb-key.w-present { background: var(--present); color: white; }
+        .kb-key.w-absent { background: var(--absent); color: white; }
+
+        /* İSTATİSTİK MODALI */
+        .modal {
+            display: none; position: fixed; z-index: 1001; left: 0; top: 0;
+            width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe; margin: auto; padding: 20px; border-radius: 15px;
+            width: 90%; max-width: 500px; text-align: center; position: relative;
+        }
+        .close-btn { position: absolute; top: 10px; right: 15px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .stats-grid { display: flex; justify-content: space-around; margin-bottom: 20px; }
+        .stat-box { display: flex; flex-direction: column; align-items: center; }
+        .stat-val { font-size: 1.8rem; font-weight: 900; }
+        .stat-label { font-size: 0.8rem; color: #777; }
+        .dist-row { display: flex; align-items: center; margin-bottom: 5px; }
+        .dist-idx { font-weight: bold; margin-right: 10px; width: 20px; }
+        .dist-bar { background: #7f8c8d; color: white; padding: 5px; text-align: right; font-weight: bold; min-width: 20px; }
+        .dist-bar.highlight { background: var(--correct); }
+    </style>
+</head>
+<body>
+
+<div class="score-board">PUAN: <span id="total-score">0</span></div>
+
+<div id="loader">
+    <div class="spinner"></div>
+    <p style="margin-top:15px; color:#95a5a6; font-weight:bold;">Veriler Yükleniyor...</p>
+</div>
+
+<div class="container" id="app" style="display:none;">
+    
+    <div class="tabs">
+        <button class="tab-btn tab-classic active" onclick="showTab('classic')">KELİME AVI</button>
+        <button class="tab-btn tab-bundle" onclick="showTab('bundle')">BUNDLE (WORDLE)</button>
+    </div>
+
+    <div id="classic" class="tab-content active">
+        <h2 style="color:var(--primary)">Kelime Avı</h2>
+        <div class="info-bar">Soru: <span id="c-idx">1</span></div>
+        <div id="c-hint" class="hint-box">...</div>
+        <div id="c-board" class="ka-board"></div>
+
+        <button class="btn btn-hint" onclick="buyLetter()">Harf İpucu Al (-10 Puan)</button><br>
+        <input type="text" id="c-input" placeholder="TAHMİNİNİZ">
+        <br>
+        <button class="btn btn-c" onclick="checkClassic()">YANITLA</button>
+        <div id="c-msg" class="feedback"></div>
+    </div>
+
+    <div id="bundle" class="tab-content">
+        <h2 style="color:var(--bundle)">Bundle (Wordle)</h2>
+        <div class="info-bar">Soru: <span id="b-idx">1</span> | Kalan Hak: <span id="b-lives">6</span></div>
+        
+        <div id="b-grid" class="w-grid"></div>
+
+        <div id="b-msg" class="feedback" style="margin-bottom: 10px;"></div>
+        
+        <div id="keyboard"></div>
+    </div>
+
+</div>
+
+<div id="stats-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeStats()">&times;</span>
+        <h2>İSTATİSTİK</h2>
+        <div class="stats-grid">
+            <div class="stat-box"><div class="stat-val" id="s-played">0</div><div class="stat-label">Oynanan</div></div>
+            <div class="stat-box"><div class="stat-val" id="s-winpct">0</div><div class="stat-label">Galibiyet %</div></div>
+            <div class="stat-box"><div class="stat-val" id="s-streak">0</div><div class="stat-label">Seri Galibiyet</div></div>
+            <div class="stat-box"><div class="stat-val" id="s-maxstreak">0</div><div class="stat-label">Seri Rekoru</div></div>
+        </div>
+        <h3>TAHMİN DAĞILIMI</h3>
+        <div id="dist-chart"></div>
+        <h3 style="color:#27ae60; margin-top:20px;">TOPLAM PUAN: <span id="final-score">0</span></h3>
+    </div>
+</div>
+
+<script>
+    // ========================================================
+    // YENİ APPS SCRIPT URL'Sİ
+    // ========================================================
+    const API_URL = "https://script.google.com/macros/s/AKfycbzaCyAczfg-fTkIxoHQPfg9Y1OW2s1xyRaIp9eXT9_kAQQgq8CMk_nkeHv_VStc5VoY/exec"; 
+    // ========================================================
+
+    let data = { classic: [], bundle: [] };
+    let currentScore = 0;
+    
+    // Kelime Avı Değişkenleri
+    let cIdx = 0;
+    let cRevealed = [];
+
+    // Bundle Değişkenleri
+    let bIdx = 0;
+    let bGuesses = [];
+    let bCurrentGuess = "";
+    let bGameOver = false;
+    let bTargetWord = "";
+    let bWordLen = 0;
+
+    // İstatistikler
+    let stats = JSON.parse(localStorage.getItem('wordleStats')) || {
+        played: 0,
+        wins: 0,
+        currentStreak: 0,
+        maxStreak: 0,
+        distribution: {1:0, 2:0, 3:0, 4:0, 5:0, 6:0}
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        fetch(API_URL)
+            .then(res => res.json())
+            .then(json => {
+                data = json;
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                
+                if(data.classic.length > 0) initClassic();
+                if(data.bundle.length > 0) initBundle();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Veri çekilemedi. Apps Script linkini ve izinlerini kontrol edin.");
+            });
+
+        // Kelime Avı için Enter tuşu
+        document.getElementById('c-input').addEventListener('keyup', e => { if(e.key==='Enter') checkClassic() });
+        
+        // Fiziksel klavye dinleyicisi
+        document.addEventListener('keyup', handlePhysicalKeyboard);
+    });
+
+    function showTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        document.querySelector(`.tab-${tabName}`).classList.add('active');
+    }
+
+    function toTr(s) { return s.toLocaleUpperCase('tr-TR'); }
+
+    // === PUAN & KONFETİ SİSTEMİ ===
+    function addScore(points) {
+        currentScore += points;
+        document.getElementById('total-score').innerText = currentScore;
+        // Puan efekti (basit animasyon)
+        const scoreBoard = document.querySelector('.score-board');
+        scoreBoard.style.transform = "scale(1.2)";
+        setTimeout(() => scoreBoard.style.transform = "scale(1)", 200);
+    }
+
+    function triggerConfetti() {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
+
+    function sendTelegram(message) {
+        // Backend'e POST isteği atar, token kullanmaz, backend halleder.
+        fetch(API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'notify',
+                message: `🎮 *Oyun Bildirimi*\n\n${message}\n🏆 *Anlık Puan:* ${currentScore}`
+            })
+        }).catch(err => console.error("Bildirim Hatası:", err));
+    }
+
+    // === KELİME AVI ===
+    function initClassic() {
+        if(cIdx >= data.classic.length) {
+            document.getElementById('classic').innerHTML = "<h2>Bitti!</h2><p>Tüm kelimeler bulundu.</p>";
+            sendTelegram("🏁 Kelime Avı Tamamlandı! Toplam Puan: " + currentScore);
+            return;
+        }
+        const item = data.classic[cIdx];
+        cRevealed = new Array(item.word.length).fill(false);
+        
+        document.getElementById('c-idx').innerText = (cIdx + 1) + "/" + data.classic.length;
+        document.getElementById('c-hint').innerText = item.hint;
+        document.getElementById('c-msg').innerText = "";
+        document.getElementById('c-input').value = "";
+        renderCBoard();
+    }
+
+    function renderCBoard() {
+        const board = document.getElementById('c-board');
+        board.innerHTML = "";
+        const word = data.classic[cIdx].word;
+        
+        for(let i=0; i<word.length; i++) {
+            const box = document.createElement('div');
+            box.className = 'ka-box';
+            if(word[i] === ' ') { 
+                box.style.opacity = 0; cRevealed[i] = true; 
+            } else if(cRevealed[i]) {
+                box.classList.add('revealed'); box.innerText = toTr(word[i]);
+            } else {
+                box.innerText = "?";
+            }
+            board.appendChild(box);
+        }
+    }
+
+    function buyLetter() {
+        let closed = [];
+        cRevealed.forEach((v,i) => { if(!v) closed.push(i); });
+        if(closed.length > 0) {
+            cRevealed[closed[Math.floor(Math.random()*closed.length)]] = true;
+            addScore(-10); // İpucu cezası
+            renderCBoard();
+        }
+    }
+
+    function checkClassic() {
+        const inp = document.getElementById('c-input');
+        const guess = toTr(inp.value).replace(/\s+/g,'');
+        const target = toTr(data.classic[cIdx].word).replace(/\s+/g,'');
+        
+        if(guess === target) {
+            document.getElementById('c-msg').innerText = "DOĞRU! (+100 PUAN)";
+            document.getElementById('c-msg').style.color = "var(--primary)";
+            cRevealed.fill(true);
+            renderCBoard();
+            
+            // ÖDÜL KISMI
+            addScore(100);
+            triggerConfetti();
+            sendTelegram(`✅ Kelime Avı Doğru Cevap: ${target}`);
+            
+            setTimeout(() => { cIdx++; initClassic(); }, 2000);
+        } else {
+            document.getElementById('c-msg').innerText = "YANLIŞ";
+            document.getElementById('c-msg').style.color = "red";
+        }
+    }
+
+    // === BUNDLE (WORDLE) ===
+    function initBundle() {
+        if(bIdx >= data.bundle.length) {
+            document.getElementById('bundle').innerHTML = "<h2>Bitti!</h2><p>Tüm Wordle soruları tamamlandı.</p>";
+            sendTelegram("🏁 Bundle Tamamlandı! Toplam Puan: " + currentScore);
+            return;
+        }
+        bGuesses = [];
+        bCurrentGuess = "";
+        bGameOver = false;
+        bTargetWord = toTr(data.bundle[bIdx]).replace(/\s+/g,'');
+        bWordLen = bTargetWord.length;
+        
+        document.getElementById('b-idx').innerText = (bIdx + 1) + "/" + data.bundle.length;
+        document.getElementById('b-lives').innerText = 6;
+        document.getElementById('b-msg').innerText = "";
+
+        // Grid'i ayarla
+        document.getElementById('b-grid').style.gridTemplateColumns = `repeat(${bWordLen}, 50px)`;
+        
+        renderBGrid();
+        renderKeyboard();
+    }
+
+    function renderBGrid() {
+        const grid = document.getElementById('b-grid');
+        grid.innerHTML = "";
+
+        // Tahminleri Çiz
+        bGuesses.forEach(guess => {
+            const status = getColors(guess, bTargetWord);
+            for(let i=0; i<bWordLen; i++) {
+                const box = document.createElement('div');
+                box.className = `w-box ${status[i]}`;
+                box.innerText = guess[i];
+                grid.appendChild(box);
+            }
+        });
+
+        // Mevcut Tahmini Çiz
+        if(!bGameOver && bGuesses.length < 6) {
+            for(let i=0; i<bWordLen; i++) {
+                const box = document.createElement('div');
+                box.className = 'w-box';
+                if(i < bCurrentGuess.length) {
+                    box.innerText = bCurrentGuess[i];
+                    box.style.borderColor = "#888";
+                }
+                grid.appendChild(box);
+            }
+        }
+
+        // Boş Satırları Çiz
+        const remain = 6 - bGuesses.length - (bGameOver ? 0 : 1);
+        for(let i=0; i<remain * bWordLen; i++) {
+            const box = document.createElement('div');
+            box.className = 'w-box';
+            grid.appendChild(box);
+        }
+    }
+
+    function renderKeyboard() {
+        const kb = document.getElementById('keyboard');
+        kb.innerHTML = "";
+        const rows = [
+            ['E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Ğ', 'Ü'],
+            ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ş', 'İ'],
+            ['ENTER', 'Z', 'C', 'V', 'B', 'N', 'M', 'Ö', 'Ç', 'DEL']
+        ];
+
+        let keyStatus = {};
+        bGuesses.forEach(guess => {
+            const status = getColors(guess, bTargetWord);
+            guess.split('').forEach((char, i) => {
+                if(status[i] === 'w-correct') keyStatus[char] = 'w-correct';
+                else if(status[i] === 'w-present' && keyStatus[char] !== 'w-correct') keyStatus[char] = 'w-present';
+                else if(status[i] === 'w-absent' && !keyStatus[char]) keyStatus[char] = 'w-absent';
+            });
+        });
+
+        rows.forEach(row => {
+            const rowEl = document.createElement('div');
+            rowEl.className = 'kb-row';
+            row.forEach(key => {
+                const btn = document.createElement('button');
+                btn.innerText = key === 'DEL' ? '⌫' : key;
+                btn.className = 'kb-key';
+                if(key === 'ENTER' || key === 'DEL') btn.classList.add('kb-wide');
+                if(keyStatus[key]) btn.classList.add(keyStatus[key]);
+                
+                btn.onclick = () => handleKeyPress(key);
+                rowEl.appendChild(btn);
+            });
+            kb.appendChild(rowEl);
+        });
+    }
+
+    function handleKeyPress(key) {
+        if(bGameOver) return;
+        if(key === 'ENTER') {
+            submitGuess();
+        } else if(key === 'DEL') {
+            bCurrentGuess = bCurrentGuess.slice(0, -1);
+            renderBGrid();
+        } else if(bCurrentGuess.length < bWordLen) {
+            bCurrentGuess += key;
+            renderBGrid();
+        }
+    }
+
+    function handlePhysicalKeyboard(e) {
+        if(!document.getElementById('bundle').classList.contains('active')) return;
+        if(bGameOver) return;
+        const key = e.key.toUpperCase();
+        if(key === 'ENTER') handleKeyPress('ENTER');
+        else if(key === 'BACKSPACE') handleKeyPress('DEL');
+        else if(/^[A-ZÇĞİÖŞÜ]$/.test(key)) handleKeyPress(key);
+    }
+
+    function submitGuess() {
+        if(bCurrentGuess.length !== bWordLen) {
+            showMessage(`${bWordLen} HARFLİ OLMALI`);
+            return;
+        }
+        bGuesses.push(bCurrentGuess);
+        const guess = bCurrentGuess;
+        bCurrentGuess = "";
+        renderBGrid();
+        renderKeyboard();
+        const livesLeft = 6 - bGuesses.length;
+        document.getElementById('b-lives').innerText = livesLeft;
+
+        if(guess === bTargetWord) {
+            bGameOver = true;
+            // Puan Hesabı: Kalan hak başına 10 puan (Max 60 puan)
+            const winPoints = (livesLeft + 1) * 10;
+            addScore(winPoints);
+            
+            showMessage(`HARİKA! (+${winPoints} Puan)`, true);
+            triggerConfetti();
+            updateStats(true);
+            sendTelegram(`✅ Wordle Bildi: ${bTargetWord} (${livesLeft+1}. hak)`);
+            
+            setTimeout(() => showStats(), 1500);
+        } else if(bGuesses.length >= 6) {
+            bGameOver = true;
+            showMessage(`CEVAP: ${bTargetWord}`);
+            updateStats(false);
+            sendTelegram(`❌ Wordle Bilemedi: ${bTargetWord}`);
+            setTimeout(() => showStats(), 2000);
+        }
+    }
+
+    function getColors(guess, target) {
+        let res = new Array(target.length).fill('w-absent');
+        let tArr = target.split('');
+        let gArr = guess.split('');
+        let taken = new Array(target.length).fill(false);
+
+        // Yeşil
+        gArr.forEach((c, i) => {
+            if(c === tArr[i]) { res[i] = 'w-correct'; taken[i] = true; }
+        });
+        // Sarı
+        gArr.forEach((c, i) => {
+            if(res[i] !== 'w-correct') {
+                let found = tArr.findIndex((tc, ti) => tc === c && !taken[ti]);
+                if(found !== -1) { res[i] = 'w-present'; taken[found] = true; }
+            }
+        });
+        return res;
+    }
+
+    function showMessage(msg, isSuccess=false) {
+        const m = document.getElementById('b-msg');
+        m.innerText = msg;
+        m.style.color = isSuccess ? "var(--correct)" : "red";
+        setTimeout(() => m.innerText = "", 2000);
+    }
+
+    // --- İSTATİSTİKLER ---
+    function updateStats(win) {
+        stats.played++;
+        if(win) {
+            stats.wins++;
+            stats.currentStreak++;
+            stats.maxStreak = Math.max(stats.currentStreak, stats.maxStreak);
+            stats.distribution[bGuesses.length]++;
+        } else {
+            stats.currentStreak = 0;
+        }
+        localStorage.setItem('wordleStats', JSON.stringify(stats));
+    }
+
+    function showStats() {
+        document.getElementById('stats-modal').style.display = "flex";
+        document.getElementById('s-played').innerText = stats.played;
+        document.getElementById('s-winpct').innerText = Math.round((stats.wins / stats.played) * 100) || 0;
+        document.getElementById('s-streak').innerText = stats.currentStreak;
+        document.getElementById('s-maxstreak').innerText = stats.maxStreak;
+        document.getElementById('final-score').innerText = currentScore; // Final Puanı Göster
+
+        const chart = document.getElementById('dist-chart');
+        chart.innerHTML = "";
+        let maxVal = Math.max(...Object.values(stats.distribution), 1);
+        
+        for(let i=1; i<=6; i++) {
+            const row = document.createElement('div');
+            row.className = 'dist-row';
+            const val = stats.distribution[i];
+            const width = Math.max((val / maxVal) * 100, 8);
+            const highlight = (bGameOver && bGuesses.length === i && bGuesses[i-1] === bTargetWord) ? 'highlight' : '';
+            
+            row.innerHTML = `
+                <div class="dist-idx">${i}</div>
+                <div class="dist-bar ${highlight}" style="width:${width}%">${val}</div>
+            `;
+            chart.appendChild(row);
+        }
+    }
+
+    function closeStats() {
+        document.getElementById('stats-modal').style.display = "none";
+        if(bGameOver) {
+            bIdx++;
+            initBundle();
+        }
+    }
+</script>
+</body>
+</html>
